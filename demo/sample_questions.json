@@ -1,0 +1,316 @@
+{
+  "samples": [
+    {
+      "name": "小学应用题 — 行程问题",
+      "type": "word_problem",
+      "grade": "小学",
+      "problem": "小明从家到学校，每分钟走60米，需要15分钟。问小明家到学校有多远？",
+      "script": {
+        "problem_type": "word_problem",
+        "grade_level": "小学",
+        "problem_text": "小明从家到学校，每分钟走60米，需要15分钟。问小明家到学校有多远？",
+        "final_answer": "900米",
+        "settings": {
+          "duration": 1.0,
+          "slide_duration": 0.8,
+          "auto_advance": true,
+          "step_pause": 1.0
+        },
+        "base_figure": null,
+        "coordinate_system": null,
+        "steps": [
+          {
+            "step_number": 1,
+            "title": "审题",
+            "text": "小明从家到学校，每分钟走60米，需要15分钟。",
+            "animation_type": "title_display",
+            "position": "center",
+            "voice_text": "我们来看这道应用题。小明从家到学校，每分钟走60米，需要15分钟。问家到学校有多远？",
+            "math_expr": "",
+            "config": {},
+            "sub_steps": []
+          },
+          {
+            "step_number": 2,
+            "title": "提取关键信息",
+            "text": "已知：速度 = 60米/分钟，时间 = 15分钟",
+            "animation_type": "text_slide_in",
+            "position": "below",
+            "voice_text": "首先提取关键信息。已知速度是每分钟60米，时间是15分钟。",
+            "math_expr": "v = 60, t = 15",
+            "config": {},
+            "sub_steps": []
+          },
+          {
+            "step_number": 3,
+            "title": "画线段图",
+            "text": "用线段图表示路程关系",
+            "animation_type": "draw_segment_diagram",
+            "position": "below",
+            "voice_text": "我们来画一个线段图，帮助理解路程关系。",
+            "math_expr": "",
+            "config": {
+              "total": 15,
+              "parts": [{"value": 15, "label": "15分钟 × 60米/分钟"}],
+              "labels": ["家", "学校"]
+            },
+            "sub_steps": []
+          },
+          {
+            "step_number": 4,
+            "title": "应用公式",
+            "text": "路程 = 速度 × 时间",
+            "animation_type": "text_slide_in",
+            "position": "below",
+            "voice_text": "根据路程等于速度乘以时间的公式来计算。",
+            "math_expr": "S = v \\times t",
+            "config": {},
+            "sub_steps": []
+          },
+          {
+            "step_number": 5,
+            "title": "计算",
+            "text": "60 × 15 = 900（米）",
+            "animation_type": "highlight",
+            "position": "below",
+            "voice_text": "60乘以15等于900米。",
+            "math_expr": "60 \\times 15 = 900",
+            "config": {},
+            "sub_steps": []
+          },
+          {
+            "step_number": 6,
+            "title": "作答",
+            "text": "答：小明家到学校有900米远。",
+            "animation_type": "highlight",
+            "position": "below",
+            "voice_text": "所以小明家到学校有900米远。",
+            "math_expr": "",
+            "config": {},
+            "sub_steps": []
+          }
+        ],
+        "created_at": "",
+        "model_used": ""
+      }
+    },
+    {
+      "name": "初中几何 — 直角三角形勾股定理",
+      "type": "geometry",
+      "grade": "初中",
+      "problem": "在直角三角形ABC中，∠C=90°，AC=3，BC=4，求AB的长度。",
+      "script": {
+        "problem_type": "geometry",
+        "grade_level": "初中",
+        "problem_text": "在直角三角形ABC中，∠C=90°，AC=3，BC=4，求AB的长度。",
+        "final_answer": "AB = 5",
+        "settings": {
+          "duration": 1.0,
+          "slide_duration": 0.8,
+          "auto_advance": true,
+          "step_pause": 1.0
+        },
+        "base_figure": {
+          "type": "triangle",
+          "points": [[-2, -1.5], [2, -1.5], [0, 2]],
+          "labels": ["A", "B", "C"],
+          "radius": 0,
+          "config": {
+            "color": "#3498DB"
+          }
+        },
+        "coordinate_system": null,
+        "steps": [
+          {
+            "step_number": 1,
+            "title": "审题画图",
+            "text": "已知直角三角形ABC，∠C=90°，AC=3，BC=4",
+            "animation_type": "draw_shape",
+            "position": "center",
+            "voice_text": "我们先画出直角三角形ABC，直角在C点。",
+            "math_expr": "",
+            "config": {
+              "shape_type": "triangle",
+              "points": [[-2, -1.5], [2, -1.5], [0, 2]],
+              "color": "#3498DB"
+            },
+            "sub_steps": []
+          },
+          {
+            "step_number": 2,
+            "title": "标注顶点",
+            "text": "标注三角形的三个顶点A、B、C",
+            "animation_type": "label_vertex",
+            "position": "below",
+            "voice_text": "标注三角形的三个顶点，A点、B点，直角在C点。",
+            "math_expr": "",
+            "config": {},
+            "sub_steps": []
+          },
+          {
+            "step_number": 3,
+            "title": "标注直角",
+            "text": "在∠C处标注直角符号",
+            "animation_type": "mark_right_angle",
+            "position": "below",
+            "voice_text": "在C点处标注直角符号。",
+            "math_expr": "",
+            "config": {
+              "vertex": [0, 2],
+              "point_a": [-2, -1.5],
+              "point_b": [2, -1.5]
+            },
+            "sub_steps": []
+          },
+          {
+            "step_number": 4,
+            "title": "标注已知边长",
+            "text": "AC=3（竖直边），BC=4（水平边）",
+            "animation_type": "label_side",
+            "position": "below",
+            "voice_text": "已知两条直角边，AC等于3，BC等于4。",
+            "math_expr": "",
+            "config": {},
+            "sub_steps": []
+          },
+          {
+            "step_number": 5,
+            "title": "应用勾股定理",
+            "text": "勾股定理：AC² + BC² = AB²",
+            "animation_type": "text_slide_in",
+            "position": "below",
+            "voice_text": "根据勾股定理，直角三角形的两条直角边的平方和等于斜边的平方。",
+            "math_expr": "AC^2 + BC^2 = AB^2",
+            "config": {},
+            "sub_steps": []
+          },
+          {
+            "step_number": 6,
+            "title": "代入数据",
+            "text": "3² + 4² = AB² → 9 + 16 = AB² → 25 = AB²",
+            "animation_type": "text_slide_in",
+            "position": "below",
+            "voice_text": "代入数据，三的平方加四的平方等于AB的平方。九加十六等于二十五，所以AB的平方等于二十五。",
+            "math_expr": "3^2 + 4^2 = 9 + 16 = 25 = AB^2",
+            "config": {},
+            "sub_steps": []
+          },
+          {
+            "step_number": 7,
+            "title": "求解",
+            "text": "AB = √25 = 5",
+            "animation_type": "highlight",
+            "position": "below",
+            "voice_text": "AB等于根号二十五，等于五。斜边AB的长度是五。",
+            "math_expr": "AB = \\sqrt{25} = 5",
+            "config": {},
+            "sub_steps": []
+          }
+        ],
+        "created_at": "",
+        "model_used": ""
+      }
+    },
+    {
+      "name": "初中代数 — 一元二次方程",
+      "type": "equation",
+      "grade": "初中",
+      "problem": "解方程：x² - 5x + 6 = 0",
+      "script": {
+        "problem_type": "equation",
+        "grade_level": "初中",
+        "problem_text": "解方程：x² - 5x + 6 = 0",
+        "final_answer": "x₁ = 2, x₂ = 3",
+        "settings": {
+          "duration": 1.0,
+          "slide_duration": 0.8,
+          "auto_advance": true,
+          "step_pause": 1.0
+        },
+        "base_figure": null,
+        "coordinate_system": null,
+        "steps": [
+          {
+            "step_number": 1,
+            "title": "审题",
+            "text": "解一元二次方程：x² - 5x + 6 = 0",
+            "animation_type": "title_display",
+            "position": "center",
+            "voice_text": "我们来解这个一元二次方程，x的平方减五x加六等于零。",
+            "math_expr": "x^2 - 5x + 6 = 0",
+            "config": {},
+            "sub_steps": []
+          },
+          {
+            "step_number": 2,
+            "title": "方法选择",
+            "text": "选用因式分解法：找两个数乘积为6，和为-5",
+            "animation_type": "text_slide_in",
+            "position": "below",
+            "voice_text": "我们选用因式分解法。需要找两个数，它们的乘积等于六，和等于负五。",
+            "math_expr": "",
+            "config": {},
+            "sub_steps": []
+          },
+          {
+            "step_number": 3,
+            "title": "分解因式",
+            "text": "两个数是-2和-3：(-2)×(-3)=6，(-2)+(-3)=-5",
+            "animation_type": "text_slide_in",
+            "position": "below",
+            "voice_text": "这两个数是负二和负三。负二乘以负三等于六，负二加负三等于负五。",
+            "math_expr": "(-2) \\times (-3) = 6,\\quad (-2) + (-3) = -5",
+            "config": {},
+            "sub_steps": []
+          },
+          {
+            "step_number": 4,
+            "title": "写成因式形式",
+            "text": "x² - 5x + 6 = (x - 2)(x - 3) = 0",
+            "animation_type": "highlight",
+            "position": "below",
+            "voice_text": "所以可以写成x减二乘以x减三等于零的形式。",
+            "math_expr": "(x - 2)(x - 3) = 0",
+            "config": {},
+            "sub_steps": []
+          },
+          {
+            "step_number": 5,
+            "title": "分别求解",
+            "text": "由(x - 2) = 0 得 x = 2；由(x - 3) = 0 得 x = 3",
+            "animation_type": "text_slide_in",
+            "position": "below",
+            "voice_text": "令每个因式等于零，得到x等于二和x等于三。",
+            "math_expr": "x - 2 = 0 \\Rightarrow x = 2,\\quad x - 3 = 0 \\Rightarrow x = 3",
+            "config": {},
+            "sub_steps": []
+          },
+          {
+            "step_number": 6,
+            "title": "检验",
+            "text": "代入验证：x=2时，4-10+6=0 ✓；x=3时，9-15+6=0 ✓",
+            "animation_type": "text_slide_in",
+            "position": "below",
+            "voice_text": "检验一下。把x等于二代入，四减十加六等于零，正确。把x等于三代入，九减十五加六等于零，也正确。",
+            "math_expr": "",
+            "config": {},
+            "sub_steps": []
+          },
+          {
+            "step_number": 7,
+            "title": "作答",
+            "text": "方程的解为：x₁ = 2，x₂ = 3",
+            "animation_type": "highlight",
+            "position": "below",
+            "voice_text": "所以这个一元二次方程的解是x一等于二，x二等于三。",
+            "math_expr": "x_1 = 2, \\quad x_2 = 3",
+            "config": {},
+            "sub_steps": []
+          }
+        ],
+        "created_at": "",
+        "model_used": ""
+      }
+    }
+  ]
+}

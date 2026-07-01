@@ -1,0 +1,1111 @@
+2026-06-30 17:11:16,516 [INFO] MathAnimAI: ============================================================
+2026-06-30 17:11:16,516 [INFO] MathAnimAI: MathAnimAI 启动中...
+2026-06-30 17:11:16,517 [INFO] MathAnimAI: ============================================================
+2026-06-30 17:11:21,148 [INFO] MathAnimAI: ✓ Manim 0.18.0
+2026-06-30 17:11:21,684 [INFO] MathAnimAI: ✓ edge-tts
+2026-06-30 17:11:22,645 [INFO] MathAnimAI: ✓ moviepy
+2026-06-30 17:11:23,391 [INFO] MathAnimAI: ✓ openai
+2026-06-30 17:11:23,391 [WARNING] MathAnimAI: ⚠ LLM_API_KEY 未配置 — 将使用内置模板脚本
+2026-06-30 17:11:23,427 [WARNING] MathAnimAI: 部分依赖缺失，系统将以降级模式运行
+2026-06-30 17:11:23,530 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-06-30 17:11:23,530 [INFO] MathAnimAI: 数据库就绪
+2026-06-30 17:11:25,639 [INFO] httpx: HTTP Request: GET https://api.gradio.app/gradio-messaging/en "HTTP/1.1 200 OK"
+2026-06-30 17:11:28,910 [INFO] MathAnimAI: 启动 Web 服务: http://127.0.0.1:7860
+2026-06-30 17:11:29,568 [INFO] httpx: HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2026-06-30 17:11:29,815 [INFO] httpx: HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2026-06-30 17:20:37,301 [INFO] MathAnimAI: ============================================================
+2026-06-30 17:20:37,302 [INFO] MathAnimAI: MathAnimAI 启动中...
+2026-06-30 17:20:37,302 [INFO] MathAnimAI: ============================================================
+2026-06-30 17:20:41,498 [INFO] manim: Reading config file: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\manim\_config\default.cfg
+2026-06-30 17:20:44,556 [INFO] MathAnimAI: ✓ Manim 0.20.1
+2026-06-30 17:20:45,031 [INFO] MathAnimAI: ✓ edge-tts
+2026-06-30 17:20:46,061 [INFO] MathAnimAI: ✓ moviepy
+2026-06-30 17:20:46,911 [INFO] MathAnimAI: ✓ openai
+2026-06-30 17:20:46,912 [WARNING] MathAnimAI: ⚠ LLM_API_KEY 未配置 — 将使用内置模板脚本
+2026-06-30 17:20:46,912 [WARNING] MathAnimAI: 部分依赖缺失，系统将以降级模式运行
+2026-06-30 17:20:46,931 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-06-30 17:20:46,932 [INFO] MathAnimAI: 数据库就绪
+2026-06-30 17:20:52,217 [INFO] MathAnimAI: 启动 Web 服务: http://127.0.0.1:7860
+2026-06-30 17:20:53,116 [INFO] httpx: HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2026-06-30 18:54:54,356 [INFO] MathAnimAI: ============================================================
+2026-06-30 18:54:54,356 [INFO] MathAnimAI: MathAnimAI 启动中...
+2026-06-30 18:54:54,357 [INFO] MathAnimAI: ============================================================
+2026-06-30 18:54:55,094 [INFO] manim: Reading config file: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Lib\site-packages\manim\_config\default.cfg
+2026-06-30 18:54:55,795 [INFO] MathAnimAI: ✓ Manim 0.20.1
+2026-06-30 18:54:56,353 [INFO] MathAnimAI: ✓ edge-tts
+2026-06-30 18:54:57,663 [INFO] MathAnimAI: ✓ moviepy
+2026-06-30 18:55:03,658 [INFO] MathAnimAI: ✓ openai
+2026-06-30 18:55:03,659 [WARNING] MathAnimAI: ⚠ LLM_API_KEY 未配置 — 将使用内置模板脚本
+2026-06-30 18:55:03,659 [WARNING] MathAnimAI: 部分依赖缺失，系统将以降级模式运行
+2026-06-30 18:55:03,684 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-06-30 18:55:03,684 [INFO] MathAnimAI: 数据库就绪
+2026-06-30 18:55:06,150 [INFO] MathAnimAI: 启动 Web 服务: http://127.0.0.1:7860
+2026-06-30 18:55:07,126 [INFO] httpx: HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2026-06-30 18:55:07,130 [INFO] httpx: HTTP Request: GET http://127.0.0.1:7860/gradio_api/startup-events "HTTP/1.1 200 OK"
+2026-06-30 18:55:07,222 [INFO] httpx: HTTP Request: HEAD http://127.0.0.1:7860/ "HTTP/1.1 200 OK"
+2026-06-30 18:55:45,860 [INFO] MathAnimAI: ============================================================
+2026-06-30 18:55:45,860 [INFO] MathAnimAI: 流水线启动: grade=小学, type=自动识别
+2026-06-30 18:55:45,860 [INFO] MathAnimAI: 题目: 2x+3=7
+2026-06-30 18:55:45,861 [INFO] MathAnimAI: [Step 1/7] OCR 预处理
+2026-06-30 18:55:45,861 [INFO] MathAnimAI: [Step 2/7] 题目类型识别
+2026-06-30 18:55:46,002 [INFO] MathAnimAI: 自动识别题型: equation
+2026-06-30 18:55:46,002 [INFO] MathAnimAI: [Step 3/7] LLM 规划动画脚本
+2026-06-30 18:55:46,002 [WARNING] MathAnimAI: 未配置 LLM API Key，使用内置示例脚本
+2026-06-30 18:55:46,002 [INFO] MathAnimAI: 动画脚本生成完成: 5个步骤
+2026-06-30 18:55:46,002 [INFO] MathAnimAI: [Step 4/7] 保存记录到数据库
+2026-06-30 18:55:46,009 [INFO] MathAnimAI.Storage: 插入记录 ID=1
+2026-06-30 18:55:46,010 [INFO] MathAnimAI: 数据库记录 ID=1
+2026-06-30 18:55:46,010 [INFO] MathAnimAI: [Step 5/7] Manim 动画渲染
+2026-06-30 18:55:46,010 [INFO] MathAnimAI: Manim 版本: 0.20.1
+2026-06-30 18:55:46,057 [INFO] MathAnimAI.Builder: 开始构建动画: type=ProblemType.EQUATION, steps=5
+2026-06-30 18:55:46,058 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmpabzpcefz\MathAnimAI_20260630_185546.py
+2026-06-30 18:55:46,069 [INFO] MathAnimAI.Renderer: LaTeX不可用，使用--disable_tex模式
+2026-06-30 18:55:46,070 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-06-30 18:55:46,070 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Scripts\python.exe -m manim -qh --disable_tex C:\Users\lxy\AppData\Local\Temp\tmpabzpcefz\MathAnimAI_20260630_185546.py MathAnimAI_20260630_185546
+2026-06-30 18:55:47,834 [ERROR] MathAnimAI.Renderer: Manim渲染失败:
+Usage: python -m manim render [OPTIONS] FILE [SCENE_NAMES]...
+Try 'python -m manim render --help' for help.
+
+Error: No such option '--disable_tex'. Did you mean '--disable_caching'?
+
+2026-06-30 18:55:47,835 [WARNING] MathAnimAI: 动画渲染失败，跳过
+2026-06-30 18:55:47,843 [INFO] MathAnimAI.Storage: 更新记录 ID=1: ['status', 'error_message']
+2026-06-30 18:55:47,843 [INFO] MathAnimAI: [Step 6/7] TTS 语音生成
+2026-06-30 18:55:47,853 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=15
+2026-06-30 18:55:49,300 [ERROR] MathAnimAI.TTS: 语音生成失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 18:55:49,602 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=18
+2026-06-30 18:55:50,908 [ERROR] MathAnimAI.TTS: 语音生成失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 18:55:51,223 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=15
+2026-06-30 18:55:52,506 [ERROR] MathAnimAI.TTS: 语音生成失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 18:55:52,821 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=16
+2026-06-30 18:55:54,173 [ERROR] MathAnimAI.TTS: 语音生成失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 18:55:54,480 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=18
+2026-06-30 18:55:55,773 [ERROR] MathAnimAI.TTS: 语音生成失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 18:55:56,080 [INFO] MathAnimAI.TTS: 批量语音生成完成: 共5段
+2026-06-30 18:55:56,082 [INFO] MathAnimAI: 语音生成完成: 5段
+2026-06-30 18:55:56,082 [INFO] MathAnimAI: [Step 7/7] 字幕生成 & 视频合成
+2026-06-30 18:55:56,090 [INFO] MathAnimAI.Subtitle: 字幕文件已保存: ./output\subtitles\subtitle_20260630_185556.srt
+2026-06-30 18:55:56,098 [INFO] MathAnimAI.Storage: 更新记录 ID=1: ['subtitle_path']
+2026-06-30 18:55:56,098 [INFO] MathAnimAI: 字幕生成完成: ./output\subtitles\subtitle_20260630_185556.srt
+2026-06-30 18:55:56,098 [INFO] MathAnimAI: 流水线完成: 耗时10.2s
+2026-06-30 18:55:56,098 [INFO] MathAnimAI: 结果: △ 动画脚本已生成，但渲染/合成未完成
+耗时: 10.2s
+步骤: 5
+请确保 Manim 环境配置正确
+2026-06-30 18:56:16,886 [INFO] MathAnimAI: ============================================================
+2026-06-30 18:56:16,886 [INFO] MathAnimAI: MathAnimAI 启动中...
+2026-06-30 18:56:16,886 [INFO] MathAnimAI: ============================================================
+2026-06-30 18:56:17,579 [INFO] manim: Reading config file: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Lib\site-packages\manim\_config\default.cfg
+2026-06-30 18:56:18,151 [INFO] MathAnimAI: [OK] Manim 0.20.1
+2026-06-30 18:56:18,326 [INFO] MathAnimAI: [OK] edge-tts
+2026-06-30 18:56:18,471 [INFO] MathAnimAI: [OK] moviepy
+2026-06-30 18:56:19,121 [INFO] MathAnimAI: [OK] openai
+2026-06-30 18:56:19,122 [WARNING] MathAnimAI: [WARN] LLM_API_KEY 未配置 — 将使用内置模板脚本
+2026-06-30 18:56:19,122 [WARNING] MathAnimAI: 部分依赖缺失，系统将以降级模式运行
+2026-06-30 18:56:19,128 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-06-30 18:56:19,128 [INFO] MathAnimAI: 数据库就绪
+2026-06-30 18:56:21,624 [INFO] MathAnimAI: 启动 Web 服务: http://127.0.0.1:7860
+2026-06-30 18:56:22,541 [INFO] httpx: HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2026-06-30 18:56:42,413 [INFO] MathAnimAI: ============================================================
+2026-06-30 18:56:42,413 [INFO] MathAnimAI: MathAnimAI 启动中...
+2026-06-30 18:56:42,413 [INFO] MathAnimAI: ============================================================
+2026-06-30 18:56:43,091 [INFO] manim: Reading config file: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Lib\site-packages\manim\_config\default.cfg
+2026-06-30 18:56:43,678 [INFO] MathAnimAI: [OK] Manim 0.20.1
+2026-06-30 18:56:43,863 [INFO] MathAnimAI: [OK] edge-tts
+2026-06-30 18:56:44,006 [INFO] MathAnimAI: [OK] moviepy
+2026-06-30 18:56:44,688 [INFO] MathAnimAI: [OK] openai
+2026-06-30 18:56:44,688 [WARNING] MathAnimAI: [WARN] LLM_API_KEY 未配置 — 将使用内置模板脚本
+2026-06-30 18:56:44,688 [WARNING] MathAnimAI: 部分依赖缺失，系统将以降级模式运行
+2026-06-30 18:56:44,695 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-06-30 18:56:44,695 [INFO] MathAnimAI: 数据库就绪
+2026-06-30 18:56:46,958 [INFO] MathAnimAI: 启动 Web 服务: http://127.0.0.1:7860
+2026-06-30 18:56:47,348 [INFO] httpx: HTTP Request: GET http://127.0.0.1:7860/gradio_api/startup-events "HTTP/1.1 200 OK"
+2026-06-30 18:56:47,371 [INFO] httpx: HTTP Request: HEAD http://127.0.0.1:7860/ "HTTP/1.1 200 OK"
+2026-06-30 18:56:47,780 [INFO] httpx: HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2026-06-30 18:57:29,261 [INFO] MathAnimAI: ============================================================
+2026-06-30 18:57:29,261 [INFO] MathAnimAI: 流水线启动: grade=初中, type=几何
+2026-06-30 18:57:29,261 [INFO] MathAnimAI: 题目: 已知直角三角形的两条直角边分别为3cm和4cm，求斜边长
+2026-06-30 18:57:29,261 [INFO] MathAnimAI: [Step 1/7] OCR 预处理
+2026-06-30 18:57:29,261 [INFO] MathAnimAI: [Step 2/7] 题目类型识别
+2026-06-30 18:57:29,261 [INFO] MathAnimAI: [Step 3/7] LLM 规划动画脚本
+2026-06-30 18:57:29,261 [WARNING] MathAnimAI: 未配置 LLM API Key，使用内置示例脚本
+2026-06-30 18:57:29,273 [INFO] MathAnimAI: 动画脚本生成完成: 5个步骤
+2026-06-30 18:57:29,273 [INFO] MathAnimAI: [Step 4/7] 保存记录到数据库
+2026-06-30 18:57:29,279 [INFO] MathAnimAI.Storage: 插入记录 ID=2
+2026-06-30 18:57:29,279 [INFO] MathAnimAI: 数据库记录 ID=2
+2026-06-30 18:57:29,279 [INFO] MathAnimAI: [Step 5/7] Manim 动画渲染
+2026-06-30 18:57:29,279 [INFO] MathAnimAI: Manim 版本: 0.20.1
+2026-06-30 18:57:29,368 [INFO] MathAnimAI.Builder: 开始构建动画: type=ProblemType.GEOMETRY, steps=5
+2026-06-30 18:57:29,369 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmp89zqil5i\MathAnimAI_20260630_185729.py
+2026-06-30 18:57:29,383 [INFO] MathAnimAI.Renderer: LaTeX不可用，使用--disable_tex模式
+2026-06-30 18:57:29,383 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-06-30 18:57:29,384 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Scripts\python.exe -m manim -qh --disable_tex C:\Users\lxy\AppData\Local\Temp\tmp89zqil5i\MathAnimAI_20260630_185729.py MathAnimAI_20260630_185729
+2026-06-30 18:57:30,925 [ERROR] MathAnimAI.Renderer: Manim渲染失败:
+Usage: python -m manim render [OPTIONS] FILE [SCENE_NAMES]...
+Try 'python -m manim render --help' for help.
+
+Error: No such option '--disable_tex'. Did you mean '--disable_caching'?
+
+2026-06-30 18:57:30,926 [WARNING] MathAnimAI: 动画渲染失败，跳过
+2026-06-30 18:57:30,968 [INFO] MathAnimAI.Storage: 更新记录 ID=2: ['status', 'error_message']
+2026-06-30 18:57:30,968 [INFO] MathAnimAI: [Step 6/7] TTS 语音生成
+2026-06-30 18:57:31,003 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=37
+2026-06-30 18:57:33,089 [ERROR] MathAnimAI.TTS: 语音生成失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 18:57:33,392 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=18
+2026-06-30 18:57:34,602 [ERROR] MathAnimAI.TTS: 语音生成失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 18:57:34,906 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=15
+2026-06-30 18:57:36,122 [ERROR] MathAnimAI.TTS: 语音生成失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 18:57:36,438 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=16
+2026-06-30 18:57:37,674 [ERROR] MathAnimAI.TTS: 语音生成失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 18:57:37,983 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=18
+2026-06-30 18:57:39,128 [ERROR] MathAnimAI.TTS: 语音生成失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 18:57:39,432 [INFO] MathAnimAI.TTS: 批量语音生成完成: 共5段
+2026-06-30 18:57:39,434 [INFO] MathAnimAI: 语音生成完成: 5段
+2026-06-30 18:57:39,434 [INFO] MathAnimAI: [Step 7/7] 字幕生成 & 视频合成
+2026-06-30 18:57:39,445 [INFO] MathAnimAI.Subtitle: 字幕文件已保存: ./output\subtitles\subtitle_20260630_185739.srt
+2026-06-30 18:57:39,450 [INFO] MathAnimAI.Storage: 更新记录 ID=2: ['subtitle_path']
+2026-06-30 18:57:39,450 [INFO] MathAnimAI: 字幕生成完成: ./output\subtitles\subtitle_20260630_185739.srt
+2026-06-30 18:57:39,451 [INFO] MathAnimAI: 流水线完成: 耗时10.2s
+2026-06-30 18:57:39,451 [INFO] MathAnimAI: 结果: [WARN] 动画脚本已生成，但渲染/合成未完成
+耗时: 10.2s
+步骤: 5
+请确保 Manim 环境配置正确
+2026-06-30 18:59:29,709 [INFO] MathAnimAI: ============================================================
+2026-06-30 18:59:29,709 [INFO] MathAnimAI: MathAnimAI 启动中...
+2026-06-30 18:59:29,709 [INFO] MathAnimAI: ============================================================
+2026-06-30 18:59:30,414 [INFO] manim: Reading config file: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Lib\site-packages\manim\_config\default.cfg
+2026-06-30 18:59:30,920 [INFO] MathAnimAI: [OK] Manim 0.20.1
+2026-06-30 18:59:31,085 [INFO] MathAnimAI: [OK] edge-tts
+2026-06-30 18:59:31,220 [INFO] MathAnimAI: [OK] moviepy
+2026-06-30 18:59:31,911 [INFO] MathAnimAI: [OK] openai
+2026-06-30 18:59:31,911 [WARNING] MathAnimAI: [WARN] LLM_API_KEY 未配置 — 将使用内置模板脚本
+2026-06-30 18:59:31,912 [WARNING] MathAnimAI: 部分依赖缺失，系统将以降级模式运行
+2026-06-30 18:59:31,918 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-06-30 18:59:31,918 [INFO] MathAnimAI: 数据库就绪
+2026-06-30 18:59:34,175 [INFO] MathAnimAI: 启动 Web 服务: http://127.0.0.1:7860
+2026-06-30 18:59:35,061 [INFO] httpx: HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2026-06-30 18:59:52,481 [INFO] MathAnimAI: ============================================================
+2026-06-30 18:59:52,481 [INFO] MathAnimAI: MathAnimAI 启动中...
+2026-06-30 18:59:52,481 [INFO] MathAnimAI: ============================================================
+2026-06-30 18:59:53,234 [INFO] manim: Reading config file: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Lib\site-packages\manim\_config\default.cfg
+2026-06-30 18:59:53,867 [INFO] MathAnimAI: [OK] Manim 0.20.1
+2026-06-30 18:59:54,033 [INFO] MathAnimAI: [OK] edge-tts
+2026-06-30 18:59:54,228 [INFO] MathAnimAI: [OK] moviepy
+2026-06-30 18:59:54,940 [INFO] MathAnimAI: [OK] openai
+2026-06-30 18:59:54,940 [WARNING] MathAnimAI: [WARN] LLM_API_KEY 未配置 — 将使用内置模板脚本
+2026-06-30 18:59:54,940 [WARNING] MathAnimAI: 部分依赖缺失，系统将以降级模式运行
+2026-06-30 18:59:54,948 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-06-30 18:59:54,948 [INFO] MathAnimAI: 数据库就绪
+2026-06-30 18:59:55,304 [INFO] MathAnimAI: ============================================================
+2026-06-30 18:59:55,305 [INFO] MathAnimAI: MathAnimAI 启动中...
+2026-06-30 18:59:55,305 [INFO] MathAnimAI: ============================================================
+2026-06-30 18:59:56,000 [INFO] manim: Reading config file: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Lib\site-packages\manim\_config\default.cfg
+2026-06-30 18:59:56,586 [INFO] MathAnimAI: [OK] Manim 0.20.1
+2026-06-30 18:59:56,790 [INFO] MathAnimAI: [OK] edge-tts
+2026-06-30 18:59:56,958 [INFO] MathAnimAI: [OK] moviepy
+2026-06-30 18:59:57,337 [INFO] MathAnimAI: 启动 Web 服务: http://127.0.0.1:7860
+2026-06-30 18:59:57,701 [INFO] MathAnimAI: [OK] openai
+2026-06-30 18:59:57,701 [WARNING] MathAnimAI: [WARN] LLM_API_KEY 未配置 — 将使用内置模板脚本
+2026-06-30 18:59:57,701 [WARNING] MathAnimAI: 部分依赖缺失，系统将以降级模式运行
+2026-06-30 18:59:57,709 [INFO] httpx: HTTP Request: GET http://127.0.0.1:7860/gradio_api/startup-events "HTTP/1.1 200 OK"
+2026-06-30 18:59:57,713 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-06-30 18:59:57,713 [INFO] MathAnimAI: 数据库就绪
+2026-06-30 18:59:57,734 [INFO] httpx: HTTP Request: HEAD http://127.0.0.1:7860/ "HTTP/1.1 200 OK"
+2026-06-30 18:59:58,301 [INFO] httpx: HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2026-06-30 19:00:00,264 [INFO] MathAnimAI: 启动 Web 服务: http://127.0.0.1:7860
+2026-06-30 19:00:01,219 [INFO] httpx: HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2026-06-30 19:00:19,908 [INFO] MathAnimAI: ============================================================
+2026-06-30 19:00:19,908 [INFO] MathAnimAI: MathAnimAI 启动中...
+2026-06-30 19:00:19,908 [INFO] MathAnimAI: ============================================================
+2026-06-30 19:00:20,614 [INFO] manim: Reading config file: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Lib\site-packages\manim\_config\default.cfg
+2026-06-30 19:00:21,228 [INFO] MathAnimAI: [OK] Manim 0.20.1
+2026-06-30 19:00:21,437 [INFO] MathAnimAI: [OK] edge-tts
+2026-06-30 19:00:21,608 [INFO] MathAnimAI: [OK] moviepy
+2026-06-30 19:00:22,408 [INFO] MathAnimAI: [OK] openai
+2026-06-30 19:00:22,408 [WARNING] MathAnimAI: [WARN] LLM_API_KEY 未配置 — 将使用内置模板脚本
+2026-06-30 19:00:22,408 [WARNING] MathAnimAI: 部分依赖缺失，系统将以降级模式运行
+2026-06-30 19:00:22,416 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-06-30 19:00:22,416 [INFO] MathAnimAI: 数据库就绪
+2026-06-30 19:00:24,918 [INFO] MathAnimAI: 启动 Web 服务: http://127.0.0.1:7860
+2026-06-30 19:00:25,884 [INFO] httpx: HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2026-06-30 19:01:04,850 [INFO] MathAnimAI: ============================================================
+2026-06-30 19:01:04,850 [INFO] MathAnimAI: MathAnimAI 启动中...
+2026-06-30 19:01:04,850 [INFO] MathAnimAI: ============================================================
+2026-06-30 19:01:05,546 [INFO] manim: Reading config file: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Lib\site-packages\manim\_config\default.cfg
+2026-06-30 19:01:06,168 [INFO] MathAnimAI: [OK] Manim 0.20.1
+2026-06-30 19:01:06,368 [INFO] MathAnimAI: [OK] edge-tts
+2026-06-30 19:01:06,557 [INFO] MathAnimAI: [OK] moviepy
+2026-06-30 19:01:07,328 [INFO] MathAnimAI: [OK] openai
+2026-06-30 19:01:07,328 [WARNING] MathAnimAI: [WARN] LLM_API_KEY 未配置 — 将使用内置模板脚本
+2026-06-30 19:01:07,328 [WARNING] MathAnimAI: 部分依赖缺失，系统将以降级模式运行
+2026-06-30 19:01:07,338 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-06-30 19:01:07,338 [INFO] MathAnimAI: 数据库就绪
+2026-06-30 19:01:09,902 [INFO] MathAnimAI: 启动 Web 服务: http://127.0.0.1:7860
+2026-06-30 19:01:10,852 [INFO] httpx: HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2026-06-30 19:01:31,083 [INFO] MathAnimAI: ============================================================
+2026-06-30 19:01:31,083 [INFO] MathAnimAI: MathAnimAI 启动中...
+2026-06-30 19:01:31,083 [INFO] MathAnimAI: ============================================================
+2026-06-30 19:01:31,695 [INFO] manim: Reading config file: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Lib\site-packages\manim\_config\default.cfg
+2026-06-30 19:01:32,177 [INFO] MathAnimAI: [OK] Manim 0.20.1
+2026-06-30 19:01:32,350 [INFO] MathAnimAI: [OK] edge-tts
+2026-06-30 19:01:32,480 [INFO] MathAnimAI: [OK] moviepy
+2026-06-30 19:01:33,178 [INFO] MathAnimAI: [OK] openai
+2026-06-30 19:01:33,178 [WARNING] MathAnimAI: [WARN] LLM_API_KEY 未配置 — 将使用内置模板脚本
+2026-06-30 19:01:33,178 [WARNING] MathAnimAI: 部分依赖缺失，系统将以降级模式运行
+2026-06-30 19:01:33,187 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-06-30 19:01:33,187 [INFO] MathAnimAI: 数据库就绪
+2026-06-30 19:01:35,364 [INFO] MathAnimAI: 启动 Web 服务: http://127.0.0.1:7860
+2026-06-30 19:01:36,350 [INFO] httpx: HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2026-06-30 19:02:21,475 [INFO] MathAnimAI: ============================================================
+2026-06-30 19:02:21,476 [INFO] MathAnimAI: MathAnimAI 启动中...
+2026-06-30 19:02:21,476 [INFO] MathAnimAI: ============================================================
+2026-06-30 19:02:22,125 [INFO] manim: Reading config file: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Lib\site-packages\manim\_config\default.cfg
+2026-06-30 19:02:22,701 [INFO] MathAnimAI: [OK] Manim 0.20.1
+2026-06-30 19:02:22,933 [INFO] MathAnimAI: [OK] edge-tts
+2026-06-30 19:02:23,094 [INFO] MathAnimAI: [OK] moviepy
+2026-06-30 19:02:23,898 [INFO] MathAnimAI: [OK] openai
+2026-06-30 19:02:23,898 [WARNING] MathAnimAI: [WARN] LLM_API_KEY 未配置 — 将使用内置模板脚本
+2026-06-30 19:02:23,898 [WARNING] MathAnimAI: 部分依赖缺失，系统将以降级模式运行
+2026-06-30 19:02:23,911 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-06-30 19:02:23,911 [INFO] MathAnimAI: 数据库就绪
+2026-06-30 19:02:26,439 [INFO] MathAnimAI: 启动 Web 服务: http://127.0.0.1:7860
+2026-06-30 19:02:26,835 [INFO] httpx: HTTP Request: GET http://127.0.0.1:7861/gradio_api/startup-events "HTTP/1.1 200 OK"
+2026-06-30 19:02:26,857 [INFO] httpx: HTTP Request: HEAD http://127.0.0.1:7861/ "HTTP/1.1 200 OK"
+2026-06-30 19:02:27,267 [INFO] httpx: HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2026-06-30 19:02:58,800 [INFO] MathAnimAI: ============================================================
+2026-06-30 19:02:58,801 [INFO] MathAnimAI: 流水线启动: grade=初中, type=几何
+2026-06-30 19:02:58,801 [INFO] MathAnimAI: 题目: 已知直角三角形的两条直角边分别为3cm和4cm，求斜边长
+2026-06-30 19:02:58,801 [INFO] MathAnimAI: [Step 1/7] OCR 预处理
+2026-06-30 19:02:58,801 [INFO] MathAnimAI: [Step 2/7] 题目类型识别
+2026-06-30 19:02:58,801 [INFO] MathAnimAI: [Step 3/7] LLM 规划动画脚本
+2026-06-30 19:02:58,801 [WARNING] MathAnimAI: 未配置 LLM API Key，使用内置示例脚本
+2026-06-30 19:02:58,823 [INFO] MathAnimAI: 动画脚本生成完成: 5个步骤
+2026-06-30 19:02:58,823 [INFO] MathAnimAI: [Step 4/7] 保存记录到数据库
+2026-06-30 19:02:58,828 [INFO] MathAnimAI.Storage: 插入记录 ID=3
+2026-06-30 19:02:58,829 [INFO] MathAnimAI: 数据库记录 ID=3
+2026-06-30 19:02:58,829 [INFO] MathAnimAI: [Step 5/7] Manim 动画渲染
+2026-06-30 19:02:58,829 [INFO] MathAnimAI: Manim 版本: 0.20.1
+2026-06-30 19:02:58,874 [INFO] MathAnimAI.Builder: 开始构建动画: type=ProblemType.GEOMETRY, steps=5
+2026-06-30 19:02:58,876 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmp6h6tdtsn\MathAnimAI_20260630_190258.py
+2026-06-30 19:02:58,892 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-06-30 19:02:58,892 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Scripts\python.exe -m manim -qh C:\Users\lxy\AppData\Local\Temp\tmp6h6tdtsn\MathAnimAI_20260630_190258.py MathAnimAI_20260630_190258
+2026-06-30 19:03:00,952 [ERROR] MathAnimAI.Renderer: Manim渲染失败:
+, line 1023, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Users\lxy\AppData\Local\Temp\tmp6h6tdtsn\MathAnimAI_20260630_190258.py", line 20, in <module>
+    class MathAnimAI_20260630_190258(GeometryScene):
+    ...<61 lines>...
+            self.wait(2.0)
+  File "C:\Users\lxy\AppData\Local\Temp\tmp6h6tdtsn\MathAnimAI_20260630_190258.py", line 22, in MathAnimAI_20260630_190258
+    self.setup()
+    ^^^^
+NameError: name 'self' is not defined
+
+2026-06-30 19:03:00,957 [WARNING] MathAnimAI: 动画渲染失败，跳过
+2026-06-30 19:03:00,964 [INFO] MathAnimAI.Storage: 更新记录 ID=3: ['status', 'error_message']
+2026-06-30 19:03:00,964 [INFO] MathAnimAI: [Step 6/7] TTS 语音生成
+2026-06-30 19:03:00,976 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=37
+2026-06-30 19:03:02,253 [ERROR] MathAnimAI.TTS: 语音生成失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 19:03:02,556 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=18
+2026-06-30 19:03:04,110 [ERROR] MathAnimAI.TTS: 语音生成失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 19:03:04,415 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=15
+2026-06-30 19:03:05,607 [ERROR] MathAnimAI.TTS: 语音生成失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 19:03:05,909 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=16
+2026-06-30 19:03:07,077 [ERROR] MathAnimAI.TTS: 语音生成失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 19:03:07,386 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=18
+2026-06-30 19:03:08,637 [ERROR] MathAnimAI.TTS: 语音生成失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 19:03:08,943 [INFO] MathAnimAI.TTS: 批量语音生成完成: 共5段
+2026-06-30 19:03:08,945 [INFO] MathAnimAI: 语音生成完成: 5段
+2026-06-30 19:03:08,946 [INFO] MathAnimAI: [Step 7/7] 字幕生成 & 视频合成
+2026-06-30 19:03:08,987 [INFO] MathAnimAI.Subtitle: 字幕文件已保存: ./output\subtitles\subtitle_20260630_190308.srt
+2026-06-30 19:03:08,992 [INFO] MathAnimAI.Storage: 更新记录 ID=3: ['subtitle_path']
+2026-06-30 19:03:08,992 [INFO] MathAnimAI: 字幕生成完成: ./output\subtitles\subtitle_20260630_190308.srt
+2026-06-30 19:03:08,992 [INFO] MathAnimAI: 流水线完成: 耗时10.2s
+2026-06-30 19:03:08,993 [INFO] MathAnimAI: 结果: [WARN] 动画脚本已生成，但渲染/合成未完成
+耗时: 10.2s
+步骤: 5
+请确保 Manim 环境配置正确
+2026-06-30 19:04:25,576 [INFO] MathAnimAI: ============================================================
+2026-06-30 19:04:25,576 [INFO] MathAnimAI: MathAnimAI 启动中...
+2026-06-30 19:04:25,576 [INFO] MathAnimAI: ============================================================
+2026-06-30 19:04:26,264 [INFO] manim: Reading config file: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Lib\site-packages\manim\_config\default.cfg
+2026-06-30 19:04:26,911 [INFO] MathAnimAI: [OK] Manim 0.20.1
+2026-06-30 19:04:27,106 [INFO] MathAnimAI: [OK] edge-tts
+2026-06-30 19:04:27,287 [INFO] MathAnimAI: [OK] moviepy
+2026-06-30 19:04:28,013 [INFO] MathAnimAI: [OK] openai
+2026-06-30 19:04:28,013 [WARNING] MathAnimAI: [WARN] LLM_API_KEY 未配置 — 将使用内置模板脚本
+2026-06-30 19:04:28,013 [WARNING] MathAnimAI: 部分依赖缺失，系统将以降级模式运行
+2026-06-30 19:04:28,044 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-06-30 19:04:28,044 [INFO] MathAnimAI: 数据库就绪
+2026-06-30 19:04:30,700 [INFO] MathAnimAI: 启动 Web 服务: http://127.0.0.1:7860
+2026-06-30 19:04:31,620 [INFO] httpx: HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2026-06-30 19:04:42,755 [INFO] MathAnimAI: ============================================================
+2026-06-30 19:04:42,756 [INFO] MathAnimAI: MathAnimAI 启动中...
+2026-06-30 19:04:42,756 [INFO] MathAnimAI: ============================================================
+2026-06-30 19:04:43,451 [INFO] manim: Reading config file: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Lib\site-packages\manim\_config\default.cfg
+2026-06-30 19:04:44,067 [INFO] MathAnimAI: [OK] Manim 0.20.1
+2026-06-30 19:04:44,256 [INFO] MathAnimAI: [OK] edge-tts
+2026-06-30 19:04:44,448 [INFO] MathAnimAI: [OK] moviepy
+2026-06-30 19:04:45,182 [INFO] MathAnimAI: [OK] openai
+2026-06-30 19:04:45,182 [WARNING] MathAnimAI: [WARN] LLM_API_KEY 未配置 — 将使用内置模板脚本
+2026-06-30 19:04:45,182 [WARNING] MathAnimAI: 部分依赖缺失，系统将以降级模式运行
+2026-06-30 19:04:45,190 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-06-30 19:04:45,190 [INFO] MathAnimAI: 数据库就绪
+2026-06-30 19:04:47,707 [INFO] MathAnimAI: 启动 Web 服务: http://127.0.0.1:7860
+2026-06-30 19:04:48,063 [INFO] httpx: HTTP Request: GET http://127.0.0.1:7862/gradio_api/startup-events "HTTP/1.1 200 OK"
+2026-06-30 19:04:48,083 [INFO] httpx: HTTP Request: HEAD http://127.0.0.1:7862/ "HTTP/1.1 200 OK"
+2026-06-30 19:04:48,633 [INFO] httpx: HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2026-06-30 19:05:00,743 [INFO] MathAnimAI: ============================================================
+2026-06-30 19:05:00,744 [INFO] MathAnimAI: 流水线启动: grade=初中, type=几何
+2026-06-30 19:05:00,744 [INFO] MathAnimAI: 题目: 已知直角三角形的两条直角边分别为3cm和4cm，求斜边长
+2026-06-30 19:05:00,744 [INFO] MathAnimAI: [Step 1/7] OCR 预处理
+2026-06-30 19:05:00,744 [INFO] MathAnimAI: [Step 2/7] 题目类型识别
+2026-06-30 19:05:00,744 [INFO] MathAnimAI: [Step 3/7] LLM 规划动画脚本
+2026-06-30 19:05:00,744 [WARNING] MathAnimAI: 未配置 LLM API Key，使用内置示例脚本
+2026-06-30 19:05:00,764 [INFO] MathAnimAI: 动画脚本生成完成: 5个步骤
+2026-06-30 19:05:00,764 [INFO] MathAnimAI: [Step 4/7] 保存记录到数据库
+2026-06-30 19:05:00,806 [INFO] MathAnimAI.Storage: 插入记录 ID=4
+2026-06-30 19:05:00,806 [INFO] MathAnimAI: 数据库记录 ID=4
+2026-06-30 19:05:00,806 [INFO] MathAnimAI: [Step 5/7] Manim 动画渲染
+2026-06-30 19:05:00,806 [INFO] MathAnimAI: Manim 版本: 0.20.1
+2026-06-30 19:05:00,829 [INFO] MathAnimAI.Builder: 开始构建动画: type=ProblemType.GEOMETRY, steps=5
+2026-06-30 19:05:00,831 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmp0iw9kig_\MathAnimAI_20260630_190500.py
+2026-06-30 19:05:00,841 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-06-30 19:05:00,842 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Scripts\python.exe -m manim -qh C:\Users\lxy\AppData\Local\Temp\tmp0iw9kig_\MathAnimAI_20260630_190500.py MathAnimAI_20260630_190500
+2026-06-30 19:05:12,055 [ERROR] MathAnimAI.Renderer: Manim渲染失败:
+   # 高亮 当前步骤                                                |
+| > 57         smooth_highlight(self, step3_text)                             |
+|   58         self.wait(1.0)                                                 |
+|   59                                                                        |
+|   60         # ===== 步骤 4: 计算求解 =====                                 |
++-----------------------------------------------------------------------------+
+NameError: name 'step3_text' is not defined
+
+2026-06-30 19:05:12,064 [WARNING] MathAnimAI: 动画渲染失败，跳过
+2026-06-30 19:05:12,068 [INFO] MathAnimAI.Storage: 更新记录 ID=4: ['status', 'error_message']
+2026-06-30 19:05:12,068 [INFO] MathAnimAI: [Step 6/7] TTS 语音生成
+2026-06-30 19:05:12,085 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=37
+2026-06-30 19:05:14,026 [WARNING] MathAnimAI.TTS: TTS子进程调用失败: [WinError 2] 系统找不到指定的文件。，尝试回退...
+2026-06-30 19:05:15,438 [ERROR] MathAnimAI.TTS: Python TTS API失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 19:05:15,440 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=18
+2026-06-30 19:05:17,769 [WARNING] MathAnimAI.TTS: TTS子进程调用失败: [WinError 2] 系统找不到指定的文件。，尝试回退...
+2026-06-30 19:05:18,913 [ERROR] MathAnimAI.TTS: Python TTS API失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 19:05:18,916 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=15
+2026-06-30 19:05:20,670 [WARNING] MathAnimAI.TTS: TTS子进程调用失败: [WinError 2] 系统找不到指定的文件。，尝试回退...
+2026-06-30 19:05:21,811 [ERROR] MathAnimAI.TTS: Python TTS API失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 19:05:21,813 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=16
+2026-06-30 19:05:23,585 [WARNING] MathAnimAI.TTS: TTS子进程调用失败: [WinError 2] 系统找不到指定的文件。，尝试回退...
+2026-06-30 19:05:24,753 [ERROR] MathAnimAI.TTS: Python TTS API失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 19:05:24,756 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=18
+2026-06-30 19:05:26,648 [WARNING] MathAnimAI.TTS: TTS子进程调用失败: [WinError 2] 系统找不到指定的文件。，尝试回退...
+2026-06-30 19:05:27,791 [ERROR] MathAnimAI.TTS: Python TTS API失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 19:05:27,793 [INFO] MathAnimAI.TTS: 批量语音生成完成: 共5段
+2026-06-30 19:05:27,793 [INFO] MathAnimAI: 语音生成完成: 5段
+2026-06-30 19:05:27,793 [INFO] MathAnimAI: [Step 7/7] 字幕生成 & 视频合成
+2026-06-30 19:05:27,798 [INFO] MathAnimAI.Subtitle: 字幕文件已保存: ./output\subtitles\subtitle_20260630_190527.srt
+2026-06-30 19:05:27,807 [INFO] MathAnimAI.Storage: 更新记录 ID=4: ['subtitle_path']
+2026-06-30 19:05:27,807 [INFO] MathAnimAI: 字幕生成完成: ./output\subtitles\subtitle_20260630_190527.srt
+2026-06-30 19:05:27,807 [INFO] MathAnimAI: 流水线完成: 耗时27.1s
+2026-06-30 19:05:27,807 [INFO] MathAnimAI: 结果: [WARN] 动画脚本已生成，但渲染/合成未完成
+耗时: 27.1s
+步骤: 5
+请确保 Manim 环境配置正确
+2026-06-30 19:14:06,528 [INFO] MathAnimAI: ============================================================
+2026-06-30 19:14:06,529 [INFO] MathAnimAI: 流水线启动: grade=初中, type=几何
+2026-06-30 19:14:06,529 [INFO] MathAnimAI: 题目: 已知直角三角形的两条直角边分别为3cm和4cm，求斜边长
+2026-06-30 19:14:06,529 [INFO] MathAnimAI: [Step 1/7] OCR 预处理
+2026-06-30 19:14:06,529 [INFO] MathAnimAI: [Step 2/7] 题目类型识别
+2026-06-30 19:14:06,529 [INFO] MathAnimAI: [Step 3/7] LLM 规划动画脚本
+2026-06-30 19:14:06,529 [WARNING] MathAnimAI: 未配置 LLM API Key，使用内置示例脚本
+2026-06-30 19:14:06,684 [INFO] MathAnimAI: 动画脚本生成完成: 5个步骤
+2026-06-30 19:14:06,684 [INFO] MathAnimAI: [Step 4/7] 保存记录到数据库
+2026-06-30 19:14:06,690 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-06-30 19:14:06,694 [INFO] MathAnimAI.Storage: 插入记录 ID=5
+2026-06-30 19:14:06,695 [INFO] MathAnimAI: 数据库记录 ID=5
+2026-06-30 19:14:06,695 [INFO] MathAnimAI: [Step 5/7] Manim 动画渲染
+2026-06-30 19:14:07,347 [INFO] manim: Reading config file: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Lib\site-packages\manim\_config\default.cfg
+2026-06-30 19:14:07,935 [INFO] MathAnimAI: Manim 版本: 0.20.1
+2026-06-30 19:14:07,954 [INFO] MathAnimAI.Builder: 开始构建动画: type=ProblemType.GEOMETRY, steps=5
+2026-06-30 19:14:07,957 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmpw_8xb00_\MathAnimAI_20260630_191407.py
+2026-06-30 19:14:08,019 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-06-30 19:14:08,019 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Scripts\python.exe -m manim -qh C:\Users\lxy\AppData\Local\Temp\tmpw_8xb00_\MathAnimAI_20260630_191407.py MathAnimAI_20260630_191407
+2026-06-30 19:14:41,507 [INFO] MathAnimAI.Renderer: 视频已输出: ./output\videos\MathAnimAI_20260630_191407_20260630_191441.mp4
+2026-06-30 19:14:41,526 [INFO] MathAnimAI.Storage: 更新记录 ID=5: ['animation_path']
+2026-06-30 19:14:41,526 [INFO] MathAnimAI: 动画渲染完成: ./output\videos\MathAnimAI_20260630_191407_20260630_191441.mp4
+2026-06-30 19:14:41,526 [INFO] MathAnimAI: [Step 6/7] TTS 语音生成
+2026-06-30 19:14:41,744 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=37
+2026-06-30 19:14:43,107 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_01_20260630_191441.mp3, 时长=9.2s
+2026-06-30 19:14:43,108 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=18
+2026-06-30 19:14:44,305 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_02_20260630_191441.mp3, 时长=4.5s
+2026-06-30 19:14:44,306 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=15
+2026-06-30 19:14:45,622 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_03_20260630_191441.mp3, 时长=3.8s
+2026-06-30 19:14:45,622 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=16
+2026-06-30 19:14:46,876 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_04_20260630_191441.mp3, 时长=4.0s
+2026-06-30 19:14:46,877 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=18
+2026-06-30 19:14:48,069 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_05_20260630_191441.mp3, 时长=4.5s
+2026-06-30 19:14:48,069 [INFO] MathAnimAI.TTS: 批量语音生成完成: 共5段
+2026-06-30 19:14:48,069 [INFO] MathAnimAI: 语音生成完成: 5段
+2026-06-30 19:14:48,095 [ERROR] MathAnimAI.TTS: 音频合并失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 19:14:48,095 [INFO] MathAnimAI: [Step 7/7] 字幕生成 & 视频合成
+2026-06-30 19:14:48,099 [INFO] MathAnimAI.Subtitle: 字幕文件已保存: ./output\subtitles\subtitle_20260630_191448.srt
+2026-06-30 19:14:48,139 [INFO] MathAnimAI.Storage: 更新记录 ID=5: ['subtitle_path']
+2026-06-30 19:14:48,139 [INFO] MathAnimAI: 字幕生成完成: ./output\subtitles\subtitle_20260630_191448.srt
+2026-06-30 19:14:48,152 [INFO] MathAnimAI.Storage: 更新记录 ID=5: ['final_video_path', 'status']
+2026-06-30 19:14:48,152 [INFO] MathAnimAI: 流水线完成: 耗时41.6s
+2026-06-30 19:14:48,152 [INFO] MathAnimAI: 结果: [OK] 教学动画生成完成！
+耗时: 41.6s
+题型: geometry
+步骤: 5
+视频: ./output\videos\MathAnimAI_20260630_191407_20260630_191441.mp4
+2026-06-30 19:15:14,477 [INFO] MathAnimAI: ============================================================
+2026-06-30 19:15:14,478 [INFO] MathAnimAI: 流水线启动: grade=小学, type=方程
+2026-06-30 19:15:14,478 [INFO] MathAnimAI: 题目: 计算：3×4+5×6等于多少？
+2026-06-30 19:15:14,478 [INFO] MathAnimAI: [Step 1/7] OCR 预处理
+2026-06-30 19:15:14,478 [INFO] MathAnimAI: [Step 2/7] 题目类型识别
+2026-06-30 19:15:14,478 [INFO] MathAnimAI: [Step 3/7] LLM 规划动画脚本
+2026-06-30 19:15:14,478 [WARNING] MathAnimAI: 未配置 LLM API Key，使用内置示例脚本
+2026-06-30 19:15:14,638 [INFO] MathAnimAI: 动画脚本生成完成: 5个步骤
+2026-06-30 19:15:14,638 [INFO] MathAnimAI: [Step 4/7] 保存记录到数据库
+2026-06-30 19:15:14,646 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-06-30 19:15:14,651 [INFO] MathAnimAI.Storage: 插入记录 ID=6
+2026-06-30 19:15:14,651 [INFO] MathAnimAI: 数据库记录 ID=6
+2026-06-30 19:15:14,651 [INFO] MathAnimAI: [Step 5/7] Manim 动画渲染
+2026-06-30 19:15:15,288 [INFO] manim: Reading config file: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Lib\site-packages\manim\_config\default.cfg
+2026-06-30 19:15:15,929 [INFO] MathAnimAI: Manim 版本: 0.20.1
+2026-06-30 19:15:15,946 [INFO] MathAnimAI.Builder: 开始构建动画: type=ProblemType.EQUATION, steps=5
+2026-06-30 19:15:15,949 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmpoqyfr7aj\MathAnimAI_20260630_191515.py
+2026-06-30 19:15:16,025 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-06-30 19:15:16,026 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Scripts\python.exe -m manim -qh C:\Users\lxy\AppData\Local\Temp\tmpoqyfr7aj\MathAnimAI_20260630_191515.py MathAnimAI_20260630_191515
+2026-06-30 19:15:43,195 [INFO] MathAnimAI.Renderer: 视频已输出: ./output\videos\MathAnimAI_20260630_191515_20260630_191543.mp4
+2026-06-30 19:15:43,215 [INFO] MathAnimAI.Storage: 更新记录 ID=6: ['animation_path']
+2026-06-30 19:15:43,215 [INFO] MathAnimAI: 动画渲染完成: ./output\videos\MathAnimAI_20260630_191515_20260630_191543.mp4
+2026-06-30 19:15:43,216 [INFO] MathAnimAI: [Step 6/7] TTS 语音生成
+2026-06-30 19:15:43,414 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=24
+2026-06-30 19:15:45,738 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_01_20260630_191543.mp3, 时长=6.0s
+2026-06-30 19:15:45,739 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=18
+2026-06-30 19:15:46,945 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_02_20260630_191543.mp3, 时长=4.5s
+2026-06-30 19:15:46,946 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=15
+2026-06-30 19:15:48,104 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_03_20260630_191543.mp3, 时长=3.8s
+2026-06-30 19:15:48,105 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=16
+2026-06-30 19:15:49,304 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_04_20260630_191543.mp3, 时长=4.0s
+2026-06-30 19:15:49,305 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=18
+2026-06-30 19:15:50,541 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_05_20260630_191543.mp3, 时长=4.5s
+2026-06-30 19:15:50,541 [INFO] MathAnimAI.TTS: 批量语音生成完成: 共5段
+2026-06-30 19:15:50,541 [INFO] MathAnimAI: 语音生成完成: 5段
+2026-06-30 19:15:50,567 [ERROR] MathAnimAI.TTS: 音频合并失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 19:15:50,568 [INFO] MathAnimAI: [Step 7/7] 字幕生成 & 视频合成
+2026-06-30 19:15:50,571 [INFO] MathAnimAI.Subtitle: 字幕文件已保存: ./output\subtitles\subtitle_20260630_191550.srt
+2026-06-30 19:15:50,614 [INFO] MathAnimAI.Storage: 更新记录 ID=6: ['subtitle_path']
+2026-06-30 19:15:50,614 [INFO] MathAnimAI: 字幕生成完成: ./output\subtitles\subtitle_20260630_191550.srt
+2026-06-30 19:15:50,640 [INFO] MathAnimAI.Storage: 更新记录 ID=6: ['final_video_path', 'status']
+2026-06-30 19:15:50,640 [INFO] MathAnimAI: 流水线完成: 耗时36.2s
+2026-06-30 19:15:50,640 [INFO] MathAnimAI: 结果: [OK] 教学动画生成完成！
+耗时: 36.2s
+题型: equation
+步骤: 5
+视频: ./output\videos\MathAnimAI_20260630_191515_20260630_191543.mp4
+2026-06-30 19:16:41,406 [INFO] MathAnimAI: ============================================================
+2026-06-30 19:16:41,406 [INFO] MathAnimAI: 流水线启动: grade=初中, type=几何
+2026-06-30 19:16:41,406 [INFO] MathAnimAI: 题目: 已知直角三角形的两条直角边分别为3cm和4cm，求斜边长
+2026-06-30 19:16:41,406 [INFO] MathAnimAI: [Step 1/7] OCR 预处理
+2026-06-30 19:16:41,406 [INFO] MathAnimAI: [Step 2/7] 题目类型识别
+2026-06-30 19:16:41,406 [INFO] MathAnimAI: [Step 3/7] LLM 规划动画脚本
+2026-06-30 19:16:41,406 [WARNING] MathAnimAI: 未配置 LLM API Key，使用内置示例脚本
+2026-06-30 19:16:41,551 [INFO] MathAnimAI: 动画脚本生成完成: 5个步骤
+2026-06-30 19:16:41,551 [INFO] MathAnimAI: [Step 4/7] 保存记录到数据库
+2026-06-30 19:16:41,560 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-06-30 19:16:41,566 [INFO] MathAnimAI.Storage: 插入记录 ID=7
+2026-06-30 19:16:41,567 [INFO] MathAnimAI: 数据库记录 ID=7
+2026-06-30 19:16:41,567 [INFO] MathAnimAI: [Step 5/7] Manim 动画渲染
+2026-06-30 19:16:42,189 [INFO] manim: Reading config file: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Lib\site-packages\manim\_config\default.cfg
+2026-06-30 19:16:42,782 [INFO] MathAnimAI: Manim 版本: 0.20.1
+2026-06-30 19:16:42,788 [INFO] MathAnimAI.Builder: 开始构建动画: type=ProblemType.GEOMETRY, steps=5
+2026-06-30 19:16:42,791 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmpavv598j2\MathAnimAI_20260630_191642.py
+2026-06-30 19:16:42,855 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-06-30 19:16:42,855 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Scripts\python.exe -m manim -qh C:\Users\lxy\AppData\Local\Temp\tmpavv598j2\MathAnimAI_20260630_191642.py MathAnimAI_20260630_191642
+2026-06-30 19:17:16,196 [INFO] MathAnimAI.Renderer: 视频已输出: ./output\videos\MathAnimAI_20260630_191642_20260630_191716.mp4
+2026-06-30 19:17:16,214 [INFO] MathAnimAI.Storage: 更新记录 ID=7: ['animation_path']
+2026-06-30 19:17:16,214 [INFO] MathAnimAI: 动画渲染完成: ./output\videos\MathAnimAI_20260630_191642_20260630_191716.mp4
+2026-06-30 19:17:16,214 [INFO] MathAnimAI: [Step 6/7] TTS 语音生成
+2026-06-30 19:17:16,415 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=37
+2026-06-30 19:17:17,775 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_01_20260630_191716.mp3, 时长=9.2s
+2026-06-30 19:17:17,775 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=18
+2026-06-30 19:17:19,047 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_02_20260630_191716.mp3, 时长=4.5s
+2026-06-30 19:17:19,047 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=15
+2026-06-30 19:17:20,241 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_03_20260630_191716.mp3, 时长=3.8s
+2026-06-30 19:17:20,241 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=16
+2026-06-30 19:17:21,624 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_04_20260630_191716.mp3, 时长=4.0s
+2026-06-30 19:17:21,624 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=18
+2026-06-30 19:17:22,820 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_05_20260630_191716.mp3, 时长=4.5s
+2026-06-30 19:17:22,820 [INFO] MathAnimAI.TTS: 批量语音生成完成: 共5段
+2026-06-30 19:17:22,821 [INFO] MathAnimAI: 语音生成完成: 5段
+2026-06-30 19:17:22,931 [INFO] MathAnimAI.TTS: 音频合并完成: ./output\audio\full_20260630_191722.mp3
+2026-06-30 19:17:22,936 [INFO] MathAnimAI.Storage: 更新记录 ID=7: ['audio_path']
+2026-06-30 19:17:22,936 [INFO] MathAnimAI: [Step 7/7] 字幕生成 & 视频合成
+2026-06-30 19:17:22,940 [INFO] MathAnimAI.Subtitle: 字幕文件已保存: ./output\subtitles\subtitle_20260630_191722.srt
+2026-06-30 19:17:22,945 [INFO] MathAnimAI.Storage: 更新记录 ID=7: ['subtitle_path']
+2026-06-30 19:17:22,945 [INFO] MathAnimAI: 字幕生成完成: ./output\subtitles\subtitle_20260630_191722.srt
+2026-06-30 19:17:23,045 [INFO] MathAnimAI.Composer: 开始视频合成: animation=./output\videos\MathAnimAI_20260630_191642_20260630_191716.mp4
+2026-06-30 19:17:23,282 [INFO] MathAnimAI.Composer: 动画视频: 1920x1080, 时长=15.9s
+2026-06-30 19:17:23,406 [INFO] MathAnimAI.Composer: 音频时长=23.8s
+2026-06-30 19:17:23,414 [WARNING] MathAnimAI.Composer: 字幕添加失败: name 're' is not defined，返回无字幕视频
+2026-06-30 19:17:23,431 [ERROR] MathAnimAI.Composer: 视频合成失败: Invalid font Microsoft YaHei, pillow failed to use it with error cannot open resource
+2026-06-30 19:17:23,436 [INFO] MathAnimAI.Storage: 更新记录 ID=7: ['final_video_path', 'status']
+2026-06-30 19:17:23,437 [INFO] MathAnimAI: 最终视频合成完成: ./output\videos\MathAnimAI_20260630_191642_20260630_191716.mp4
+2026-06-30 19:17:23,437 [INFO] MathAnimAI: 流水线完成: 耗时42.0s
+2026-06-30 19:17:23,437 [INFO] MathAnimAI: 结果: [OK] 教学动画生成完成！
+耗时: 42.0s
+题型: geometry
+步骤: 5
+视频: ./output\videos\MathAnimAI_20260630_191642_20260630_191716.mp4
+2026-06-30 19:24:10,454 [INFO] MathAnimAI: ============================================================
+2026-06-30 19:24:10,454 [INFO] MathAnimAI: 流水线启动: grade=初中, type=方程
+2026-06-30 19:24:10,454 [INFO] MathAnimAI: 题目: 2x+3=7
+2026-06-30 19:24:10,455 [INFO] MathAnimAI: [Step 1/7] OCR 预处理
+2026-06-30 19:24:10,455 [INFO] MathAnimAI: [Step 2/7] 题目类型识别
+2026-06-30 19:24:10,455 [INFO] MathAnimAI: [Step 3/7] LLM 规划动画脚本
+2026-06-30 19:24:10,455 [WARNING] MathAnimAI: 未配置 LLM API Key，使用内置示例脚本
+2026-06-30 19:24:10,455 [INFO] MathAnimAI: 动画脚本生成完成: 5个步骤
+2026-06-30 19:24:10,455 [INFO] MathAnimAI: [Step 4/7] 保存记录到数据库
+2026-06-30 19:24:10,462 [INFO] MathAnimAI.Storage: 插入记录 ID=8
+2026-06-30 19:24:10,462 [INFO] MathAnimAI: 数据库记录 ID=8
+2026-06-30 19:24:10,462 [INFO] MathAnimAI: [Step 5/7] Manim 动画渲染
+2026-06-30 19:24:10,463 [INFO] MathAnimAI: Manim 版本: 0.20.1
+2026-06-30 19:24:10,463 [INFO] MathAnimAI.Builder: 开始构建动画: type=ProblemType.EQUATION, steps=5
+2026-06-30 19:24:10,464 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmp_ai1om1o\MathAnimAI_20260630_192410.py
+2026-06-30 19:24:10,475 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-06-30 19:24:10,475 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Scripts\python.exe -m manim -qh C:\Users\lxy\AppData\Local\Temp\tmp_ai1om1o\MathAnimAI_20260630_192410.py MathAnimAI_20260630_192410
+2026-06-30 19:24:18,638 [ERROR] MathAnimAI.Renderer: Manim渲染失败:
+   # 高亮 当前步骤                                                |
+| > 57         smooth_highlight(self, step3_text)                             |
+|   58         self.wait(1.0)                                                 |
+|   59                                                                        |
+|   60         # ===== 步骤 4: 计算求解 =====                                 |
++-----------------------------------------------------------------------------+
+NameError: name 'step3_text' is not defined
+
+2026-06-30 19:24:18,646 [WARNING] MathAnimAI: 动画渲染失败，跳过
+2026-06-30 19:24:18,652 [INFO] MathAnimAI.Storage: 更新记录 ID=8: ['status', 'error_message']
+2026-06-30 19:24:18,652 [INFO] MathAnimAI: [Step 6/7] TTS 语音生成
+2026-06-30 19:24:18,653 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=15
+2026-06-30 19:24:20,618 [WARNING] MathAnimAI.TTS: TTS子进程调用失败: [WinError 2] 系统找不到指定的文件。，尝试回退...
+2026-06-30 19:24:22,625 [ERROR] MathAnimAI.TTS: Python TTS API失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 19:24:22,629 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=18
+2026-06-30 19:24:24,875 [WARNING] MathAnimAI.TTS: TTS子进程调用失败: [WinError 2] 系统找不到指定的文件。，尝试回退...
+2026-06-30 19:24:26,852 [ERROR] MathAnimAI.TTS: Python TTS API失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 19:24:26,855 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=15
+2026-06-30 19:24:28,751 [WARNING] MathAnimAI.TTS: TTS子进程调用失败: [WinError 2] 系统找不到指定的文件。，尝试回退...
+2026-06-30 19:24:29,949 [ERROR] MathAnimAI.TTS: Python TTS API失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 19:24:29,953 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=16
+2026-06-30 19:24:31,809 [WARNING] MathAnimAI.TTS: TTS子进程调用失败: [WinError 2] 系统找不到指定的文件。，尝试回退...
+2026-06-30 19:24:32,970 [ERROR] MathAnimAI.TTS: Python TTS API失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 19:24:32,974 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=18
+2026-06-30 19:24:34,934 [WARNING] MathAnimAI.TTS: TTS子进程调用失败: [WinError 2] 系统找不到指定的文件。，尝试回退...
+2026-06-30 19:24:36,085 [ERROR] MathAnimAI.TTS: Python TTS API失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 19:24:36,087 [INFO] MathAnimAI.TTS: 批量语音生成完成: 共5段
+2026-06-30 19:24:36,087 [INFO] MathAnimAI: 语音生成完成: 5段
+2026-06-30 19:24:36,088 [INFO] MathAnimAI: [Step 7/7] 字幕生成 & 视频合成
+2026-06-30 19:24:36,091 [INFO] MathAnimAI.Subtitle: 字幕文件已保存: ./output\subtitles\subtitle_20260630_192436.srt
+2026-06-30 19:24:36,098 [INFO] MathAnimAI.Storage: 更新记录 ID=8: ['subtitle_path']
+2026-06-30 19:24:36,099 [INFO] MathAnimAI: 字幕生成完成: ./output\subtitles\subtitle_20260630_192436.srt
+2026-06-30 19:24:36,099 [INFO] MathAnimAI: 流水线完成: 耗时25.6s
+2026-06-30 19:24:36,099 [INFO] MathAnimAI: 结果: [WARN] 动画脚本已生成，但渲染/合成未完成
+耗时: 25.6s
+步骤: 5
+请确保 Manim 环境配置正确
+2026-06-30 19:31:13,717 [INFO] MathAnimAI: ============================================================
+2026-06-30 19:31:13,718 [INFO] MathAnimAI: 流水线启动: grade=初中, type=方程
+2026-06-30 19:31:13,718 [INFO] MathAnimAI: 题目: 2x+3=7
+2026-06-30 19:31:13,718 [INFO] MathAnimAI: [Step 1/7] OCR 预处理
+2026-06-30 19:31:13,718 [INFO] MathAnimAI: [Step 2/7] 题目类型识别
+2026-06-30 19:31:13,718 [INFO] MathAnimAI: [Step 3/7] LLM 规划动画脚本
+2026-06-30 19:31:13,718 [WARNING] MathAnimAI: 未配置 LLM API Key，使用内置示例脚本
+2026-06-30 19:31:13,718 [INFO] MathAnimAI: 动画脚本生成完成: 5个步骤
+2026-06-30 19:31:13,718 [INFO] MathAnimAI: [Step 4/7] 保存记录到数据库
+2026-06-30 19:31:13,764 [INFO] MathAnimAI.Storage: 插入记录 ID=9
+2026-06-30 19:31:13,765 [INFO] MathAnimAI: 数据库记录 ID=9
+2026-06-30 19:31:13,765 [INFO] MathAnimAI: [Step 5/7] Manim 动画渲染
+2026-06-30 19:31:13,765 [INFO] MathAnimAI: Manim 版本: 0.20.1
+2026-06-30 19:31:13,765 [INFO] MathAnimAI.Builder: 开始构建动画: type=ProblemType.EQUATION, steps=5
+2026-06-30 19:31:13,766 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmpqp_5l3_t\MathAnimAI_20260630_193113.py
+2026-06-30 19:31:13,783 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-06-30 19:31:13,783 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Scripts\python.exe -m manim -qh C:\Users\lxy\AppData\Local\Temp\tmpqp_5l3_t\MathAnimAI_20260630_193113.py MathAnimAI_20260630_193113
+2026-06-30 19:31:21,986 [ERROR] MathAnimAI.Renderer: Manim渲染失败:
+   # 高亮 当前步骤                                                |
+| > 57         smooth_highlight(self, step3_text)                             |
+|   58         self.wait(1.0)                                                 |
+|   59                                                                        |
+|   60         # ===== 步骤 4: 计算求解 =====                                 |
++-----------------------------------------------------------------------------+
+NameError: name 'step3_text' is not defined
+
+2026-06-30 19:31:21,992 [WARNING] MathAnimAI: 动画渲染失败，跳过
+2026-06-30 19:31:21,999 [INFO] MathAnimAI.Storage: 更新记录 ID=9: ['status', 'error_message']
+2026-06-30 19:31:21,999 [INFO] MathAnimAI: [Step 6/7] TTS 语音生成
+2026-06-30 19:31:22,000 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=15
+2026-06-30 19:31:24,120 [WARNING] MathAnimAI.TTS: TTS子进程调用失败: [WinError 2] 系统找不到指定的文件。，尝试回退...
+2026-06-30 19:31:25,291 [ERROR] MathAnimAI.TTS: Python TTS API失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 19:31:25,296 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=18
+2026-06-30 19:31:27,136 [WARNING] MathAnimAI.TTS: TTS子进程调用失败: [WinError 2] 系统找不到指定的文件。，尝试回退...
+2026-06-30 19:31:28,344 [ERROR] MathAnimAI.TTS: Python TTS API失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 19:31:28,347 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=15
+2026-06-30 19:31:30,218 [WARNING] MathAnimAI.TTS: TTS子进程调用失败: [WinError 2] 系统找不到指定的文件。，尝试回退...
+2026-06-30 19:31:31,404 [ERROR] MathAnimAI.TTS: Python TTS API失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 19:31:31,408 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=16
+2026-06-30 19:31:33,215 [WARNING] MathAnimAI.TTS: TTS子进程调用失败: [WinError 2] 系统找不到指定的文件。，尝试回退...
+2026-06-30 19:31:34,401 [ERROR] MathAnimAI.TTS: Python TTS API失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 19:31:34,420 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=18
+2026-06-30 19:31:36,218 [WARNING] MathAnimAI.TTS: TTS子进程调用失败: [WinError 2] 系统找不到指定的文件。，尝试回退...
+2026-06-30 19:31:37,471 [ERROR] MathAnimAI.TTS: Python TTS API失败: [WinError 2] 系统找不到指定的文件。
+2026-06-30 19:31:37,474 [INFO] MathAnimAI.TTS: 批量语音生成完成: 共5段
+2026-06-30 19:31:37,474 [INFO] MathAnimAI: 语音生成完成: 5段
+2026-06-30 19:31:37,474 [INFO] MathAnimAI: [Step 7/7] 字幕生成 & 视频合成
+2026-06-30 19:31:37,476 [INFO] MathAnimAI.Subtitle: 字幕文件已保存: ./output\subtitles\subtitle_20260630_193137.srt
+2026-06-30 19:31:37,520 [INFO] MathAnimAI.Storage: 更新记录 ID=9: ['subtitle_path']
+2026-06-30 19:31:37,520 [INFO] MathAnimAI: 字幕生成完成: ./output\subtitles\subtitle_20260630_193137.srt
+2026-06-30 19:31:37,520 [INFO] MathAnimAI: 流水线完成: 耗时23.8s
+2026-06-30 19:31:37,520 [INFO] MathAnimAI: 结果: [WARN] 动画脚本已生成，但渲染/合成未完成
+耗时: 23.8s
+步骤: 5
+请确保 Manim 环境配置正确
+2026-06-30 19:35:52,254 [INFO] MathAnimAI: ============================================================
+2026-06-30 19:35:52,260 [INFO] MathAnimAI: 流水线启动: grade=初中, type=几何
+2026-06-30 19:35:52,261 [INFO] MathAnimAI: 题目: 已知直角三角形的两条直角边分别为3cm和4cm，求斜边长
+2026-06-30 19:35:52,261 [INFO] MathAnimAI: [Step 1/7] OCR 预处理
+2026-06-30 19:35:52,261 [INFO] MathAnimAI: [Step 2/7] 题目类型识别
+2026-06-30 19:35:52,262 [INFO] MathAnimAI: [Step 3/7] LLM 规划动画脚本
+2026-06-30 19:35:55,709 [INFO] httpx: HTTP Request: GET http://localhost:11434/v1/models "HTTP/1.1 200 OK"
+2026-06-30 19:35:55,731 [INFO] MathAnimAI: Ollama 已连接，可用模型: ['qwen2.5:7b', 'qwen2.5:0.5b']
+2026-06-30 19:35:55,788 [INFO] MathAnimAI.LLM: 调用LLM: model=qwen2.5:7b, temperature=0.3
+2026-06-30 19:37:09,910 [INFO] httpx: HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-06-30 19:37:09,986 [INFO] MathAnimAI.LLM: LLM响应完成，耗时74.2s，长度2824字符
+2026-06-30 19:37:09,987 [INFO] MathAnimAI.LLM: Pydantic校验通过，共8个步骤
+2026-06-30 19:37:09,988 [INFO] MathAnimAI.LLM: Token消耗 — prompt: 1217, completion: 1092, total: 2309
+2026-06-30 19:37:09,989 [INFO] MathAnimAI: 动画脚本生成完成: 8个步骤
+2026-06-30 19:37:09,990 [INFO] MathAnimAI: [Step 4/7] 保存记录到数据库
+2026-06-30 19:37:10,000 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-06-30 19:37:10,006 [INFO] MathAnimAI.Storage: 插入记录 ID=10
+2026-06-30 19:37:10,007 [INFO] MathAnimAI: 数据库记录 ID=10
+2026-06-30 19:37:10,008 [INFO] MathAnimAI: [Step 5/7] Manim 动画渲染
+2026-06-30 19:37:10,444 [INFO] manim: Reading config file: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Lib\site-packages\manim\_config\default.cfg
+2026-06-30 19:37:11,096 [INFO] MathAnimAI: Manim 版本: 0.20.1
+2026-06-30 19:37:11,102 [INFO] MathAnimAI.Builder: 开始构建动画: type=ProblemType.GEOMETRY, steps=8
+2026-06-30 19:37:11,104 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmpe3bm9617\MathAnimAI_20260630_193711.py
+2026-06-30 19:37:11,170 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-06-30 19:37:11,171 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Scripts\python.exe -m manim -qh C:\Users\lxy\AppData\Local\Temp\tmpe3bm9617\MathAnimAI_20260630_193711.py MathAnimAI_20260630_193711
+2026-06-30 19:37:20,442 [ERROR] MathAnimAI.Renderer: Manim渲染失败:
+ # 绘制图形: polygon                                           |
+| >  48         self.add_to_all(shape)                                        |
+|    49         self.play(Create(shape, run_time=DURATION_CREATE, rate_func=l |
+|    50         self.wait(1.0)                                                |
+|    51                                                                       |
++-----------------------------------------------------------------------------+
+NameError: name 'shape' is not defined
+
+2026-06-30 19:37:20,487 [WARNING] MathAnimAI: 动画渲染失败，跳过
+2026-06-30 19:37:20,494 [INFO] MathAnimAI.Storage: 更新记录 ID=10: ['status', 'error_message']
+2026-06-30 19:37:20,494 [INFO] MathAnimAI: [Step 6/7] TTS 语音生成
+2026-06-30 19:37:20,648 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=35
+2026-06-30 19:37:22,380 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_01_20260630_193720.mp3, 时长=8.8s
+2026-06-30 19:37:22,381 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=33
+2026-06-30 19:37:23,879 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_02_20260630_193720.mp3, 时长=8.2s
+2026-06-30 19:37:23,880 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=21
+2026-06-30 19:37:25,186 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_03_20260630_193720.mp3, 时长=5.2s
+2026-06-30 19:37:25,187 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=22
+2026-06-30 19:37:26,673 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_04_20260630_193720.mp3, 时长=5.5s
+2026-06-30 19:37:26,674 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=59
+2026-06-30 19:37:28,198 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_05_20260630_193720.mp3, 时长=14.8s
+2026-06-30 19:37:28,199 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=43
+2026-06-30 19:37:29,689 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_06_20260630_193720.mp3, 时长=10.8s
+2026-06-30 19:37:29,690 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=45
+2026-06-30 19:37:31,146 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_07_20260630_193720.mp3, 时长=11.2s
+2026-06-30 19:37:31,148 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=11
+2026-06-30 19:37:32,475 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_08_20260630_193720.mp3, 时长=2.8s
+2026-06-30 19:37:32,476 [INFO] MathAnimAI.TTS: 批量语音生成完成: 共8段
+2026-06-30 19:37:32,476 [INFO] MathAnimAI: 语音生成完成: 8段
+2026-06-30 19:37:32,593 [INFO] MathAnimAI.TTS: 音频合并完成: ./output\audio\full_20260630_193732.mp3
+2026-06-30 19:37:32,601 [INFO] MathAnimAI.Storage: 更新记录 ID=10: ['audio_path']
+2026-06-30 19:37:32,602 [INFO] MathAnimAI: [Step 7/7] 字幕生成 & 视频合成
+2026-06-30 19:37:32,606 [INFO] MathAnimAI.Subtitle: 字幕文件已保存: ./output\subtitles\subtitle_20260630_193732.srt
+2026-06-30 19:37:32,614 [INFO] MathAnimAI.Storage: 更新记录 ID=10: ['subtitle_path']
+2026-06-30 19:37:32,614 [INFO] MathAnimAI: 字幕生成完成: ./output\subtitles\subtitle_20260630_193732.srt
+2026-06-30 19:37:32,615 [INFO] MathAnimAI: 流水线完成: 耗时100.4s
+2026-06-30 19:37:32,615 [INFO] MathAnimAI: 结果: [WARN] 动画脚本已生成，但渲染/合成未完成
+耗时: 100.4s
+步骤: 8
+请确保 Manim 环境配置正确
+2026-06-30 19:56:00,817 [INFO] MathAnimAI: ============================================================
+2026-06-30 19:56:00,818 [INFO] MathAnimAI: MathAnimAI 启动中...
+2026-06-30 19:56:00,818 [INFO] MathAnimAI: ============================================================
+2026-06-30 19:56:05,263 [INFO] manim: Reading config file: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\manim\_config\default.cfg
+2026-06-30 19:56:08,190 [INFO] MathAnimAI: [OK] Manim 0.20.1
+2026-06-30 19:56:08,690 [INFO] MathAnimAI: [OK] edge-tts
+2026-06-30 19:56:09,521 [INFO] MathAnimAI: [OK] moviepy
+2026-06-30 19:56:10,606 [INFO] MathAnimAI: [OK] openai
+2026-06-30 19:56:12,670 [INFO] MathAnimAI: Ollama 已连接，可用模型: ['qwen2.5:7b', 'qwen2.5:0.5b']
+2026-06-30 19:56:12,691 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-06-30 19:56:12,691 [INFO] MathAnimAI: 数据库就绪
+2026-06-30 19:56:18,712 [INFO] MathAnimAI: 启动 Web 服务: http://127.0.0.1:7860
+2026-06-30 19:56:19,753 [INFO] httpx: HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2026-06-30 19:57:25,479 [INFO] MathAnimAI: ============================================================
+2026-06-30 19:57:25,480 [INFO] MathAnimAI: 流水线启动: grade=初中, type=自动识别
+2026-06-30 19:57:25,480 [INFO] MathAnimAI: 题目: 小明从家到学校，每分钟走60米，需要15分钟，问家到学校有多远？
+
+2026-06-30 19:57:25,480 [INFO] MathAnimAI: [Step 1/7] OCR 预处理
+2026-06-30 19:57:25,480 [INFO] MathAnimAI: [Step 2/7] 题目类型识别
+2026-06-30 19:57:25,541 [INFO] MathAnimAI: 自动识别题型: word_problem
+2026-06-30 19:57:25,541 [INFO] MathAnimAI: [Step 3/7] LLM 规划动画脚本
+2026-06-30 19:57:25,541 [WARNING] MathAnimAI: 未配置 LLM API Key，使用内置示例脚本
+2026-06-30 19:57:25,541 [INFO] MathAnimAI: 动画脚本生成完成: 5个步骤
+2026-06-30 19:57:25,542 [INFO] MathAnimAI: [Step 4/7] 保存记录到数据库
+2026-06-30 19:57:25,546 [INFO] MathAnimAI.Storage: 插入记录 ID=15
+2026-06-30 19:57:25,546 [INFO] MathAnimAI: 数据库记录 ID=15
+2026-06-30 19:57:25,546 [INFO] MathAnimAI: [Step 5/7] Manim 动画渲染
+2026-06-30 19:57:25,546 [INFO] MathAnimAI: Manim 版本: 0.20.1
+2026-06-30 19:57:25,563 [INFO] MathAnimAI.Builder: 开始构建动画: type=ProblemType.WORD_PROBLEM, steps=5
+2026-06-30 19:57:25,565 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmpchsfjyao\MathAnimAI_20260630_195725.py
+2026-06-30 19:57:25,578 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-06-30 19:57:25,578 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\.venv\Scripts\python.exe -m manim -qh C:\Users\lxy\AppData\Local\Temp\tmpchsfjyao\MathAnimAI_20260630_195725.py MathAnimAI_20260630_195725
+2026-06-30 19:58:02,884 [INFO] MathAnimAI.Renderer: 视频已输出: ./output\videos\MathAnimAI_20260630_195725_20260630_195802.mp4
+2026-06-30 19:58:02,907 [INFO] MathAnimAI.Storage: 更新记录 ID=15: ['animation_path']
+2026-06-30 19:58:02,907 [INFO] MathAnimAI: 动画渲染完成: ./output\videos\MathAnimAI_20260630_195725_20260630_195802.mp4
+2026-06-30 19:58:02,907 [INFO] MathAnimAI: [Step 6/7] TTS 语音生成
+2026-06-30 19:58:02,911 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=41
+2026-06-30 19:58:04,406 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_01_20260630_195802.mp3, 时长=10.2s
+2026-06-30 19:58:04,407 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=18
+2026-06-30 19:58:05,570 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_02_20260630_195802.mp3, 时长=4.5s
+2026-06-30 19:58:05,570 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=15
+2026-06-30 19:58:06,718 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_03_20260630_195802.mp3, 时长=3.8s
+2026-06-30 19:58:06,718 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=16
+2026-06-30 19:58:07,834 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_04_20260630_195802.mp3, 时长=4.0s
+2026-06-30 19:58:07,835 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=18
+2026-06-30 19:58:08,941 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_05_20260630_195802.mp3, 时长=4.5s
+2026-06-30 19:58:08,941 [INFO] MathAnimAI.TTS: 批量语音生成完成: 共5段
+2026-06-30 19:58:08,942 [INFO] MathAnimAI: 语音生成完成: 5段
+2026-06-30 19:58:09,046 [INFO] MathAnimAI.TTS: 音频合并完成: ./output\audio\full_20260630_195808.mp3
+2026-06-30 19:58:09,051 [INFO] MathAnimAI.Storage: 更新记录 ID=15: ['audio_path']
+2026-06-30 19:58:09,051 [INFO] MathAnimAI: [Step 7/7] 字幕生成 & 视频合成
+2026-06-30 19:58:09,054 [INFO] MathAnimAI.Subtitle: 字幕文件已保存: ./output\subtitles\subtitle_20260630_195809.srt
+2026-06-30 19:58:09,057 [INFO] MathAnimAI.Storage: 更新记录 ID=15: ['subtitle_path']
+2026-06-30 19:58:09,057 [INFO] MathAnimAI: 字幕生成完成: ./output\subtitles\subtitle_20260630_195809.srt
+2026-06-30 19:58:09,070 [INFO] MathAnimAI.Composer: 开始视频合成: animation=./output\videos\MathAnimAI_20260630_195725_20260630_195802.mp4
+2026-06-30 19:58:09,235 [INFO] MathAnimAI.Composer: 动画视频: 1920x1080, 时长=17.6s
+2026-06-30 19:58:09,352 [INFO] MathAnimAI.Composer: 音频时长=24.2s
+2026-06-30 19:58:09,667 [INFO] MathAnimAI.Composer: 渲染输出: ./output\videos\final_20260630_195809.mp4
+2026-06-30 19:58:56,060 [INFO] MathAnimAI: ============================================================
+2026-06-30 19:58:56,060 [INFO] MathAnimAI: MathAnimAI 启动中...
+2026-06-30 19:58:56,060 [INFO] MathAnimAI: ============================================================
+2026-06-30 19:58:57,061 [INFO] manim: Reading config file: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\manim\_config\default.cfg
+2026-06-30 19:58:57,894 [INFO] MathAnimAI: [OK] Manim 0.20.1
+2026-06-30 19:58:58,228 [INFO] MathAnimAI: [OK] edge-tts
+2026-06-30 19:58:58,413 [INFO] MathAnimAI: [OK] moviepy
+2026-06-30 19:58:59,590 [INFO] MathAnimAI: [OK] openai
+2026-06-30 19:59:01,634 [INFO] MathAnimAI: Ollama 已连接，可用模型: ['qwen2.5:7b', 'qwen2.5:0.5b']
+2026-06-30 19:59:01,648 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-06-30 19:59:01,648 [INFO] MathAnimAI: 数据库就绪
+2026-06-30 19:59:05,594 [INFO] MathAnimAI: 启动 Web 服务: http://127.0.0.1:7860
+2026-06-30 19:59:06,581 [INFO] httpx: HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2026-06-30 20:01:30,806 [INFO] MathAnimAI.Composer: 视频合成完成: ./output\videos\final_20260630_195809.mp4
+2026-06-30 20:01:30,838 [INFO] MathAnimAI.Storage: 更新记录 ID=15: ['final_video_path', 'status']
+2026-06-30 20:01:30,838 [INFO] MathAnimAI: 最终视频合成完成: ./output\videos\final_20260630_195809.mp4
+2026-06-30 20:01:30,839 [INFO] MathAnimAI: 流水线完成: 耗时245.4s
+2026-06-30 20:01:30,839 [INFO] MathAnimAI: 结果: [OK] 教学动画生成完成！
+耗时: 245.4s
+题型: word_problem
+步骤: 5
+视频: ./output\videos\final_20260630_195809.mp4
+2026-06-30 20:40:12,565 [INFO] manim: Reading config file: C:\Users\lxy\AppData\Roaming\Python\Python313\site-packages\manim\_config\default.cfg
+2026-06-30 20:40:31,983 [INFO] manim: Reading config file: C:\Users\lxy\AppData\Roaming\Python\Python313\site-packages\manim\_config\default.cfg
+2026-06-30 20:40:43,734 [INFO] manim: Reading config file: C:\Users\lxy\AppData\Roaming\Python\Python313\site-packages\manim\_config\default.cfg
+2026-06-30 20:40:44,523 [INFO] MathAnimAI.Builder: 开始构建动画: type=ProblemType.WORD_PROBLEM, steps=5
+2026-06-30 20:40:44,526 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmpu1uz4wu5\MathAnimAI_20260630_204044.py
+2026-06-30 20:40:45,515 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\AppData\Roaming\Python\Python313\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-06-30 20:40:45,515 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\.workbuddy\binaries\python\versions\3.13.12\python.exe -m manim -qm C:\Users\lxy\AppData\Local\Temp\tmpu1uz4wu5\MathAnimAI_20260630_204044.py MathAnimAI_20260630_204044
+2026-06-30 20:40:51,703 [ERROR] MathAnimAI.Renderer: Manim渲染失败:
+                                                    |
+| > 538     if new_element.get_top()[1] > CANVAS_TOP_Y - 0.5:                 |
+|   539         overshoot = new_element.get_top()[1] - (CANVAS_TOP_Y - 0.5)   |
+|   540         new_element.shift(DOWN * overshoot)                           |
+|   541                                                                       |
++-----------------------------------------------------------------------------+
+NameError: name 'CANVAS_TOP_Y' is not defined
+
+2026-06-30 20:41:07,005 [INFO] manim: Reading config file: C:\Users\lxy\AppData\Roaming\Python\Python313\site-packages\manim\_config\default.cfg
+2026-06-30 20:41:07,853 [INFO] MathAnimAI.Builder: 开始构建动画: type=ProblemType.WORD_PROBLEM, steps=5
+2026-06-30 20:41:07,855 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmpke2rw9yf\MathAnimAI_20260630_204107.py
+2026-06-30 20:41:07,925 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\AppData\Roaming\Python\Python313\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-06-30 20:41:07,925 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\.workbuddy\binaries\python\versions\3.13.12\python.exe -m manim -qm C:\Users\lxy\AppData\Local\Temp\tmpke2rw9yf\MathAnimAI_20260630_204107.py MathAnimAI_20260630_204107
+2026-06-30 20:41:53,977 [INFO] MathAnimAI.Renderer: 视频已输出: ./output\videos\MathAnimAI_20260630_204107_20260630_204153.mp4
+2026-06-30 20:43:48,073 [INFO] MathAnimAI: ============================================================
+2026-06-30 20:43:48,073 [INFO] MathAnimAI: MathAnimAI 启动中...
+2026-06-30 20:43:48,073 [INFO] MathAnimAI: ============================================================
+2026-06-30 20:43:48,901 [INFO] manim: Reading config file: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\manim\_config\default.cfg
+2026-06-30 20:43:49,598 [INFO] MathAnimAI: [OK] Manim 0.20.1
+2026-06-30 20:43:49,862 [INFO] MathAnimAI: [OK] edge-tts
+2026-06-30 20:43:50,016 [INFO] MathAnimAI: [OK] moviepy
+2026-06-30 20:43:50,939 [INFO] MathAnimAI: [OK] openai
+2026-06-30 20:43:53,016 [INFO] MathAnimAI: Ollama 已连接，可用模型: ['qwen2.5:7b', 'qwen2.5:0.5b']
+2026-06-30 20:43:53,034 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-06-30 20:43:53,040 [INFO] MathAnimAI: 数据库就绪
+2026-06-30 20:43:56,052 [INFO] MathAnimAI: 启动 Web 服务: http://127.0.0.1:7860
+2026-06-30 20:43:57,096 [INFO] httpx: HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2026-07-01 10:34:31,783 [INFO] MathAnimAI: ============================================================
+2026-07-01 10:34:31,784 [INFO] MathAnimAI: MathAnimAI 启动中...
+2026-07-01 10:34:31,784 [INFO] MathAnimAI: ============================================================
+2026-07-01 10:34:35,684 [INFO] manim: Reading config file: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\manim\_config\default.cfg
+2026-07-01 10:34:38,374 [INFO] MathAnimAI: [OK] Manim 0.20.1
+2026-07-01 10:34:38,875 [INFO] MathAnimAI: [OK] edge-tts
+2026-07-01 10:34:39,786 [INFO] MathAnimAI: [OK] moviepy
+2026-07-01 10:34:40,783 [INFO] MathAnimAI: [OK] openai
+2026-07-01 10:34:42,873 [INFO] MathAnimAI: Ollama 已连接，可用模型: ['qwen2.5:7b', 'qwen2.5:0.5b']
+2026-07-01 10:34:42,965 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-07-01 10:34:42,965 [INFO] MathAnimAI: 数据库就绪
+2026-07-01 10:34:48,886 [INFO] MathAnimAI: 启动 Web 服务: http://127.0.0.1:7860
+2026-07-01 10:34:49,420 [INFO] httpx: HTTP Request: GET http://127.0.0.1:7860/gradio_api/startup-events "HTTP/1.1 200 OK"
+2026-07-01 10:34:49,479 [INFO] httpx: HTTP Request: HEAD http://127.0.0.1:7860/ "HTTP/1.1 200 OK"
+2026-07-01 10:34:49,809 [INFO] httpx: HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2026-07-01 10:36:28,072 [INFO] MathAnimAI: ============================================================
+2026-07-01 10:36:28,072 [INFO] MathAnimAI: 流水线启动: grade=初中, type=自动识别
+2026-07-01 10:36:28,072 [INFO] MathAnimAI: 题目: 小明从家到学校 1200 米，用了 15 分钟，求速度
+2026-07-01 10:36:28,072 [INFO] MathAnimAI: [Step 1/7] OCR 预处理
+2026-07-01 10:36:28,073 [INFO] MathAnimAI: [Step 2/7] 题目类型识别
+2026-07-01 10:36:28,158 [INFO] MathAnimAI: 自动识别题型: word_problem
+2026-07-01 10:36:28,159 [INFO] MathAnimAI: [Step 3/7] LLM 规划动画脚本
+2026-07-01 10:36:30,210 [INFO] MathAnimAI: Ollama 已连接，可用模型: ['qwen2.5:7b', 'qwen2.5:0.5b']
+2026-07-01 10:36:30,275 [INFO] MathAnimAI.LLM: 调用LLM: model=qwen2.5:7b, temperature=0.3
+2026-07-01 10:38:05,802 [INFO] httpx: HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-01 10:38:05,815 [INFO] MathAnimAI.LLM: LLM响应完成，耗时95.5s，长度3077字符
+2026-07-01 10:38:05,816 [INFO] MathAnimAI.LLM: Pydantic校验通过，共9个步骤
+2026-07-01 10:38:05,816 [INFO] MathAnimAI.LLM: Token消耗 — prompt: 1167, completion: 1150, total: 2317
+2026-07-01 10:38:05,818 [INFO] MathAnimAI: 动画脚本生成完成: 9个步骤
+2026-07-01 10:38:05,819 [INFO] MathAnimAI: [Step 4/7] 保存记录到数据库
+2026-07-01 10:38:05,826 [INFO] MathAnimAI.Storage: 插入记录 ID=22
+2026-07-01 10:38:05,826 [INFO] MathAnimAI: 数据库记录 ID=22
+2026-07-01 10:38:05,827 [INFO] MathAnimAI: [Step 5/7] Manim 动画渲染
+2026-07-01 10:38:05,827 [INFO] MathAnimAI: Manim 版本: 0.20.1
+2026-07-01 10:38:05,944 [INFO] MathAnimAI.Builder: 开始构建动画: type=ProblemType.WORD_PROBLEM, steps=9
+2026-07-01 10:38:05,946 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmp0txdrrvh\MathAnimAI_20260701_103805.py
+2026-07-01 10:38:05,971 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-07-01 10:38:05,971 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\.conda\envs\workbuddy_agent\python.exe -m manim -qh C:\Users\lxy\AppData\Local\Temp\tmp0txdrrvh\MathAnimAI_20260701_103805.py MathAnimAI_20260701_103805
+2026-07-01 10:40:12,884 [INFO] MathAnimAI.Renderer: 视频已输出: ./output\videos\MathAnimAI_20260701_103805_20260701_104012.mp4
+2026-07-01 10:40:12,908 [INFO] MathAnimAI.Storage: 更新记录 ID=22: ['animation_path']
+2026-07-01 10:40:12,909 [INFO] MathAnimAI: 动画渲染完成: ./output\videos\MathAnimAI_20260701_103805_20260701_104012.mp4
+2026-07-01 10:40:12,909 [INFO] MathAnimAI: [Step 6/7] TTS 语音生成
+2026-07-01 10:40:12,935 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=43
+2026-07-01 10:40:14,470 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_01_20260701_104012.mp3, 时长=10.8s
+2026-07-01 10:40:14,471 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=38
+2026-07-01 10:40:15,980 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_02_20260701_104012.mp3, 时长=9.5s
+2026-07-01 10:40:15,980 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=22
+2026-07-01 10:40:17,371 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_03_20260701_104012.mp3, 时长=5.5s
+2026-07-01 10:40:17,371 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=23
+2026-07-01 10:40:18,859 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_04_20260701_104012.mp3, 时长=5.8s
+2026-07-01 10:40:18,859 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=25
+2026-07-01 10:40:20,206 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_05_20260701_104012.mp3, 时长=6.2s
+2026-07-01 10:40:20,207 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=29
+2026-07-01 10:40:21,588 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_06_20260701_104012.mp3, 时长=7.2s
+2026-07-01 10:40:21,589 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=10
+2026-07-01 10:40:22,861 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_07_20260701_104012.mp3, 时长=2.5s
+2026-07-01 10:40:22,862 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=34
+2026-07-01 10:40:24,352 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_08_20260701_104012.mp3, 时长=8.5s
+2026-07-01 10:40:24,352 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=26
+2026-07-01 10:40:25,721 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_09_20260701_104012.mp3, 时长=6.5s
+2026-07-01 10:40:25,721 [INFO] MathAnimAI.TTS: 批量语音生成完成: 共9段
+2026-07-01 10:40:25,722 [INFO] MathAnimAI: 语音生成完成: 9段
+2026-07-01 10:40:25,875 [INFO] MathAnimAI.TTS: 音频合并完成: ./output\audio\full_20260701_104025.mp3
+2026-07-01 10:40:25,880 [INFO] MathAnimAI.Storage: 更新记录 ID=22: ['audio_path']
+2026-07-01 10:40:25,881 [INFO] MathAnimAI: [Step 7/7] 字幕生成 & 视频合成
+2026-07-01 10:40:25,897 [INFO] MathAnimAI.Subtitle: 字幕文件已保存: ./output\subtitles\subtitle_20260701_104025.srt
+2026-07-01 10:40:25,902 [INFO] MathAnimAI.Storage: 更新记录 ID=22: ['subtitle_path']
+2026-07-01 10:40:25,902 [INFO] MathAnimAI: 字幕生成完成: ./output\subtitles\subtitle_20260701_104025.srt
+2026-07-01 10:40:25,920 [INFO] MathAnimAI.Composer: 使用字幕字体: C:/Windows/Fonts/msyh.ttc
+2026-07-01 10:40:25,922 [INFO] MathAnimAI.Composer: 开始视频合成: animation=./output\videos\MathAnimAI_20260701_103805_20260701_104012.mp4
+2026-07-01 10:40:26,091 [INFO] MathAnimAI.Composer: 动画视频: 1920x1080, 时长=100.0s
+2026-07-01 10:40:26,196 [INFO] MathAnimAI.Composer: 音频时长=51.2s
+2026-07-01 10:40:26,731 [INFO] MathAnimAI.Composer: 渲染输出: ./output\videos\final_20260701_104026.mp4
+2026-07-01 10:52:29,916 [INFO] MathAnimAI.Composer: 视频合成完成: ./output\videos\final_20260701_104026.mp4
+2026-07-01 10:52:29,959 [INFO] MathAnimAI.Storage: 更新记录 ID=22: ['final_video_path', 'status']
+2026-07-01 10:52:29,959 [INFO] MathAnimAI: 最终视频合成完成: ./output\videos\final_20260701_104026.mp4
+2026-07-01 10:52:29,960 [INFO] MathAnimAI: 流水线完成: 耗时961.9s
+2026-07-01 10:52:29,960 [INFO] MathAnimAI: 结果: [OK] 教学动画生成完成！
+耗时: 961.9s
+题型: word_problem
+步骤: 9
+视频: ./output\videos\final_20260701_104026.mp4
+2026-07-01 10:59:29,504 [INFO] MathAnimAI: ============================================================
+2026-07-01 10:59:29,504 [INFO] MathAnimAI: MathAnimAI 启动中...
+2026-07-01 10:59:29,505 [INFO] MathAnimAI: ============================================================
+2026-07-01 10:59:30,229 [INFO] manim: Reading config file: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\manim\_config\default.cfg
+2026-07-01 10:59:30,821 [INFO] MathAnimAI: [OK] Manim 0.20.1
+2026-07-01 10:59:31,064 [INFO] MathAnimAI: [OK] edge-tts
+2026-07-01 10:59:31,210 [INFO] MathAnimAI: [OK] moviepy
+2026-07-01 10:59:32,035 [INFO] MathAnimAI: [OK] openai
+2026-07-01 10:59:34,082 [INFO] MathAnimAI: Ollama 已连接，可用模型: ['qwen2.5:7b', 'qwen2.5:0.5b']
+2026-07-01 10:59:34,092 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-07-01 10:59:34,092 [INFO] MathAnimAI: 数据库就绪
+2026-07-01 10:59:37,129 [INFO] MathAnimAI: 启动 Web 服务: http://127.0.0.1:7060
+2026-07-01 10:59:37,555 [INFO] httpx: HTTP Request: GET http://127.0.0.1:7060/gradio_api/startup-events "HTTP/1.1 200 OK"
+2026-07-01 10:59:37,578 [INFO] httpx: HTTP Request: HEAD http://127.0.0.1:7060/ "HTTP/1.1 200 OK"
+2026-07-01 10:59:38,047 [INFO] httpx: HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2026-07-01 10:59:49,631 [INFO] MathAnimAI: ============================================================
+2026-07-01 10:59:49,631 [INFO] MathAnimAI: 流水线启动: grade=初中, type=自动识别
+2026-07-01 10:59:49,631 [INFO] MathAnimAI: 题目: 鸡兔同笼，共有头 35 个，脚 94 只，问鸡兔各多少只
+2026-07-01 10:59:49,631 [INFO] MathAnimAI: [Step 1/7] OCR 预处理
+2026-07-01 10:59:49,632 [INFO] MathAnimAI: [Step 2/7] 题目类型识别
+2026-07-01 10:59:49,658 [INFO] MathAnimAI: 自动识别题型: word_problem
+2026-07-01 10:59:49,659 [INFO] MathAnimAI: [Step 3/7] LLM 规划动画脚本
+2026-07-01 10:59:51,721 [INFO] MathAnimAI: Ollama 已连接，可用模型: ['qwen2.5:7b', 'qwen2.5:0.5b']
+2026-07-01 10:59:51,735 [INFO] MathAnimAI.LLM: 调用LLM: model=qwen2.5:7b, temperature=0.3
+2026-07-01 11:01:54,406 [INFO] openai._base_client: Retrying request to /chat/completions in 0.377629 seconds
+2026-07-01 11:03:39,317 [INFO] httpx: HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-01 11:03:39,328 [INFO] MathAnimAI.LLM: LLM响应完成，耗时227.6s，长度3640字符
+2026-07-01 11:03:39,329 [INFO] MathAnimAI.LLM: Pydantic校验通过，共10个步骤
+2026-07-01 11:03:39,329 [INFO] MathAnimAI.LLM: Token消耗 — prompt: 1170, completion: 1486, total: 2656
+2026-07-01 11:03:39,330 [INFO] MathAnimAI: 动画脚本生成完成: 10个步骤
+2026-07-01 11:03:39,330 [INFO] MathAnimAI: [Step 4/7] 保存记录到数据库
+2026-07-01 11:03:39,371 [INFO] MathAnimAI.Storage: 插入记录 ID=23
+2026-07-01 11:03:39,371 [INFO] MathAnimAI: 数据库记录 ID=23
+2026-07-01 11:03:39,371 [INFO] MathAnimAI: [Step 5/7] Manim 动画渲染
+2026-07-01 11:03:39,372 [INFO] MathAnimAI: Manim 版本: 0.20.1
+2026-07-01 11:03:39,389 [INFO] MathAnimAI.Builder: 开始构建动画: type=ProblemType.WORD_PROBLEM, steps=10
+2026-07-01 11:03:39,393 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmpb5lc1e2y\MathAnimAI_20260701_110339.py
+2026-07-01 11:03:39,424 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-07-01 11:03:39,425 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\.conda\envs\workbuddy_agent\python.exe -m manim -qh C:\Users\lxy\AppData\Local\Temp\tmpb5lc1e2y\MathAnimAI_20260701_110339.py MathAnimAI_20260701_110339
+2026-07-01 11:03:41,300 [ERROR] MathAnimAI.Renderer: Manim渲染失败:
+, line 936, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1074, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1004, in source_to_code
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "C:\Users\lxy\AppData\Local\Temp\tmpb5lc1e2y\MathAnimAI_20260701_110339.py", line 87
+    step5_text = step_text("设鸡有 x 只，兔有 y 只。根据题意，可以列出以下两个方程：
+                           ^
+SyntaxError: unterminated string literal (detected at line 87)
+
+2026-07-01 11:03:41,301 [WARNING] MathAnimAI: 动画渲染失败，跳过
+2026-07-01 11:03:41,308 [INFO] MathAnimAI.Storage: 更新记录 ID=23: ['status', 'error_message']
+2026-07-01 11:03:41,308 [INFO] MathAnimAI: [Step 6/7] TTS 语音生成
+2026-07-01 11:03:41,312 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=45
+2026-07-01 11:03:42,717 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_01_20260701_110341.mp3, 时长=11.2s
+2026-07-01 11:03:42,718 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=21
+2026-07-01 11:03:44,066 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_02_20260701_110341.mp3, 时长=5.2s
+2026-07-01 11:03:44,066 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=18
+2026-07-01 11:03:45,382 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_03_20260701_110341.mp3, 时长=4.5s
+2026-07-01 11:03:45,383 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=18
+2026-07-01 11:03:46,718 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_04_20260701_110341.mp3, 时长=4.5s
+2026-07-01 11:03:46,719 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=61
+2026-07-01 11:03:48,440 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_05_20260701_110341.mp3, 时长=15.2s
+2026-07-01 11:03:48,440 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=19
+2026-07-01 11:03:49,819 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_06_20260701_110341.mp3, 时长=4.8s
+2026-07-01 11:03:49,819 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=82
+2026-07-01 11:03:51,521 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_07_20260701_110341.mp3, 时长=20.5s
+2026-07-01 11:03:51,522 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=32
+2026-07-01 11:03:52,871 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_08_20260701_110341.mp3, 时长=8.0s
+2026-07-01 11:03:52,871 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=42
+2026-07-01 11:03:54,408 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_09_20260701_110341.mp3, 时长=10.5s
+2026-07-01 11:03:54,410 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=16
+2026-07-01 11:03:55,708 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_10_20260701_110341.mp3, 时长=4.0s
+2026-07-01 11:03:55,708 [INFO] MathAnimAI.TTS: 批量语音生成完成: 共10段
+2026-07-01 11:03:55,708 [INFO] MathAnimAI: 语音生成完成: 10段
+2026-07-01 11:03:55,797 [INFO] MathAnimAI.TTS: 音频合并完成: ./output\audio\full_20260701_110355.mp3
+2026-07-01 11:03:55,841 [INFO] MathAnimAI.Storage: 更新记录 ID=23: ['audio_path']
+2026-07-01 11:03:55,842 [INFO] MathAnimAI: [Step 7/7] 字幕生成 & 视频合成
+2026-07-01 11:03:55,846 [INFO] MathAnimAI.Subtitle: 字幕文件已保存: ./output\subtitles\subtitle_20260701_110355.srt
+2026-07-01 11:03:55,851 [INFO] MathAnimAI.Storage: 更新记录 ID=23: ['subtitle_path']
+2026-07-01 11:03:55,851 [INFO] MathAnimAI: 字幕生成完成: ./output\subtitles\subtitle_20260701_110355.srt
+2026-07-01 11:03:55,851 [INFO] MathAnimAI: 流水线完成: 耗时246.2s
+2026-07-01 11:03:55,852 [INFO] MathAnimAI: 结果: [WARN] 动画脚本已生成，但渲染/合成未完成
+耗时: 246.2s
+步骤: 10
+请确保 Manim 环境配置正确
+2026-07-01 11:07:13,854 [INFO] manim: Reading config file: C:\Users\lxy\AppData\Roaming\Python\Python313\site-packages\manim\_config\default.cfg
+2026-07-01 11:09:54,283 [INFO] manim: Reading config file: C:\Users\lxy\AppData\Roaming\Python\Python313\site-packages\manim\_config\default.cfg
+2026-07-01 11:09:55,160 [INFO] MathAnimAI.Builder: 开始构建动画: type=ProblemType.WORD_PROBLEM, steps=5
+2026-07-01 11:09:55,221 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmpxqwe2bnb\MathAnimAI_20260701_110955.py
+2026-07-01 11:09:56,084 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\AppData\Roaming\Python\Python313\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-07-01 11:09:56,084 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\.workbuddy\binaries\python\versions\3.13.12\python.exe -m manim -qm C:\Users\lxy\AppData\Local\Temp\tmpxqwe2bnb\MathAnimAI_20260701_110955.py MathAnimAI_20260701_110955
+2026-07-01 11:10:53,087 [INFO] MathAnimAI.Renderer: 视频已输出: ./output\videos\MathAnimAI_20260701_110955_20260701_111053.mp4
+2026-07-01 11:11:10,206 [INFO] manim: Reading config file: C:\Users\lxy\AppData\Roaming\Python\Python313\site-packages\manim\_config\default.cfg
+2026-07-01 11:11:11,090 [INFO] MathAnimAI.Builder: 开始构建动画: type=ProblemType.WORD_PROBLEM, steps=5
+2026-07-01 11:11:11,092 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmps650a_my\MathAnimAI_20260701_111111.py
+2026-07-01 11:11:11,146 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\AppData\Roaming\Python\Python313\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-07-01 11:11:11,146 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\.workbuddy\binaries\python\versions\3.13.12\python.exe -m manim -qm C:\Users\lxy\AppData\Local\Temp\tmps650a_my\MathAnimAI_20260701_111111.py MathAnimAI_20260701_111111
+2026-07-01 11:12:06,724 [INFO] MathAnimAI.Renderer: 视频已输出: ./output\videos\MathAnimAI_20260701_111111_20260701_111206.mp4
+2026-07-01 11:12:26,764 [INFO] MathAnimAI: ============================================================
+2026-07-01 11:12:26,764 [INFO] MathAnimAI: MathAnimAI 启动中...
+2026-07-01 11:12:26,765 [INFO] MathAnimAI: ============================================================
+2026-07-01 11:12:27,447 [INFO] manim: Reading config file: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\manim\_config\default.cfg
+2026-07-01 11:12:28,040 [INFO] MathAnimAI: [OK] Manim 0.20.1
+2026-07-01 11:12:28,283 [INFO] MathAnimAI: [OK] edge-tts
+2026-07-01 11:12:28,432 [INFO] MathAnimAI: [OK] moviepy
+2026-07-01 11:12:29,223 [INFO] MathAnimAI: [OK] openai
+2026-07-01 11:12:31,292 [INFO] MathAnimAI: Ollama 已连接，可用模型: ['qwen2.5:7b', 'qwen2.5:0.5b']
+2026-07-01 11:12:31,309 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-07-01 11:12:31,309 [INFO] MathAnimAI: 数据库就绪
+2026-07-01 11:12:34,157 [INFO] MathAnimAI: 启动 Web 服务: http://127.0.0.1:7060
+2026-07-01 11:12:34,598 [INFO] httpx: HTTP Request: GET http://127.0.0.1:7060/gradio_api/startup-events "HTTP/1.1 200 OK"
+2026-07-01 11:12:34,620 [INFO] httpx: HTTP Request: HEAD http://127.0.0.1:7060/ "HTTP/1.1 200 OK"
+2026-07-01 11:12:35,031 [INFO] httpx: HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2026-07-01 11:12:56,255 [INFO] MathAnimAI: ============================================================
+2026-07-01 11:12:56,255 [INFO] MathAnimAI: 流水线启动: grade=初中, type=自动识别
+2026-07-01 11:12:56,255 [INFO] MathAnimAI: 题目: 鸡兔同笼，共有头 35 个，脚 94 只，问鸡兔各多少只
+2026-07-01 11:12:56,255 [INFO] MathAnimAI: [Step 1/7] OCR 预处理
+2026-07-01 11:12:56,256 [INFO] MathAnimAI: [Step 2/7] 题目类型识别
+2026-07-01 11:12:56,281 [INFO] MathAnimAI: 自动识别题型: word_problem
+2026-07-01 11:12:56,282 [INFO] MathAnimAI: [Step 3/7] LLM 规划动画脚本
+2026-07-01 11:12:58,357 [INFO] MathAnimAI: Ollama 已连接，可用模型: ['qwen2.5:7b', 'qwen2.5:0.5b']
+2026-07-01 11:12:58,373 [INFO] MathAnimAI.LLM: 调用LLM: model=qwen2.5:7b, temperature=0.3
+2026-07-01 11:14:57,734 [INFO] httpx: HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-01 11:14:57,745 [INFO] MathAnimAI.LLM: LLM响应完成，耗时119.4s，长度3872字符
+2026-07-01 11:14:57,745 [INFO] MathAnimAI.LLM: Pydantic校验通过，共8个步骤
+2026-07-01 11:14:57,746 [INFO] MathAnimAI.LLM: Token消耗 — prompt: 1170, completion: 1581, total: 2751
+2026-07-01 11:14:57,746 [INFO] MathAnimAI: 动画脚本生成完成: 8个步骤
+2026-07-01 11:14:57,746 [INFO] MathAnimAI: [Step 4/7] 保存记录到数据库
+2026-07-01 11:14:57,751 [INFO] MathAnimAI.Storage: 插入记录 ID=24
+2026-07-01 11:14:57,752 [INFO] MathAnimAI: 数据库记录 ID=24
+2026-07-01 11:14:57,752 [INFO] MathAnimAI: [Step 5/7] Manim 动画渲染
+2026-07-01 11:14:57,752 [INFO] MathAnimAI: Manim 版本: 0.20.1
+2026-07-01 11:14:57,765 [INFO] MathAnimAI.Builder: 开始构建动画: type=ProblemType.WORD_PROBLEM, steps=8
+2026-07-01 11:14:57,767 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmppo3ik5t5\MathAnimAI_20260701_111457.py
+2026-07-01 11:14:57,791 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-07-01 11:14:57,791 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\.conda\envs\workbuddy_agent\python.exe -m manim -qh C:\Users\lxy\AppData\Local\Temp\tmppo3ik5t5\MathAnimAI_20260701_111457.py MathAnimAI_20260701_111457
+2026-07-01 11:17:45,285 [INFO] MathAnimAI.Renderer: 视频已输出: ./output\videos\MathAnimAI_20260701_111457_20260701_111745.mp4
+2026-07-01 11:17:45,311 [INFO] MathAnimAI.Storage: 更新记录 ID=24: ['animation_path']
+2026-07-01 11:17:45,313 [INFO] MathAnimAI: 动画渲染完成: ./output\videos\MathAnimAI_20260701_111457_20260701_111745.mp4
+2026-07-01 11:17:45,313 [INFO] MathAnimAI: [Step 6/7] TTS 语音生成
+2026-07-01 11:17:45,318 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=45
+2026-07-01 11:17:46,609 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_01_20260701_111745.mp3, 时长=11.2s
+2026-07-01 11:17:46,610 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=21
+2026-07-01 11:17:47,873 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_02_20260701_111745.mp3, 时长=5.2s
+2026-07-01 11:17:47,874 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=57
+2026-07-01 11:17:49,347 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_03_20260701_111745.mp3, 时长=14.2s
+2026-07-01 11:17:49,348 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=20
+2026-07-01 11:17:50,663 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_04_20260701_111745.mp3, 时长=5.0s
+2026-07-01 11:17:50,664 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=82
+2026-07-01 11:17:52,217 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_05_20260701_111745.mp3, 时长=20.5s
+2026-07-01 11:17:52,218 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=73
+2026-07-01 11:17:53,806 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_06_20260701_111745.mp3, 时长=18.2s
+2026-07-01 11:17:53,807 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=43
+2026-07-01 11:17:55,316 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_07_20260701_111745.mp3, 时长=10.8s
+2026-07-01 11:17:55,317 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=52
+2026-07-01 11:17:56,796 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_08_20260701_111745.mp3, 时长=13.0s
+2026-07-01 11:17:56,797 [INFO] MathAnimAI.TTS: 批量语音生成完成: 共8段
+2026-07-01 11:17:56,797 [INFO] MathAnimAI: 语音生成完成: 8段
+2026-07-01 11:17:56,866 [INFO] MathAnimAI.TTS: 音频合并完成: ./output\audio\full_20260701_111756.mp3
+2026-07-01 11:17:56,872 [INFO] MathAnimAI.Storage: 更新记录 ID=24: ['audio_path']
+2026-07-01 11:17:56,873 [INFO] MathAnimAI: [Step 7/7] 字幕生成 & 视频合成
+2026-07-01 11:17:56,875 [INFO] MathAnimAI.Subtitle: 字幕文件已保存: ./output\subtitles\subtitle_20260701_111756.srt
+2026-07-01 11:17:56,880 [INFO] MathAnimAI.Storage: 更新记录 ID=24: ['subtitle_path']
+2026-07-01 11:17:56,881 [INFO] MathAnimAI: 字幕生成完成: ./output\subtitles\subtitle_20260701_111756.srt
+2026-07-01 11:17:56,883 [INFO] MathAnimAI.Composer: 使用字幕字体: C:/Windows/Fonts/msyh.ttc
+2026-07-01 11:17:56,885 [INFO] MathAnimAI.Composer: 开始视频合成: animation=./output\videos\MathAnimAI_20260701_111457_20260701_111745.mp4
+2026-07-01 11:17:57,055 [INFO] MathAnimAI.Composer: 动画视频: 1920x1080, 时长=128.9s
+2026-07-01 11:17:57,159 [INFO] MathAnimAI.Composer: 音频时长=80.7s
+2026-07-01 11:17:57,811 [INFO] MathAnimAI.Composer: 渲染输出: ./output\videos\final_20260701_111757.mp4
+2026-07-01 11:34:15,924 [INFO] MathAnimAI.Composer: 视频合成完成: ./output\videos\final_20260701_111757.mp4
+2026-07-01 11:34:15,980 [INFO] MathAnimAI.Storage: 更新记录 ID=24: ['final_video_path', 'status']
+2026-07-01 11:34:15,980 [INFO] MathAnimAI: 最终视频合成完成: ./output\videos\final_20260701_111757.mp4
+2026-07-01 11:34:15,980 [INFO] MathAnimAI: 流水线完成: 耗时1279.7s
+2026-07-01 11:34:15,981 [INFO] MathAnimAI: 结果: [OK] 教学动画生成完成！
+耗时: 1279.7s
+题型: word_problem
+步骤: 8
+视频: ./output\videos\final_20260701_111757.mp4
