@@ -1,72 +1,264 @@
 """
 ============================================================
-MathAnimAI — 视频合成模块 (moviepy)
+MathAnimAI — 视频合成模块 (ffmpeg 原生版)
 功能：
-  1. 加载Manim渲染的无声动画
-  2. 叠加合成人声音频
-  3. SRT字幕渲染在画面底部半透明区域
-  4. 自动添加片头标题、片尾总结
-  5. 输出完整MP4文件
+  1. 将 TTS 音频合并到 Manim 动画视频
+  2. 用 ffmpeg subtitles 滤镜烧录 SRT 字幕
+  3. -shortest 自动裁剪视频以匹配音频时长
+  4. 比 moviepy 方案提速 10-100 倍
+
+替代旧的 moviepy 实现，解决：
+  - 视频合成耗时过长（16 分钟 → 约 30 秒）
+  - 音画不同步（音频结束但视频继续播放）
 ============================================================
 """
 
 import os
 import re
+import subprocess
 import logging
 from typing import Optional
 
 from config import (
-    OUTPUT_VIDEO_DIR, INTRO_DURATION, OUTRO_DURATION,
-    SUBTITLE_FONT_SIZE, SUBTITLE_BG_OPACITY,
-    Colors, FONT_FAMILY, get_timestamp, ensure_dirs,
-    RESOLUTION_WIDTH, RESOLUTION_HEIGHT,
+    OUTPUT_VIDEO_DIR,
+    SUBTITLE_FONT_SIZE,
+    get_timestamp,
+    ensure_dirs,
+    RESOLUTION_WIDTH,
+    RESOLUTION_HEIGHT,
 )
 
 logger = logging.getLogger("MathAnimAI.Composer")
 
+
 # ================================================================
-# 字体检测
+# FFmpeg 路径检测
 # ================================================================
-# 检测可用的中文字体（用于 moviepy/Pillow 渲染）
-_available_font = None
-try:
-    from PIL import ImageFont
-    # 尝试常见中文字体（按优先级排序）
-    _candidate_fonts = [
-        "C:/Windows/Fonts/msyh.ttc",          # Microsoft YaHei
-        "C:/Windows/Fonts/msyhbd.ttc",        # Microsoft YaHei Bold
-        "C:/Windows/Fonts/simhei.ttf",        # 黑体
-        "C:/Windows/Fonts/simsun.ttc",        # 宋体
-        "C:/Windows/Fonts/simkai.ttf",        # 楷体
-        "C:/Windows/Fonts/STKAITI.TTF",       # 华文楷体
-        "C:/Windows/Fonts/Deng.ttf",          # DengXian
-        "C:/Windows/Fonts/Dengb.ttf",         # DengXian Bold
-        "C:/Windows/Fonts/STFANGSO.TTF",      # 华文仿宋
+def _find_ffmpeg() -> Optional[str]:
+    """查找 ffmpeg 可执行文件"""
+    # 方法1：从 imageio_ffmpeg 获取（与 Manim 渲染器一致）
+    try:
+        import imageio_ffmpeg
+        path = imageio_ffmpeg.get_ffmpeg_exe()
+        if path and os.path.exists(path):
+            return path
+    except Exception:
+        pass
+
+    # 方法2：系统 PATH
+    for name in ["ffmpeg", "ffmpeg.exe"]:
+        try:
+            result = subprocess.run(
+                [name, "-version"],
+                capture_output=True, timeout=5,
+            )
+            if result.returncode == 0:
+                return name
+        except Exception:
+            continue
+
+    return None
+
+
+_FFMPEG_PATH = _find_ffmpeg()
+
+if _FFMPEG_PATH:
+    logger.info(f"FFmpeg 路径: {_FFMPEG_PATH}")
+else:
+    logger.warning("未找到 FFmpeg，视频合成将降级到 moviepy")
+
+
+# ================================================================
+# SRT 字幕 → ffmpeg force_style 字符串
+# ================================================================
+def _build_subtitle_style() -> str:
+    """构建 ffmpeg subtitles 滤镜的 force_style 参数"""
+    # 检测中文字体
+    font_name = "Microsoft YaHei"
+    font_dir = "C\\:/Windows/Fonts" if os.path.exists("C:/Windows/Fonts") else ""
+
+    styles = [
+        f"FontName={font_name}",
+        f"FontSize={SUBTITLE_FONT_SIZE}",
+        "PrimaryColour=&H00FFFFFF",     # 白色文字
+        "OutlineColour=&H00000000",      # 黑色描边
+        "Outline=2",
+        "BackColour=&H80000000",         # 半透明黑色背景
+        "BorderStyle=4",                 # 背景框模式
+        "Alignment=2",                   # 底部居中
+        "MarginV=40",                    # 底部边距
     ]
-    for _f in _candidate_fonts:
-        if os.path.exists(_f):
-            _available_font = _f
-            logger.info(f"使用字幕字体: {_f}")
-            break
-    if _available_font is None:
-        # 回退：扫描 Windows Fonts 目录找任意 .ttf
-        for _f in os.listdir("C:/Windows/Fonts"):
-            if _f.lower().endswith(('.ttf', '.ttc')):
-                _available_font = os.path.join("C:/Windows/Fonts", _f)
-                logger.warning(f"未找到中文字体，回退使用: {_available_font}")
-                break
-except Exception:
-    _available_font = None
+    return ",".join(styles)
 
-if _available_font is None:
-    _available_font = "Microsoft-YaHei"  # Pillow 可能通过名称找到
-    logger.warning("无法检测系统字体，字幕渲染可能失败")
+
+def _escape_ffmpeg_path(path: str) -> str:
+    """将 Windows 路径转义为 ffmpeg 可接受的格式"""
+    # ffmpeg 的 subtitles 滤镜中，路径中的 : 和 \ 需要特殊处理
+    # 将反斜杠替换为正斜杠，然后用单引号包裹
+    escaped = path.replace("\\", "/")
+    # 对冒号进行转义（Windows 盘符如 C:/... 中的冒号）
+    escaped = escaped.replace(":", "\\\\:")
+    return escaped
 
 
 # ================================================================
-# 完整视频合成
+# 核心合成函数（ffmpeg 版本）
 # ================================================================
 def compose_video(
+    animation_path: str,
+    audio_path: str,
+    subtitle_path: str = None,
+    title: str = "",
+    output_path: str = None,
+    add_intro: bool = False,
+    add_outro: bool = False,
+    encoding_preset: str = "fast",
+) -> Optional[str]:
+    """
+    合成完整教学视频：动画 + 音频 + 字幕
+
+    使用 ffmpeg 直接处理，比 moviepy 快 10-100 倍。
+    -subtitles 滤镜原生烧录字幕
+    -shortest 自动裁剪视频以匹配最短流（通常是音频）
+    -preset fast 加速编码
+
+    Args:
+        animation_path: Manim 渲染的无声动画视频路径
+        audio_path: 人声音频路径
+        subtitle_path: SRT 字幕文件路径
+        title: 视频标题（当前版本暂不添加片头）
+        output_path: 输出路径
+        add_intro: 是否添加片头（ffmpeg 模式暂不支持，保留参数兼容）
+        add_outro: 是否添加片尾（ffmpeg 模式暂不支持，保留参数兼容）
+        encoding_preset: ffmpeg preset (fast/medium/ultrafast)，默认 fast
+
+    Returns:
+        合成的 MP4 视频路径
+    """
+    # 如果没有 ffmpeg，降级到 moviepy
+    if not _FFMPEG_PATH:
+        return _compose_video_moviepy_fallback(
+            animation_path, audio_path, subtitle_path,
+            title, output_path, add_intro, add_outro,
+        )
+
+    try:
+        # 验证输入
+        if not os.path.exists(animation_path):
+            logger.error(f"动画视频不存在: {animation_path}")
+            return None
+
+        has_audio = audio_path and os.path.exists(audio_path)
+        has_subtitle = subtitle_path and os.path.exists(subtitle_path)
+
+        logger.info(
+            f"开始视频合成 (ffmpeg): animation={animation_path}, "
+            f"audio={'有' if has_audio else '无'}, "
+            f"subtitle={'有' if has_subtitle else '无'}"
+        )
+
+        # 输出路径
+        if output_path is None:
+            timestamp = get_timestamp()
+            output_path = os.path.join(OUTPUT_VIDEO_DIR, f"final_{timestamp}.mp4")
+        ensure_dirs()
+
+        # ================================================================
+        # 构建 ffmpeg 命令
+        # ================================================================
+        cmd = [_FFMPEG_PATH, "-hide_banner", "-loglevel", "warning"]
+
+        # 输入：动画视频
+        cmd.extend(["-i", animation_path])
+
+        # 输入：音频（如果有）
+        if has_audio:
+            cmd.extend(["-i", audio_path])
+
+        # 视频滤镜：字幕烧录
+        video_filters = []
+        if has_subtitle:
+            # ffmpeg subtitles 滤镜需要绝对路径
+            abs_subtitle = os.path.abspath(subtitle_path)
+            # Windows 路径在 subtitles 滤镜中需要转义冒号
+            escaped_sub = abs_subtitle.replace("\\", "/").replace(":", "\\:")
+            style = _build_subtitle_style()
+            sub_filter = f"subtitles='{escaped_sub}':force_style='{style}'"
+            video_filters.append(sub_filter)
+            logger.info(f"字幕文件: {abs_subtitle}")
+
+        # 视频编码参数
+        if video_filters:
+            cmd.extend(["-vf", ",".join(video_filters)])
+
+        cmd.extend([
+            "-c:v", "libx264",
+            "-preset", encoding_preset,
+            "-crf", "23",             # 质量：18=接近无损，23=默认，28=较低
+            "-pix_fmt", "yuv420p",    # 兼容所有播放器
+        ])
+
+        # 音频编码参数
+        if has_audio:
+            cmd.extend([
+                "-c:a", "aac",
+                "-b:a", "128k",
+            ])
+        else:
+            cmd.extend(["-an"])  # 无音频
+
+        # -shortest：以最短的流（通常是音频）为准裁剪视频
+        # 这解决了"视频比音频长"导致的不同步问题
+        cmd.append("-shortest")
+
+        # 输出选项
+        cmd.extend([
+            "-movflags", "+faststart",  # Web 渐进式加载
+            "-y",                        # 覆盖输出
+            output_path,
+        ])
+
+        # ================================================================
+        # 执行 ffmpeg
+        # ================================================================
+        logger.info(f"ffmpeg 命令: {' '.join(cmd)}")
+
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            timeout=600,  # 10分钟超时
+        )
+
+        if result.returncode != 0:
+            stderr_tail = result.stderr.strip()[-500:] if result.stderr else ""
+            logger.error(f"ffmpeg 合成失败 (returncode={result.returncode}):\n{stderr_tail}")
+
+            # 如果字幕滤镜失败，尝试无字幕合成
+            if has_subtitle and "subtitles" in stderr_tail:
+                logger.warning("字幕滤镜失败，尝试无字幕合成...")
+                return compose_video(
+                    animation_path, audio_path,
+                    subtitle_path=None,
+                    output_path=output_path,
+                )
+            return None
+
+        logger.info(f"视频合成完成: {output_path}")
+        return output_path
+
+    except subprocess.TimeoutExpired:
+        logger.error("ffmpeg 合成超时（10分钟）")
+        return None
+    except Exception as e:
+        logger.error(f"视频合成异常: {e}")
+        return None
+
+
+# ================================================================
+# Moviepy 降级方案（当 ffmpeg 不可用时）
+# ================================================================
+def _compose_video_moviepy_fallback(
     animation_path: str,
     audio_path: str,
     subtitle_path: str = None,
@@ -75,28 +267,13 @@ def compose_video(
     add_intro: bool = True,
     add_outro: bool = True,
 ) -> Optional[str]:
-    """
-    合成完整教学视频：动画 + 音频 + 字幕 + 片头片尾
-
-    Args:
-        animation_path: Manim渲染的无声动画视频路径
-        audio_path: 人声音频路径
-        subtitle_path: SRT字幕文件路径
-        title: 视频标题（用于片头）
-        output_path: 输出路径
-        add_intro: 是否添加片头
-        add_outro: 是否添加片尾
-
-    Returns:
-        合成的MP4视频路径
-    """
+    """moviepy 降级合成方案（保留旧逻辑作为兜底）"""
     try:
         from moviepy import VideoFileClip, AudioFileClip, CompositeVideoClip
         from moviepy import TextClip, ColorClip, vfx
 
-        logger.info(f"开始视频合成: animation={animation_path}")
+        logger.info(f"[moviepy降级] 开始视频合成: animation={animation_path}")
 
-        # 加载动画视频
         if not os.path.exists(animation_path):
             logger.error(f"动画视频不存在: {animation_path}")
             return None
@@ -112,156 +289,101 @@ def compose_video(
             audio = AudioFileClip(audio_path)
             logger.info(f"音频时长={audio.duration:.1f}s")
 
-            # 音画同步策略：
-            # - 音频 ≤ 视频：正常，视频末尾保持静音
-            # - 音频 > 视频：扩展视频（冻结最后一帧）+ 完整保留音频
             if audio.duration > video_duration + 0.3:
                 gap = audio.duration - video_duration
-                logger.info(f"音频比视频长 {gap:.1f}s，扩展视频（冻结最后一帧）")
+                logger.info(f"音频比视频长 {gap:.1f}s，扩展视频")
                 video = _extend_video_with_freeze(video, audio.duration)
-            elif audio.duration < video_duration:
-                # 视频末尾保留静音即可（moviepy自动处理）
-                pass
 
             video = video.with_audio(audio)
-        else:
-            logger.warning("无音频文件，视频将无声")
 
-        # 添加字幕
+        # 字幕
         if subtitle_path and os.path.exists(subtitle_path):
             video = _add_subtitles_to_video(video, subtitle_path, width, height)
-        else:
-            logger.info("无字幕文件")
-
-        # 构建片头
-        segments = []
-        if add_intro and title:
-            intro = _create_intro_clip(title, width, height, INTRO_DURATION)
-            segments.append(intro)
-
-        segments.append(video)
-
-        # 构建片尾
-        if add_outro:
-            outro = _create_outro_clip(width, height, OUTRO_DURATION)
-            segments.append(outro)
-
-        # 拼接所有片段
-        if len(segments) > 1:
-            final_video = _concatenate_clips(segments)
-        else:
-            final_video = video
 
         # 输出
         if output_path is None:
             timestamp = get_timestamp()
             output_path = os.path.join(OUTPUT_VIDEO_DIR, f"final_{timestamp}.mp4")
-
         ensure_dirs()
 
         logger.info(f"渲染输出: {output_path}")
-        final_video.write_videofile(
+        video.write_videofile(
             output_path,
             codec="libx264",
             audio_codec="aac",
             fps=30,
-            logger=None,  # 禁用moviepy日志
+            logger=None,
         )
-
         logger.info(f"视频合成完成: {output_path}")
         return output_path
 
     except ImportError:
-        logger.error("moviepy 未安装。请运行: pip install moviepy")
-        # 降级返回原始动画视频
+        logger.error("moviepy 未安装")
         return animation_path
     except Exception as e:
-        logger.error(f"视频合成失败: {e}")
-        return animation_path  # 降级
+        logger.error(f"moviepy 合成失败: {e}")
+        return animation_path
 
 
 # ================================================================
-# 字幕添加
+# Moviepy 工具函数（降级方案复用）
 # ================================================================
-def _add_subtitles_to_video(
-    video,
-    subtitle_path: str,
-    width: int,
-    height: int,
-) -> "CompositeVideoClip":
-    """
-    将SRT字幕渲染到视频底部
-
-    Args:
-        video: VideoFileClip
-        subtitle_path: SRT文件路径
-        width: 视频宽度
-        height: 视频高度
-
-    Returns:
-        叠加字幕后的CompositeVideoClip
-    """
+def _add_subtitles_to_video(video, subtitle_path, width, height):
+    """SRT 字幕渲染（moviepy 方案）"""
     try:
         from moviepy import CompositeVideoClip, TextClip
-        import re
-
-        # 解析SRT文件
-        subtitles = _parse_srt(subtitle_path)
-        if not subtitles:
-            logger.warning("SRT解析为空，跳过字幕")
-            return video
-
-        # 为每条字幕创建TextClip
-        _font = _available_font or "Arial"
-        subtitle_clips = []
-        for start, end, text in subtitles:
-            # 字幕文本过长时自动换行
-            if len(text) > 30:
-                # 约每25字插入换行
-                wrapped_lines = []
-                for i in range(0, len(text), 25):
-                    wrapped_lines.append(text[i:i+25])
-                text = "\n".join(wrapped_lines)
-
-            # 创建字幕文本
-            txt_clip = TextClip(
-                text=text,
-                font=_font,
-                font_size=SUBTITLE_FONT_SIZE,
-                color="white",
-                stroke_color="black",
-                stroke_width=2,
-                size=(int(width * 0.85), None),
-                method="caption",
-                text_align="center",
-            )
-
-            # 添加半透明背景
-            bg_clip = _create_subtitle_background(
-                txt_clip, width, height, SUBTITLE_BG_OPACITY
-            )
-
-            # 组合字幕
-            subtitle_group = CompositeVideoClip(
-                [bg_clip, txt_clip.with_position("center")]
-            )
-
-            # 设置显示时间
-            subtitle_group = subtitle_group.with_start(start).with_end(end)
-            subtitle_group = subtitle_group.with_position(("center", int(height * 0.82)))
-            subtitle_clips.append(subtitle_group)
-
-        # 叠加到视频上
-        result = CompositeVideoClip([video] + subtitle_clips)
-        return result
-
-    except Exception as e:
-        logger.warning(f"字幕添加失败: {e}，返回无字幕视频")
+        from PIL import ImageFont
+    except ImportError:
         return video
 
+    # 找字体
+    font = None
+    for f in [
+        "C:/Windows/Fonts/msyh.ttc",
+        "C:/Windows/Fonts/simhei.ttf",
+        "C:/Windows/Fonts/simsun.ttc",
+    ]:
+        if os.path.exists(f):
+            font = f
+            break
+    if font is None:
+        font = "Arial"
 
-def _parse_srt(srt_path: str) -> list[tuple[float, float, str]]:
-    """解析SRT文件"""
+    subtitles = _parse_srt(subtitle_path)
+    if not subtitles:
+        return video
+
+    subtitle_clips = []
+    for start, end, text in subtitles:
+        if len(text) > 30:
+            wrapped = []
+            for i in range(0, len(text), 25):
+                wrapped.append(text[i:i+25])
+            text = "\n".join(wrapped)
+
+        txt_clip = TextClip(
+            text=text, font=font, font_size=SUBTITLE_FONT_SIZE,
+            color="white", stroke_color="black", stroke_width=2,
+            size=(int(width * 0.85), None),
+            method="caption", text_align="center",
+        )
+
+        from moviepy import ColorClip
+        bg = ColorClip(
+            size=(max(1, int(txt_clip.w * 1.05)), max(1, int(txt_clip.h * 1.1))),
+            color=(0, 0, 0),
+        ).with_opacity(0.6)
+
+        group = CompositeVideoClip([bg, txt_clip.with_position("center")])
+        group = group.with_start(start).with_end(end)
+        group = group.with_position(("center", int(height * 0.82)))
+        subtitle_clips.append(group)
+
+    return CompositeVideoClip([video] + subtitle_clips)
+
+
+def _parse_srt(srt_path: str) -> list:
+    """解析 SRT 文件"""
     with open(srt_path, "r", encoding="utf-8") as f:
         content = f.read()
 
@@ -274,13 +396,11 @@ def _parse_srt(srt_path: str) -> list[tuple[float, float, str]]:
         end = _srt_time_to_seconds(end_str)
         text = text.strip().replace("\n", " ")
         subtitles.append((start, end, text))
-
     return subtitles
 
 
 def _srt_time_to_seconds(time_str: str) -> float:
-    """SRT时间转秒"""
-    import re
+    """SRT 时间转秒"""
     match = re.match(r"(\d+):(\d+):(\d+)[.,](\d+)", time_str)
     if match:
         h, m, s, ms = map(int, match.groups())
@@ -288,125 +408,15 @@ def _srt_time_to_seconds(time_str: str) -> float:
     return 0.0
 
 
-def _create_subtitle_background(txt_clip, width: int, height: int, opacity: float):
-    """创建字幕的半透明背景"""
-    from moviepy import ColorClip
-    bg_w = max(1, int(txt_clip.w * 1.05))
-    bg_h = max(1, int(txt_clip.h * 1.1))
-    bg = ColorClip(
-        size=(bg_w, bg_h),
-        color=(0, 0, 0),
-    )
-    bg = bg.with_opacity(opacity)
-    return bg
-
-
-# ================================================================
-# 片头片尾生成
-# ================================================================
-def _create_intro_clip(
-    title: str,
-    width: int,
-    height: int,
-    duration: float,
-):
-    """创建片头：标题 + 柔和背景"""
-    from moviepy import TextClip, ColorClip, CompositeVideoClip
-
-    # 背景
-    bg = ColorClip(size=(width, height), color=(52, 152, 219))
-    bg = bg.with_duration(duration)
-
-    # 标题文字
-    title_text = TextClip(
-        text=title,
-        font=_available_font,
-        font_size=48,
-        color="white",
-        size=(int(width * 0.8), None),
-        method="caption",
-        text_align="center",
-    )
-    title_text = title_text.with_position("center").with_duration(duration)
-
-    # 副标题
-    subtitle = TextClip(
-        text="数学动画教学",
-        font=_available_font,
-        font_size=28,
-        color="#DDDDDD",
-        size=(int(width * 0.8), None),
-        method="caption",
-        text_align="center",
-    )
-    subtitle = subtitle.with_position(("center", int(height * 0.65))).with_duration(duration)
-
-    intro = CompositeVideoClip([bg, title_text, subtitle])
-    return intro
-
-
-def _create_outro_clip(width: int, height: int, duration: float):
-    """创建片尾"""
-    from moviepy import TextClip, ColorClip, CompositeVideoClip
-
-    bg = ColorClip(size=(width, height), color=(44, 62, 80))
-    bg = bg.with_duration(duration)
-
-    text = TextClip(
-        text="感谢观看\nMathAnimAI 呈现",
-        font=_available_font,
-        font_size=36,
-        color="white",
-        size=(int(width * 0.8), None),
-        method="caption",
-        text_align="center",
-    )
-    text = text.with_position("center").with_duration(duration)
-
-    return CompositeVideoClip([bg, text])
-
-
-def _concatenate_clips(clips: list):
-    """拼接多个视频片段"""
-    from moviepy import concatenate_videoclips
-    return concatenate_videoclips(clips, method="compose")
-
-
 def _extend_video_with_freeze(video, target_duration: float):
-    """
-    当音频比视频长时，冻结视频最后一帧来扩展视频时长。
-
-    使用 moviepy 的 freeze 功能：截取最后一帧作为静态图片，
-    然后拼接到视频末尾，确保音频不会在视频结束后继续播放。
-
-    Args:
-        video: VideoFileClip
-        target_duration: 目标总时长（秒）
-
-    Returns:
-        扩展后的 VideoClip
-    """
-    from moviepy import concatenate_videoclips
-
+    """冻结最后一帧扩展视频"""
+    from moviepy import concatenate_videoclips, vfx
     gap = target_duration - video.duration
     if gap <= 0.1:
         return video
-
     try:
-        # 方法1: 使用 to_ImageClip 截取最后一帧
         last_frame = video.to_ImageClip(t=video.duration - 0.05, duration=gap)
-        # 加一点淡出效果避免突兀
         last_frame = last_frame.with_effects([vfx.FadeOut(0.5)])
-        extended = concatenate_videoclips([video, last_frame], method="compose")
-        logger.info(f"视频已扩展: {video.duration:.1f}s → {extended.duration:.1f}s")
-        return extended
-    except Exception as e:
-        logger.warning(f"to_ImageClip 方法失败 ({e})，尝试 freeze 方法")
-        try:
-            # 方法2: 使用 time_mirror / freeze 技巧
-            # 创建一个简单的静态延长
-            extended = video.with_duration(target_duration)
-            return extended
-        except Exception as e2:
-            logger.warning(f"扩展视频失败 ({e2})，保持原视频长度")
-            return video
+        return concatenate_videoclips([video, last_frame], method="compose")
+    except Exception:
+        return video

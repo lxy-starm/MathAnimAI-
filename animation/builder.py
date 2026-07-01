@@ -73,7 +73,7 @@ def get_scene_class(problem_type: str):
 # ================================================================
 # Scene代码生成
 # ================================================================
-def generate_scene_code(script: ProblemScript) -> str:
+def generate_scene_code(script: ProblemScript, audio_durations: dict = None) -> str:
     """
     根据ProblemScript JSON生成完整的Scene construct()代码
     这是核心代码生成逻辑，将JSON步骤翻译为Manim动画序列
@@ -85,11 +85,12 @@ def generate_scene_code(script: ProblemScript) -> str:
     - 所有内容自动检测边界防止溢出
 
     音频同步：
-    - 根据每步voice_text字数估算音频时长
-    - 动画wait时间匹配音频时长，确保音画同步
+    - 优先使用 audio_durations 中的 TTS 真实时长
+    - 降级使用 AUDIO_CHARS_PER_SEC 估算
 
     Args:
         script: 经过Pydantic校验的动画脚本
+        audio_durations: {step_number: actual_audio_duration_seconds}，可选
 
     Returns:
         完整的construct()方法代码字符串
@@ -197,12 +198,16 @@ def generate_scene_code(script: ProblemScript) -> str:
             # 兜底：默认用text_slide_in
             lines.extend(_gen_text_slide_in(step, indent))
 
-        # 根据音频时长估算步骤等待时间（音画同步关键！）
-        voice_text = step.voice_text or step.text or ""
-        audio_est = max(len(voice_text) / AUDIO_CHARS_PER_SEC, 1.5)
-        # 加上动画本身的播放时间（约1-2秒）
-        total_wait = audio_est + 0.5  # 动画播放时间 + 音频时间
-        lines.append(f'{indent}# 音频估算 {audio_est:.1f}s，总等待 {total_wait:.1f}s')
+        # 根据音频时长确定步骤等待时间（音画同步关键！）
+        # 优先使用 TTS 真实时长，降级使用字数估算
+        if audio_durations and step.step_number in audio_durations:
+            total_wait = audio_durations[step.step_number]
+            lines.append(f'{indent}# TTS 真实时长 {total_wait:.1f}s')
+        else:
+            voice_text = step.voice_text or step.text or ""
+            audio_est = max(len(voice_text) / AUDIO_CHARS_PER_SEC, 1.0)
+            total_wait = audio_est
+            lines.append(f'{indent}# 音频估算 {audio_est:.1f}s（字数={len(voice_text)}）')
         lines.append(f'{indent}self.wait({total_wait:.2f})')
         lines.append('')
 
@@ -459,6 +464,7 @@ def build_and_render(
     script: ProblemScript,
     output_dir: str = None,
     hd: bool = True,
+    audio_durations: dict = None,
 ) -> Optional[str]:
     """
     根据ProblemScript生成动画视频
@@ -467,6 +473,7 @@ def build_and_render(
         script: 标准化动画脚本
         output_dir: 视频输出目录
         hd: 是否高清渲染
+        audio_durations: {step_number: duration_seconds} TTS 真实时长
 
     Returns:
         视频文件路径，失败返回None
@@ -480,7 +487,7 @@ def build_and_render(
     scene_cls = get_scene_class(script.problem_type)
 
     # 生成场景代码
-    scene_code = generate_scene_code(script)
+    scene_code = generate_scene_code(script, audio_durations=audio_durations)
 
     # 用临时目录存场景文件
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -503,20 +510,21 @@ def build_and_render(
         return video_path
 
 
-def parse_and_build(json_str: str, hd: bool = True) -> Optional[str]:
+def parse_and_build(json_str: str, hd: bool = True, audio_durations: dict = None) -> Optional[str]:
     """
     便捷入口：从JSON字符串直接生成视频
 
     Args:
         json_str: JSON动画脚本字符串
         hd: 是否高清
+        audio_durations: {step_number: duration_seconds} TTS 真实时长
 
     Returns:
         视频文件路径
     """
     try:
         script = ProblemScript.from_json_str(json_str)
-        return build_and_render(script, hd=hd)
+        return build_and_render(script, hd=hd, audio_durations=audio_durations)
     except Exception as e:
         logger.error(f"解析JSON失败: {e}")
         return None

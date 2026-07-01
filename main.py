@@ -3,12 +3,12 @@
 MathAnimAI — Gradio Web 主入口
 串联完整 Agent 流水线：
   1. OCR 识别 (图片→文本)
-  2. LLM 规划 (文本→JSON动画脚本)
-  3. Manim 渲染 (JSON→无声动画视频)
-  4. TTS 配音 (文本→分段语音)
-  5. 字幕生成 (步骤时长→SRT)
-  6. 视频合成 (动画+音频+字幕→MP4)
-  7. 存储记录 (SQLite持久化)
+  2. 题目类型识别
+  3. LLM 规划 (文本→JSON动画脚本)
+  4. 存入数据库
+  5. TTS 配音 (文本→分段语音，获取真实时长用于精确同步)
+  6. Manim 渲染 (JSON + 真实音频时长→精确同步动画视频)
+  7. 字幕生成 & 视频合成 (ffmpeg, 动画+音频+字幕→MP4)
 ============================================================
 """
 
@@ -168,9 +168,59 @@ def run_full_pipeline(
         logger.info(f"数据库记录 ID={record_id}")
 
         # ================================================================
-        # Step 5: Manim 动画渲染
+        # Step 5: TTS 语音生成（在 Manim 之前，获取真实音频时长用于精确同步）
         # ================================================================
-        logger.info("[Step 5/7] Manim 动画渲染")
+        logger.info("[Step 5/7] TTS 语音生成")
+
+        try:
+            import edge_tts
+            tts_available = True
+        except ImportError:
+            logger.warning("edge-tts 未安装，跳过语音生成")
+            tts_available = False
+
+        step_audios = []
+        step_audio_durations = {}  # {step_number: actual_duration_seconds}
+        if tts_available:
+            from audio.tts import generate_all_audios_sync
+
+            # 将 Pydantic 步骤转为字典
+            steps_data = [
+                {
+                    "step_number": s.step_number,
+                    "voice_text": s.voice_text or s.text,
+                    "text": s.text,
+                }
+                for s in script.steps
+            ]
+
+            if steps_data:
+                try:
+                    step_audios = generate_all_audios_sync(steps_data)
+                    logger.info(f"语音生成完成: {len(step_audios)}段")
+
+                    # 提取真实音频时长，用于 Manim 精确同步
+                    for a in step_audios:
+                        if a.get("step_number") and a.get("duration"):
+                            step_audio_durations[a["step_number"]] = a["duration"]
+                    logger.info(f"TTS 真实时长: {step_audio_durations}")
+
+                    # 合并为完整音频
+                    audio_files = [a["path"] for a in step_audios if a.get("path")]
+                    if audio_files:
+                        from audio.tts import merge_audio_segments
+                        timestamp = get_timestamp()
+                        audio_output = os.path.join(OUTPUT_AUDIO_DIR, f"full_{timestamp}.mp3")
+                        merged_audio = merge_audio_segments(audio_files, audio_output)
+                        if merged_audio:
+                            history_db.update_record(record_id, audio_path=merged_audio)
+                except Exception as e:
+                    logger.warning(f"语音生成降级: {e}")
+
+        # ================================================================
+        # Step 6: Manim 动画渲染（使用 TTS 真实时长精确同步）
+        # ================================================================
+        logger.info("[Step 6/7] Manim 动画渲染")
 
         # 检查 Manim 是否可用
         try:
@@ -187,6 +237,7 @@ def run_full_pipeline(
                 animation_path = build_and_render(
                     script=script,
                     hd=True,
+                    audio_durations=step_audio_durations if step_audio_durations else None,
                 )
                 if animation_path:
                     result["video_path"] = animation_path
@@ -208,49 +259,6 @@ def run_full_pipeline(
                 )
         else:
             logger.info("跳过动画渲染（Manim未安装）")
-
-        # ================================================================
-        # Step 6: TTS 语音生成
-        # ================================================================
-        logger.info("[Step 6/7] TTS 语音生成")
-
-        try:
-            import edge_tts
-            tts_available = True
-        except ImportError:
-            logger.warning("edge-tts 未安装，跳过语音生成")
-            tts_available = False
-
-        step_audios = []
-        if tts_available:
-            from audio.tts import generate_all_audios_sync
-
-            # 将 Pydantic 步骤转为字典
-            steps_data = [
-                {
-                    "step_number": s.step_number,
-                    "voice_text": s.voice_text or s.text,
-                    "text": s.text,
-                }
-                for s in script.steps
-            ]
-
-            if steps_data:
-                try:
-                    step_audios = generate_all_audios_sync(steps_data)
-                    logger.info(f"语音生成完成: {len(step_audios)}段")
-
-                    # 合并为完整音频
-                    audio_files = [a["path"] for a in step_audios if a.get("path")]
-                    if audio_files:
-                        from audio.tts import merge_audio_segments
-                        timestamp = get_timestamp()
-                        audio_output = os.path.join(OUTPUT_AUDIO_DIR, f"full_{timestamp}.mp3")
-                        merged_audio = merge_audio_segments(audio_files, audio_output)
-                        if merged_audio:
-                            history_db.update_record(record_id, audio_path=merged_audio)
-                except Exception as e:
-                    logger.warning(f"语音生成降级: {e}")
 
         # ================================================================
         # Step 7: 字幕生成 & 视频合成
