@@ -181,6 +181,7 @@ def run_full_pipeline(
 
         step_audios = []
         step_audio_durations = {}  # {step_number: actual_duration_seconds}
+        step_audio_paths = {}      # {step_number: absolute_audio_file_path}
         if tts_available:
             from audio.tts import generate_all_audios_sync
 
@@ -199,13 +200,16 @@ def run_full_pipeline(
                     step_audios = generate_all_audios_sync(steps_data)
                     logger.info(f"语音生成完成: {len(step_audios)}段")
 
-                    # 提取真实音频时长，用于 Manim 精确同步
+                    # 提取真实音频时长和路径，用于 Manim 精确同步
                     for a in step_audios:
                         if a.get("step_number") and a.get("duration"):
                             step_audio_durations[a["step_number"]] = a["duration"]
+                        if a.get("step_number") and a.get("path"):
+                            step_audio_paths[a["step_number"]] = a["path"]
                     logger.info(f"TTS 真实时长: {step_audio_durations}")
+                    logger.info(f"TTS 音频路径: {step_audio_paths}")
 
-                    # 合并为完整音频
+                    # 合并为完整音频（保留作为后备，主流程使用 add_sound 嵌入）
                     audio_files = [a["path"] for a in step_audios if a.get("path")]
                     if audio_files:
                         from audio.tts import merge_audio_segments
@@ -231,32 +235,66 @@ def run_full_pipeline(
             logger.warning("Manim 未安装，将跳过动画渲染")
             manim_available = False
 
+        # 判断是否支持每步独立渲染（无持久化图形的题型）
+        PER_STEP_TYPES = {"word_problem", "fraction", "equation"}
+        use_per_step = (
+            manim_available
+            and problem_type_en in PER_STEP_TYPES
+            and len(step_audio_durations) > 0
+        )
+
+        step_videos = []  # 每步独立渲染结果
+
         if manim_available:
-            from animation.builder import build_and_render
-            try:
-                animation_path = build_and_render(
-                    script=script,
-                    hd=True,
-                    audio_durations=step_audio_durations if step_audio_durations else None,
-                )
-                if animation_path:
-                    result["video_path"] = animation_path
-                    history_db.update_record(record_id, animation_path=animation_path)
-                    logger.info(f"动画渲染完成: {animation_path}")
-                else:
-                    logger.warning("动画渲染失败，跳过")
+            if use_per_step:
+                # === 每步独立渲染模式（精确音画同步） ===
+                from animation.builder import build_and_render_per_step
+                logger.info(f"使用每步独立渲染模式: {problem_type_en}")
+                try:
+                    step_videos = build_and_render_per_step(
+                        script=script,
+                        audio_durations=step_audio_durations,
+                        hd=True,
+                        audio_paths=step_audio_paths,
+                    )
+                    if step_videos:
+                        logger.info(f"每步渲染完成: {len(step_videos)}/{len(script.steps)} 步骤")
+                    else:
+                        logger.warning("每步渲染全部失败，降级到单场景模式")
+                        use_per_step = False
+                except Exception as e:
+                    logger.warning(f"每步渲染异常，降级到单场景: {e}")
+                    use_per_step = False
+                    step_videos = []
+
+            if not use_per_step:
+                # === 单场景渲染模式（add_sound 嵌入音频 + end_scene_with_audio 同步） ===
+                from animation.builder import build_and_render
+                try:
+                    animation_path = build_and_render(
+                        script=script,
+                        hd=True,
+                        audio_durations=step_audio_durations if step_audio_durations else None,
+                        audio_paths=step_audio_paths if step_audio_paths else None,
+                    )
+                    if animation_path:
+                        result["video_path"] = animation_path
+                        history_db.update_record(record_id, animation_path=animation_path)
+                        logger.info(f"动画渲染完成: {animation_path}")
+                    else:
+                        logger.warning("动画渲染失败，跳过")
+                        history_db.update_record(
+                            record_id,
+                            status="failed",
+                            error_message="动画渲染失败",
+                        )
+                except Exception as e:
+                    logger.error(f"动画渲染异常: {e}")
                     history_db.update_record(
                         record_id,
                         status="failed",
-                        error_message="动画渲染失败",
+                        error_message=f"动画渲染异常: {str(e)}",
                     )
-            except Exception as e:
-                logger.error(f"动画渲染异常: {e}")
-                history_db.update_record(
-                    record_id,
-                    status="failed",
-                    error_message=f"动画渲染异常: {str(e)}",
-                )
         else:
             logger.info("跳过动画渲染（Manim未安装）")
 
@@ -270,15 +308,66 @@ def run_full_pipeline(
         if step_audios:
             try:
                 from audio.subtitle import save_srt_file
-                subtitle_path = save_srt_file(step_audios)
+                # 计算字幕时间偏移：标题动画时长 + 停顿
+                # 单场景模式：标题在所有步骤之前
+                # 每步模式：标题在第一个步骤视频中
+                title_offset = float(script.settings.duration) + 1.0  # 标题动画 + 停顿
+                step_gap = 0.8 if not use_per_step else 0.3  # 单场景有过渡动画，每步模式无
+                subtitle_path = save_srt_file(
+                    step_audios,
+                    start_offset=title_offset if not use_per_step else title_offset,
+                    step_gap=step_gap,
+                )
                 if subtitle_path:
                     history_db.update_record(record_id, subtitle_path=subtitle_path)
                     logger.info(f"字幕生成完成: {subtitle_path}")
             except Exception as e:
                 logger.warning(f"字幕生成失败: {e}")
 
-        # 如果 Manim 渲染成功且有音频，合成最终视频
-        if result["video_path"] and os.path.exists(result["video_path"]):
+        # 合成最终视频
+        if use_per_step and step_videos:
+            # === 每步拼接合成（步骤视频 + 步骤音频 + 字幕） ===
+            try:
+                from video.composer import compose_from_steps
+                step_audio_paths = [
+                    a["path"] for a in step_audios
+                    if a.get("path") and os.path.exists(a["path"])
+                ]
+                if step_audio_paths:
+                    logger.info(f"每步拼接合成: {len(step_videos)} 视频 + {len(step_audio_paths)} 音频")
+                    final_video = compose_from_steps(
+                        step_videos=step_videos,
+                        step_audios=step_audio_paths,
+                        subtitle_path=subtitle_path,
+                    )
+                    if final_video:
+                        result["video_path"] = final_video
+                        history_db.update_record(
+                            record_id,
+                            final_video_path=final_video,
+                            status="completed",
+                        )
+                        logger.info(f"最终视频合成完成: {final_video}")
+                    else:
+                        history_db.update_record(
+                            record_id,
+                            status="completed",
+                        )
+                else:
+                    logger.warning("步骤音频路径缺失，跳过合成")
+                    history_db.update_record(
+                        record_id,
+                        status="completed",
+                    )
+            except Exception as e:
+                logger.warning(f"每步拼接合成降级: {e}")
+                history_db.update_record(
+                    record_id,
+                    status="completed",
+                )
+
+        elif result.get("video_path") and os.path.exists(result["video_path"]):
+            # === 传统单场景合成 ===
             try:
                 from video.composer import compose_video
                 audio_input = history_db.get_record(record_id)
@@ -300,7 +389,6 @@ def run_full_pipeline(
                         )
                         logger.info(f"最终视频合成完成: {final_video}")
                 else:
-                    # 无音频，直接标记完成
                     history_db.update_record(
                         record_id,
                         final_video_path=result["video_path"],

@@ -102,11 +102,26 @@ def _escape_ffmpeg_path(path: str) -> str:
 
 
 # ================================================================
+# 检测视频是否已包含音频流
+# ================================================================
+def _has_audio_stream(video_path: str) -> bool:
+    """检测视频文件是否包含音频流"""
+    if not _FFMPEG_PATH or not os.path.exists(video_path):
+        return False
+    try:
+        cmd = [_FFMPEG_PATH, "-i", video_path, "-hide_banner"]
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=10)
+        return "Audio:" in result.stderr
+    except Exception:
+        return False
+
+
+# ================================================================
 # 核心合成函数（ffmpeg 版本）
 # ================================================================
 def compose_video(
     animation_path: str,
-    audio_path: str,
+    audio_path: str = None,
     subtitle_path: str = None,
     title: str = "",
     output_path: str = None,
@@ -117,20 +132,20 @@ def compose_video(
     """
     合成完整教学视频：动画 + 音频 + 字幕
 
-    使用 ffmpeg 直接处理，比 moviepy 快 10-100 倍。
-    -subtitles 滤镜原生烧录字幕
-    -shortest 自动裁剪视频以匹配最短流（通常是音频）
-    -preset fast 加速编码
+    音画同步策略（参考 MathLens 模板项目）：
+    - 如果动画视频已通过 Manim add_sound() 嵌入音频，则不再合并外部音频
+    - 仅烧录字幕
+    - 如果动画视频无音频（降级情况），则合并外部音频
 
     Args:
-        animation_path: Manim 渲染的无声动画视频路径
-        audio_path: 人声音频路径
+        animation_path: Manim 渲染的动画视频路径（可能已含音频）
+        audio_path: 外部音频路径（仅在动画无音频时使用）
         subtitle_path: SRT 字幕文件路径
-        title: 视频标题（当前版本暂不添加片头）
+        title: 视频标题
         output_path: 输出路径
-        add_intro: 是否添加片头（ffmpeg 模式暂不支持，保留参数兼容）
-        add_outro: 是否添加片尾（ffmpeg 模式暂不支持，保留参数兼容）
-        encoding_preset: ffmpeg preset (fast/medium/ultrafast)，默认 fast
+        add_intro: 是否添加片头（保留参数兼容）
+        add_outro: 是否添加片尾（保留参数兼容）
+        encoding_preset: ffmpeg preset
 
     Returns:
         合成的 MP4 视频路径
@@ -148,12 +163,30 @@ def compose_video(
             logger.error(f"动画视频不存在: {animation_path}")
             return None
 
-        has_audio = audio_path and os.path.exists(audio_path)
+        # 检测动画视频是否已包含音频流（通过 add_sound 嵌入）
+        video_has_audio = _has_audio_stream(animation_path)
+        external_audio = audio_path and os.path.exists(audio_path)
         has_subtitle = subtitle_path and os.path.exists(subtitle_path)
+
+        # 决定音频来源
+        if video_has_audio:
+            # 视频已含音频（add_sound 嵌入），无需外部音频
+            has_audio = True
+            use_external_audio = False
+            logger.info("动画视频已含音频流（add_sound 嵌入），跳过外部音频合并")
+        elif external_audio:
+            # 视频无音频，使用外部音频
+            has_audio = True
+            use_external_audio = True
+            logger.info("动画视频无音频，使用外部音频合并")
+        else:
+            has_audio = False
+            use_external_audio = False
+            logger.info("无音频源，输出静音视频")
 
         logger.info(
             f"开始视频合成 (ffmpeg): animation={animation_path}, "
-            f"audio={'有' if has_audio else '无'}, "
+            f"video_has_audio={video_has_audio}, "
             f"subtitle={'有' if has_subtitle else '无'}"
         )
 
@@ -171,31 +204,28 @@ def compose_video(
         # 输入：动画视频
         cmd.extend(["-i", animation_path])
 
-        # 输入：音频（如果有）
-        if has_audio:
+        # 输入：外部音频（仅当视频无音频且外部音频存在时）
+        if use_external_audio:
             cmd.extend(["-i", audio_path])
 
         # 视频滤镜：字幕烧录
         video_filters = []
         if has_subtitle:
-            # ffmpeg subtitles 滤镜需要绝对路径
             abs_subtitle = os.path.abspath(subtitle_path)
-            # Windows 路径在 subtitles 滤镜中需要转义冒号
             escaped_sub = abs_subtitle.replace("\\", "/").replace(":", "\\:")
             style = _build_subtitle_style()
             sub_filter = f"subtitles='{escaped_sub}':force_style='{style}'"
             video_filters.append(sub_filter)
             logger.info(f"字幕文件: {abs_subtitle}")
 
-        # 视频编码参数
         if video_filters:
             cmd.extend(["-vf", ",".join(video_filters)])
 
         cmd.extend([
             "-c:v", "libx264",
             "-preset", encoding_preset,
-            "-crf", "23",             # 质量：18=接近无损，23=默认，28=较低
-            "-pix_fmt", "yuv420p",    # 兼容所有播放器
+            "-crf", "23",
+            "-pix_fmt", "yuv420p",
         ])
 
         # 音频编码参数
@@ -205,16 +235,17 @@ def compose_video(
                 "-b:a", "128k",
             ])
         else:
-            cmd.extend(["-an"])  # 无音频
+            cmd.extend(["-an"])
 
-        # -shortest：以最短的流（通常是音频）为准裁剪视频
-        # 这解决了"视频比音频长"导致的不同步问题
-        cmd.append("-shortest")
+        # -shortest：仅在使用外部音频时需要（匹配最短流）
+        # 当视频已含音频时不需要 -shortest（音视频已在 Manim 中同步）
+        if use_external_audio:
+            cmd.append("-shortest")
 
         # 输出选项
         cmd.extend([
-            "-movflags", "+faststart",  # Web 渐进式加载
-            "-y",                        # 覆盖输出
+            "-movflags", "+faststart",
+            "-y",
             output_path,
         ])
 
@@ -227,14 +258,13 @@ def compose_video(
             cmd,
             capture_output=True,
             text=True,
-            timeout=600,  # 10分钟超时
+            timeout=600,
         )
 
         if result.returncode != 0:
             stderr_tail = result.stderr.strip()[-500:] if result.stderr else ""
             logger.error(f"ffmpeg 合成失败 (returncode={result.returncode}):\n{stderr_tail}")
 
-            # 如果字幕滤镜失败，尝试无字幕合成
             if has_subtitle and "subtitles" in stderr_tail:
                 logger.warning("字幕滤镜失败，尝试无字幕合成...")
                 return compose_video(
@@ -420,3 +450,174 @@ def _extend_video_with_freeze(video, target_duration: float):
         return concatenate_videoclips([video, last_frame], method="compose")
     except Exception:
         return video
+
+
+# ================================================================
+# 步骤独立渲染 → ffmpeg 拼接合成
+# ================================================================
+def compose_from_steps(
+    step_videos: list[dict],
+    step_audios: list[str],
+    subtitle_path: str = None,
+    output_path: str = None,
+    encoding_preset: str = "fast",
+) -> Optional[str]:
+    """
+    将 N 个独立渲染的步骤视频拼接为最终视频。
+
+    音画同步策略（参考 MathLens 模板项目）：
+    - 如果步骤视频已通过 add_sound() 嵌入音频，直接拼接视频+烧录字幕
+    - 如果步骤视频无音频（降级），拼接视频+拼接音频+合并
+
+    流程（视频已含音频）：
+    1. ffmpeg concat 拼接所有步骤视频（含音频） → combined.mp4
+    2. ffmpeg 烧录字幕 → final.mp4
+
+    流程（视频无音频，降级）：
+    1. ffmpeg concat 拼接所有步骤视频 → silent.mp4
+    2. ffmpeg concat 拼接所有步骤音频 → full_audio.mp3
+    3. ffmpeg 合并视频+音频+字幕 → final.mp4
+
+    Args:
+        step_videos: [{"step_number": 1, "video_path": "...", "duration": 11.2}, ...]
+        step_audios: ["step_01.mp3", "step_02.mp3", ...] 按步骤顺序
+        subtitle_path: SRT 字幕文件路径
+        output_path: 输出路径
+        encoding_preset: ffmpeg preset
+
+    Returns:
+        最终 MP4 路径
+    """
+    if not _FFMPEG_PATH:
+        logger.error("compose_from_steps 需要 FFmpeg，请确认已安装")
+        return None
+
+    if not step_videos:
+        logger.error("步骤视频列表为空")
+        return None
+
+    try:
+        timestamp = get_timestamp()
+        if output_path is None:
+            output_path = os.path.join(OUTPUT_VIDEO_DIR, f"final_{timestamp}.mp4")
+        ensure_dirs()
+
+        # 临时工作目录
+        tmp_dir = os.path.join(OUTPUT_VIDEO_DIR, f"_tmp_{timestamp}")
+        os.makedirs(tmp_dir, exist_ok=True)
+
+        video_concat_list = os.path.join(tmp_dir, "video_concat.txt")
+        combined_video = os.path.join(tmp_dir, "combined.mp4")
+
+        # ================================================================
+        # 第1步：拼接所有步骤视频
+        # ================================================================
+        logger.info(f"拼接 {len(step_videos)} 个步骤视频...")
+        with open(video_concat_list, "w", encoding="utf-8") as f:
+            for sv in step_videos:
+                abs_path = os.path.abspath(sv["video_path"]).replace("\\", "/")
+                f.write(f"file '{abs_path}'\n")
+
+        # 检测步骤视频是否含音频
+        first_video = step_videos[0]["video_path"]
+        videos_have_audio = _has_audio_stream(first_video)
+
+        if videos_have_audio:
+            # 视频已含音频，直接拼接（含音视频流）
+            cmd_concat = [
+                _FFMPEG_PATH, "-y", "-hide_banner", "-loglevel", "warning",
+                "-f", "concat", "-safe", "0",
+                "-i", video_concat_list,
+                "-c", "copy",
+                combined_video,
+            ]
+            result = subprocess.run(cmd_concat, capture_output=True, text=True, timeout=300)
+            if result.returncode != 0:
+                # -c copy 可能因编码差异失败，降级重编码
+                logger.warning(f"直接拼接失败，尝试重编码: {result.stderr[-200:]}")
+                cmd_concat = [
+                    _FFMPEG_PATH, "-y", "-hide_banner", "-loglevel", "warning",
+                    "-f", "concat", "-safe", "0",
+                    "-i", video_concat_list,
+                    "-c:v", "libx264", "-preset", encoding_preset, "-crf", "23",
+                    "-c:a", "aac", "-b:a", "128k",
+                    "-pix_fmt", "yuv420p",
+                    combined_video,
+                ]
+                result = subprocess.run(cmd_concat, capture_output=True, text=True, timeout=600)
+                if result.returncode != 0:
+                    logger.error(f"视频拼接失败: {result.stderr[-300:]}")
+                    return None
+            logger.info(f"视频拼接完成(含音频): {combined_video}")
+
+            # 烧录字幕
+            final = compose_video(
+                animation_path=combined_video,
+                audio_path=None,  # 视频已含音频
+                subtitle_path=subtitle_path,
+                output_path=output_path,
+                encoding_preset=encoding_preset,
+            )
+        else:
+            # 降级：视频无音频，需要单独拼接音频
+            logger.info("步骤视频无音频，使用降级方案：拼接视频+拼接音频+合并")
+
+            silent_video = os.path.join(tmp_dir, "silent.mp4")
+            cmd_concat_video = [
+                _FFMPEG_PATH, "-y", "-hide_banner", "-loglevel", "warning",
+                "-f", "concat", "-safe", "0",
+                "-i", video_concat_list,
+                "-c", "copy",
+                silent_video,
+            ]
+            result = subprocess.run(cmd_concat_video, capture_output=True, text=True, timeout=300)
+            if result.returncode != 0:
+                logger.error(f"视频拼接失败: {result.stderr[-300:]}")
+                return None
+            logger.info(f"视频拼接完成(无音频): {silent_video}")
+
+            # 拼接音频
+            merged_audio = os.path.join(tmp_dir, "merged_audio.mp3")
+            audio_concat_list = os.path.join(tmp_dir, "audio_concat.txt")
+            if step_audios:
+                with open(audio_concat_list, "w", encoding="utf-8") as f:
+                    for ap in step_audios:
+                        abs_path = os.path.abspath(ap).replace("\\", "/")
+                        f.write(f"file '{abs_path}'\n")
+
+                cmd_concat_audio = [
+                    _FFMPEG_PATH, "-y", "-hide_banner", "-loglevel", "warning",
+                    "-f", "concat", "-safe", "0",
+                    "-i", audio_concat_list,
+                    "-c", "copy",
+                    merged_audio,
+                ]
+                result = subprocess.run(cmd_concat_audio, capture_output=True, text=True, timeout=120)
+                if result.returncode != 0:
+                    logger.error(f"音频拼接失败: {result.stderr[-300:]}")
+                    return None
+                logger.info(f"音频拼接完成: {merged_audio}")
+            else:
+                merged_audio = None
+
+            # 合并视频+音频+字幕
+            final = compose_video(
+                animation_path=silent_video,
+                audio_path=merged_audio,
+                subtitle_path=subtitle_path,
+                output_path=output_path,
+                encoding_preset=encoding_preset,
+            )
+
+        # 清理临时文件
+        try:
+            import shutil
+            shutil.rmtree(tmp_dir, ignore_errors=True)
+        except Exception:
+            pass
+
+        return final
+
+    except Exception as e:
+        logger.error(f"步骤拼接合成异常: {e}")
+        return None

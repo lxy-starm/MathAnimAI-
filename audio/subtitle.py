@@ -40,22 +40,31 @@ def seconds_to_srt_time(seconds: float) -> str:
 def generate_srt_from_steps(
     step_audios: list[dict],
     extra_padding: float = 0.2,
+    start_offset: float = 0.0,
+    step_gap: float = 0.3,
 ) -> str:
     """
     根据步骤音频时长生成SRT字幕内容
 
+    字幕时间轴计算（与 add_sound + end_scene_with_audio 同步方案匹配）：
+    - start_offset: 第一步音频开始前的时间（标题动画+停顿）
+    - step_gap: 步骤之间的间隔（安全余量+过渡动画）
+    - 每步音频的实际播放时间 = start_offset + 累积(前序步骤时长 + step_gap)
+
     Args:
         step_audios: 步骤音频列表 [{"step_number": 1, "duration": 2.5, "voice_text": "..."}, ...]
         extra_padding: 额外时间缓冲（秒），避免字幕播完太仓促
+        start_offset: 字幕起始偏移（秒），对应标题展示时间
+        step_gap: 步骤间隔（秒），对应 end_scene_with_audio 安全余量 + step_transition
 
     Returns:
         SRT格式字符串
     """
     srt_lines = []
-    current_time = 0.0
+    current_time = start_offset
     subtitle_index = 1
 
-    for audio in step_audios:
+    for i, audio in enumerate(step_audios):
         duration = audio.get("duration", 2.0)
         step_num = audio.get("step_number", subtitle_index)
         text = audio.get("voice_text", "")
@@ -75,8 +84,8 @@ def generate_srt_from_steps(
         srt_lines.append(text)
         srt_lines.append("")  # 空行分隔
 
-        # 更新时间和索引
-        current_time = end_time
+        # 更新时间：当前步骤时长 + 步骤间隔
+        current_time = start_time + duration + step_gap
         subtitle_index += 1
 
     return "\n".join(srt_lines)
@@ -85,6 +94,8 @@ def generate_srt_from_steps(
 def save_srt_file(
     step_audios: list[dict],
     output_path: str = None,
+    start_offset: float = 0.0,
+    step_gap: float = 0.3,
 ) -> Optional[str]:
     """
     生成并保存SRT字幕文件
@@ -92,6 +103,8 @@ def save_srt_file(
     Args:
         step_audios: 步骤音频列表
         output_path: 输出文件路径，默认自动生成
+        start_offset: 字幕起始偏移（秒），对应标题展示时间
+        step_gap: 步骤间隔（秒），对应安全余量+过渡动画
 
     Returns:
         SRT文件路径
@@ -103,7 +116,11 @@ def save_srt_file(
     ensure_dirs()
 
     try:
-        srt_content = generate_srt_from_steps(step_audios)
+        srt_content = generate_srt_from_steps(
+            step_audios,
+            start_offset=start_offset,
+            step_gap=step_gap,
+        )
 
         with open(output_path, "w", encoding="utf-8") as f:
             f.write(srt_content)

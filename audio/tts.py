@@ -10,9 +10,12 @@ MathAnimAI — edge-tts 语音合成模块
 
 import os
 import sys
+import re
+import json
 import asyncio
 import subprocess
 import logging
+import threading
 from typing import Optional
 from pathlib import Path
 
@@ -22,6 +25,211 @@ from config import (
 )
 
 logger = logging.getLogger("MathAnimAI.TTS")
+
+
+# ================================================================
+# 句级同步点构建（参考 MathLens 模板项目）
+# ================================================================
+def build_sentence_sync_points(original_text, word_boundaries):
+    """
+    根据原文的句号/问号/感叹号拆句，利用 WordBoundary 偏移量
+    计算每句话在音频中的起始时间。
+
+    返回: [{idx, text, time}, ...]
+    """
+    if not word_boundaries:
+        return []
+
+    sentences = re.split(r'[。！？!?]+', original_text)
+    sentences = [s.strip() for s in sentences if s.strip()]
+
+    if not sentences:
+        return [{"idx": 0, "text": original_text[:40], "time": word_boundaries[0]["offset"]}]
+
+    PUNCT = re.compile(r'[，,、；;：:（）()\s""\'\'""「」\-—…·。！？!?]')
+
+    sync_points = []
+    wb_idx = 0
+
+    for sent_idx, sentence in enumerate(sentences):
+        if wb_idx >= len(word_boundaries):
+            break
+
+        sync_points.append({
+            "idx": sent_idx,
+            "text": sentence[:40],
+            "time": word_boundaries[wb_idx]["offset"],
+        })
+
+        clean = PUNCT.sub('', sentence)
+        consumed = 0
+        target = len(clean)
+
+        while wb_idx < len(word_boundaries) and consumed < target:
+            consumed += len(word_boundaries[wb_idx]["text"])
+            wb_idx += 1
+
+    return sync_points
+
+
+# ================================================================
+# 带 WordBoundary 捕获的 TTS 生成
+# ================================================================
+def generate_speech_with_sync(
+    text: str,
+    output_path: str,
+    voice: str = None,
+) -> Optional[dict]:
+    """
+    使用 edge-tts 流式 API 生成语音，同时捕获 WordBoundary 事件。
+
+    与 generate_speech() 的区别：
+    - 使用 communicate.stream() 而非 communicate.save()
+    - 捕获 WordBoundary 事件获取词级时间戳
+    - 构建句级同步点 sync_points
+    - 生成 audio_info.json 供 Manim 精确对齐
+
+    Returns:
+        {"path": str, "duration": float, "sync_points": list} 或 None
+    """
+    try:
+        import edge_tts
+
+        voice_name = voice or TTS_VOICE
+        clean_text = text.strip()
+        if not clean_text:
+            logger.warning("TTS文本为空，跳过")
+            return None
+
+        abs_output = os.path.abspath(output_path)
+        os.makedirs(os.path.dirname(abs_output), exist_ok=True)
+
+        logger.info(f"生成语音(带同步): voice={voice_name}, 文本长度={len(clean_text)}")
+
+        async def _gen():
+            communicate = edge_tts.Communicate(text=clean_text, voice=voice_name)
+            word_boundaries = []
+
+            with open(abs_output, "wb") as f:
+                async for chunk in communicate.stream():
+                    if chunk["type"] == "audio":
+                        f.write(chunk["data"])
+                    elif chunk["type"] == "WordBoundary":
+                        word_boundaries.append({
+                            "text": chunk["text"],
+                            "offset": round(chunk["offset"] / 1e7, 3),
+                            "duration": round(chunk["duration"] / 1e7, 3),
+                        })
+
+            return word_boundaries
+
+        # 处理事件循环（兼容 Gradio 异步上下文）
+        word_boundaries = None
+        try:
+            loop = asyncio.get_running_loop()
+            # 已有事件循环（Gradio），用独立线程执行
+            result_box = [None]
+            error_box = [None]
+
+            def _run_in_thread():
+                try:
+                    result_box[0] = asyncio.run(_gen())
+                except Exception as e:
+                    error_box[0] = e
+
+            thread = threading.Thread(target=_run_in_thread)
+            thread.start()
+            thread.join(timeout=120)
+
+            if error_box[0]:
+                raise error_box[0]
+            word_boundaries = result_box[0]
+        except RuntimeError:
+            # 无运行中的事件循环，直接调用
+            word_boundaries = asyncio.run(_gen())
+
+        if word_boundaries is None:
+            word_boundaries = []
+
+        # 获取音频时长
+        duration = _estimate_duration(clean_text, abs_output)
+        sync_points = build_sentence_sync_points(clean_text, word_boundaries)
+
+        logger.info(
+            f"语音生成成功(带同步): {abs_output}, 时长={duration:.1f}s, "
+            f"同步点={len(sync_points)}句"
+        )
+        return {"path": abs_output, "duration": duration, "sync_points": sync_points}
+
+    except ImportError:
+        logger.error("edge_tts 未安装。请运行: pip install edge-tts")
+        return None
+    except Exception as e:
+        logger.error(f"语音生成(带同步)失败: {e}")
+        return None
+
+
+# ================================================================
+# 保存 audio_info.json（供 Manim 动画精确对齐）
+# ================================================================
+def save_audio_info(
+    results: list[dict],
+    output_dir: str = None,
+    voice: str = None,
+) -> Optional[str]:
+    """
+    将 TTS 生成结果保存为 audio_info.json
+
+    格式参考 MathLens 模板项目：
+    {
+        "files": [
+            {
+                "scene": 1,
+                "file": "step_01_xxx.mp3",
+                "text": "...",
+                "duration": 5.2,
+                "sync_points": [{"idx": 0, "text": "...", "time": 0.0}, ...]
+            }
+        ],
+        "total_duration": 25.3,
+        "count": 5,
+        "voice": "zh-CN-XiaoxiaoNeural"
+    }
+    """
+    output_path = output_dir or OUTPUT_AUDIO_DIR
+    info_path = os.path.join(output_path, "audio_info.json")
+
+    try:
+        files_data = []
+        for r in results:
+            scene_num = r.get("step_number", 0)
+            file_path = r.get("path", "")
+            filename = os.path.basename(file_path) if file_path else ""
+            files_data.append({
+                "scene": scene_num,
+                "file": filename,
+                "path": file_path,  # 保存绝对路径，供 Manim add_sound() 使用
+                "text": r.get("voice_text", ""),
+                "duration": round(r.get("duration", 0.0), 2),
+                "sync_points": r.get("sync_points", []),
+            })
+
+        info = {
+            "files": files_data,
+            "total_duration": round(sum(r.get("duration", 0) for r in results), 2),
+            "count": len(results),
+            "voice": voice or TTS_VOICE,
+        }
+
+        with open(info_path, "w", encoding="utf-8") as f:
+            json.dump(info, f, ensure_ascii=False, indent=2)
+
+        logger.info(f"audio_info.json 已保存: {info_path}")
+        return info_path
+
+    except Exception as e:
+        logger.error(f"保存 audio_info.json 失败: {e}")
+        return None
 
 
 # ================================================================
@@ -405,7 +613,15 @@ def generate_all_audios_sync(
     voice: str = None,
 ) -> list[dict]:
     """
-    同步批量生成，逐个调用 tts_sync 避免事件循环问题
+    同步批量生成，使用带 WordBoundary 捕获的 TTS。
+    生成 audio_info.json 供 Manim 动画精确对齐。
+
+    返回结果中每个条目包含：
+    - step_number: 步骤号
+    - path: 音频文件绝对路径
+    - duration: 音频时长（秒）
+    - voice_text: 配音文本
+    - sync_points: 句级同步点列表
     """
     output_path = output_dir or OUTPUT_AUDIO_DIR
     ensure_dirs()
@@ -426,24 +642,44 @@ def generate_all_audios_sync(
                 "path": "",
                 "duration": 2.0,
                 "voice_text": "",
+                "sync_points": [],
             })
             continue
 
         file_name = f"step_{step_num:02d}_{timestamp}.mp3"
         file_path = os.path.join(output_path, file_name)
 
-        result = tts_sync(text=voice_text, output_path=file_path, voice=voice)
+        # 优先使用带 WordBoundary 捕获的 TTS
+        result = generate_speech_with_sync(
+            text=voice_text,
+            output_path=file_path,
+            voice=voice,
+        )
+
         if result:
             result["step_number"] = step_num
             result["voice_text"] = voice_text
             results.append(result)
         else:
-            results.append({
-                "step_number": step_num,
-                "path": "",
-                "duration": 2.0,
-                "voice_text": voice_text,
-            })
+            # 降级：使用旧的 tts_sync（无同步点）
+            logger.warning(f"步骤{step_num} 带同步TTS失败，降级到普通TTS")
+            fallback = tts_sync(text=voice_text, output_path=file_path, voice=voice)
+            if fallback:
+                fallback["step_number"] = step_num
+                fallback["voice_text"] = voice_text
+                fallback["sync_points"] = []
+                results.append(fallback)
+            else:
+                results.append({
+                    "step_number": step_num,
+                    "path": "",
+                    "duration": 2.0,
+                    "voice_text": voice_text,
+                    "sync_points": [],
+                })
+
+    # 生成 audio_info.json
+    save_audio_info(results, output_path, voice or TTS_VOICE)
 
     logger.info(f"批量语音生成完成: 共{len(results)}段")
     return results

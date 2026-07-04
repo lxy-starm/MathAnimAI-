@@ -20,7 +20,40 @@ from config import Colors
 from config import (
     CANVAS_MAX_WIDTH, CANVAS_BOTTOM_Y, MAX_STACK_STEPS,
     AUDIO_CHARS_PER_SEC, CENTER_CONTENT_MAX_WIDTH,
+    DURATION_CREATE, DURATION_SLIDE_IN, DURATION_HIGHLIGHT,
+    DURATION_GROW, DURATION_TRANSITION,
 )
+
+# ================================================================
+# 动画类型 → 预估播放时长（秒）
+# 用于计算 self.wait() 时减去动画本身的播放时间
+# ================================================================
+ANIM_TYPE_DURATION: dict[str, float] = {
+    "text_slide_in": 0.8,       # DURATION_SLIDE_IN
+    "title_display": 0.8,
+    "draw_shape": 1.0,          # DURATION_CREATE
+    "draw_circle": 1.0,
+    "draw_arc": 1.0,
+    "draw_dashed_line": 1.0,
+    "highlight": 1.2,           # DURATION_HIGHLIGHT
+    "highlight_region": 1.2,
+    "mark_angle": 0.5,
+    "mark_right_angle": 0.5,
+    "label_vertex": 0.8,        # DURATION_GROW
+    "label_side": 0.8,
+    "label_text": 0.8,
+    "plot_function": 1.5,       # DURATION_CREATE * 1.5
+    "plot_coordinate": 1.0,
+    "plot_point": 0.8,
+    "draw_bar_chart": 1.5,
+    "draw_pie_chart": 0.8,
+    "draw_segment_diagram": 1.0,
+    "wait": 0.0,                # wait 本身就是暂停，不需要减
+    "transform": 1.0,
+}
+
+# 步骤切换开销（step_transition 动画时间）
+STEP_TRANSITION_DURATION = DURATION_TRANSITION  # 0.5s
 from parser.schema import ProblemScript, ProblemType
 from animation.common import BaseMathScene
 from animation.scenes.equation import EquationScene
@@ -73,7 +106,11 @@ def get_scene_class(problem_type: str):
 # ================================================================
 # Scene代码生成
 # ================================================================
-def generate_scene_code(script: ProblemScript, audio_durations: dict = None) -> str:
+def generate_scene_code(
+    script: ProblemScript,
+    audio_durations: dict = None,
+    audio_paths: dict = None,
+) -> str:
     """
     根据ProblemScript JSON生成完整的Scene construct()代码
     这是核心代码生成逻辑，将JSON步骤翻译为Manim动画序列
@@ -84,13 +121,15 @@ def generate_scene_code(script: ProblemScript, audio_durations: dict = None) -> 
     - 讲解完毕的步骤缩放到左侧面板（小号，垂直排列）
     - 所有内容自动检测边界防止溢出
 
-    音频同步：
-    - 优先使用 audio_durations 中的 TTS 真实时长
-    - 降级使用 AUDIO_CHARS_PER_SEC 估算
+    音画同步（参考 MathLens 模板项目）：
+    - 使用 add_sound() 将音频直接嵌入 Manim 时间轴
+    - 使用 end_scene_with_audio() 自动补齐等待时间
+    - 无需 FFmpeg 后期合并，帧级音画同步
 
     Args:
         script: 经过Pydantic校验的动画脚本
         audio_durations: {step_number: actual_audio_duration_seconds}，可选
+        audio_paths: {step_number: absolute_audio_file_path}，可选
 
     Returns:
         完整的construct()方法代码字符串
@@ -113,9 +152,7 @@ def generate_scene_code(script: ProblemScript, audio_durations: dict = None) -> 
     lines.append(f'{indent}problem_title.to_edge(UP, buff=0.5)')
     lines.append(f'{indent}self.add_to_all(problem_title)')
     lines.append(f'{indent}self.play(FadeIn(problem_title, shift=DOWN*0.5, run_time={script.settings.duration}))')
-    # 标题演示停顿用音频估算
-    title_audio_est = max(len(script.problem_text) / AUDIO_CHARS_PER_SEC * 0.6, 1.0)
-    lines.append(f'{indent}self.wait({title_audio_est:.2f})')
+    lines.append(f'{indent}self.wait(1.0)  # 标题展示停顿（无音频）')
     lines.append(f'')
 
     # 如果有几何底图，先绘制
@@ -141,6 +178,24 @@ def generate_scene_code(script: ProblemScript, audio_durations: dict = None) -> 
         if step.step_number > 1:
             lines.append(f'{indent}# 将上一中央内容移至左侧侧边栏')
             lines.append(f'{indent}self.step_transition()')
+
+        # ===== 音画同步：add_sound 嵌入音频 =====
+        # 获取音频时长和路径
+        if audio_durations and step.step_number in audio_durations:
+            audio_dur = audio_durations[step.step_number]
+        else:
+            voice_text = step.voice_text or step.text or ""
+            audio_dur = max(len(voice_text) / AUDIO_CHARS_PER_SEC, 1.0)
+
+        audio_path = audio_paths.get(step.step_number) if audio_paths else None
+
+        if audio_path:
+            # 新方式：add_sound 嵌入音频 + end_scene_with_audio 自动补齐
+            escaped_path = audio_path.replace("\\", "\\\\")
+            lines.append(f'{indent}self.start_scene_with_audio({step.step_number}, audio_path=r"{audio_path}", expected_duration={audio_dur:.2f})')
+        else:
+            # 降级：无音频路径，仅用时长估算
+            lines.append(f'{indent}self.start_scene_with_audio({step.step_number}, audio_path=None, expected_duration={audio_dur:.2f})')
 
         # 根据动画类型生成对应代码
         if anim_type in ("text_slide_in", "title_display"):
@@ -198,17 +253,9 @@ def generate_scene_code(script: ProblemScript, audio_durations: dict = None) -> 
             # 兜底：默认用text_slide_in
             lines.extend(_gen_text_slide_in(step, indent))
 
-        # 根据音频时长确定步骤等待时间（音画同步关键！）
-        # 优先使用 TTS 真实时长，降级使用字数估算
-        if audio_durations and step.step_number in audio_durations:
-            total_wait = audio_durations[step.step_number]
-            lines.append(f'{indent}# TTS 真实时长 {total_wait:.1f}s')
-        else:
-            voice_text = step.voice_text or step.text or ""
-            audio_est = max(len(voice_text) / AUDIO_CHARS_PER_SEC, 1.0)
-            total_wait = audio_est
-            lines.append(f'{indent}# 音频估算 {audio_est:.1f}s（字数={len(voice_text)}）')
-        lines.append(f'{indent}self.wait({total_wait:.2f})')
+        # ===== 音画同步：end_scene_with_audio 自动补齐 =====
+        lines.append(f'{indent}# audio={audio_dur:.1f}s → end_scene_with_audio 自动补齐')
+        lines.append(f'{indent}self.end_scene_with_audio(expected_duration={audio_dur:.2f})')
         lines.append('')
 
     # 结尾 — 最终答案展示在中央
@@ -222,6 +269,144 @@ def generate_scene_code(script: ProblemScript, audio_durations: dict = None) -> 
     lines.append(f'{indent}self.wait(2.5)')
 
     return '\n'.join(lines)
+
+
+# ================================================================
+# 每步独立渲染：generate_step_scene_code
+# ================================================================
+def generate_step_scene_code(
+    script: ProblemScript,
+    step_index: int,
+    audio_durations: dict = None,
+    audio_paths: dict = None,
+    is_first: bool = False,
+) -> str:
+    """
+    生成单步骤的独立 Scene construct() 代码（用于每步独立渲染）。
+
+    与 generate_scene_code() 的区别：
+    - 无侧边栏/步骤过渡（每个视频独立）
+    - 标题在非首步时静态添加（无 FadeIn），确保拼接后视觉连续
+    - 无最终答案展示
+    - 使用 add_sound() + end_scene_with_audio() 实现音画同步
+
+    Args:
+        script: 动画脚本
+        step_index: 步骤序号（1-based）
+        audio_durations: {step_number: duration_seconds}
+        audio_paths: {step_number: absolute_audio_file_path}
+        is_first: 是否为第一个步骤（决定标题是否需要 FadeIn 动画）
+
+    Returns:
+        完整的 construct() 方法代码
+    """
+    step = script.steps[step_index - 1]
+    anim_type = step.animation_type.value if hasattr(step.animation_type, 'value') else step.animation_type
+
+    lines = []
+    indent = "        "
+
+    # 初始化场景
+    lines.append(f'{indent}# ===== 步骤 {step.step_number} 独立场景 =====')
+    lines.append(f'{indent}self.setup()')
+    lines.append('')
+
+    # 标题 — 首步 FadeIn，后续步静态（拼接后视觉连续）
+    title_raw = _py_escape(script.problem_text)
+    title_display = title_raw[:40]
+    if len(title_raw) > 40:
+        title_display = title_display + "..."
+    lines.append(f'{indent}# 标题')
+    lines.append(f'{indent}problem_title = title_text("{title_display}")')
+    lines.append(f'{indent}problem_title.to_edge(UP, buff=0.5)')
+    if is_first:
+        lines.append(f'{indent}self.add_to_all(problem_title)')
+        lines.append(f'{indent}self.play(FadeIn(problem_title, shift=DOWN*0.5, run_time={script.settings.duration}))')
+        lines.append(f'{indent}self.wait(1.0)  # 标题展示停顿')
+    else:
+        # 静态添加，首帧就显示
+        lines.append(f'{indent}self.add(problem_title)')
+    lines.append('')
+
+    # ===== 音画同步：add_sound 嵌入音频 =====
+    if audio_durations and step.step_number in audio_durations:
+        audio_dur = audio_durations[step.step_number]
+    else:
+        voice_text = step.voice_text or step.text or ""
+        audio_dur = max(len(voice_text) / AUDIO_CHARS_PER_SEC, 1.0)
+
+    audio_path = audio_paths.get(step.step_number) if audio_paths else None
+
+    lines.append(f'{indent}# ===== 步骤内容 =====')
+    if audio_path:
+        lines.append(f'{indent}self.start_scene_with_audio({step.step_number}, audio_path=r"{audio_path}", expected_duration={audio_dur:.2f})')
+    else:
+        lines.append(f'{indent}self.start_scene_with_audio({step.step_number}, audio_path=None, expected_duration={audio_dur:.2f})')
+
+    if anim_type in ("text_slide_in", "title_display"):
+        lines.extend(_gen_step_text_slide_in(step, indent))
+    elif anim_type in ("draw_shape", "draw_circle", "draw_arc"):
+        lines.extend(_gen_draw_shape(step, indent))
+    elif anim_type == "draw_dashed_line":
+        lines.extend(_gen_dashed_line(step, indent))
+    elif anim_type in ("highlight", "highlight_region"):
+        lines.extend(_gen_highlight(step, indent))
+    elif anim_type == "mark_angle":
+        lines.extend(_gen_mark_angle(step, indent))
+    elif anim_type == "mark_right_angle":
+        lines.extend(_gen_mark_right_angle(step, indent))
+    elif anim_type == "label_vertex":
+        lines.extend(_gen_label_vertex(step, indent))
+    elif anim_type == "label_side":
+        lines.extend(_gen_label_side(step, indent))
+    elif anim_type == "label_text":
+        lines.extend(_gen_label_text(step, indent))
+    elif anim_type == "plot_function":
+        lines.extend(_gen_plot_function(step, indent))
+    elif anim_type == "plot_coordinate":
+        lines.extend(_gen_plot_coordinate(step, indent))
+    elif anim_type == "plot_point":
+        lines.extend(_gen_plot_point(step, indent))
+    elif anim_type == "draw_bar_chart":
+        lines.extend(_gen_bar_chart(step, indent))
+    elif anim_type == "draw_pie_chart":
+        lines.extend(_gen_pie_chart(step, indent))
+    elif anim_type == "draw_segment_diagram":
+        lines.extend(_gen_segment_diagram(step, indent))
+    elif anim_type == "wait":
+        lines.append(f'{indent}self.wait({step.config.get("duration", 1.5)})')
+    elif anim_type == "transform":
+        lines.extend(_gen_transform(step, indent))
+    else:
+        lines.extend(_gen_step_text_slide_in(step, indent))
+
+    # ===== 音画同步：end_scene_with_audio 自动补齐 =====
+    lines.append(f'{indent}# audio={audio_dur:.1f}s → end_scene_with_audio 自动补齐')
+    lines.append(f'{indent}self.end_scene_with_audio(expected_duration={audio_dur:.2f})')
+
+    return '\n'.join(lines)
+
+
+def _gen_step_text_slide_in(step, indent: str) -> list[str]:
+    """单步骤模式的文字滑入（不使用 add_to_center / sidebar 机制）"""
+    lines = []
+    lines.append(f'{indent}# 文字滑入')
+    text_var = f"step{step.step_number}_text"
+    raw_text = _py_escape(step.text)
+    step_text_content = raw_text[:80]
+    if len(raw_text) > 80:
+        step_text_content = step_text_content + "..."
+    lines.append(f'{indent}{text_var} = step_text("{step_text_content}")')
+    if step.math_expr:
+        lines.append(f'{indent}{text_var}_math = math_text(r"{_py_escape(step.math_expr)}")')
+        lines.append(f'{indent}{text_var} = VGroup({text_var}, {text_var}_math).arrange(DOWN, buff=0.2)')
+    # 居中放置
+    lines.append(f'{indent}position_in_center_safe({text_var})')
+    lines.append(f'{indent}if {text_var}.width > {CENTER_CONTENT_MAX_WIDTH}:')
+    lines.append(f'{indent}    {text_var}.scale({CENTER_CONTENT_MAX_WIDTH} / {text_var}.width * 0.9)')
+    lines.append(f'{indent}self.add({text_var})')
+    lines.append(f'{indent}self.play(FadeIn({text_var}, shift=UP*0.5, run_time=DURATION_SLIDE_IN, rate_func=smooth))')
+    return lines
 
 
 # ================================================================
@@ -460,20 +645,110 @@ def _gen_transform(step, indent: str) -> list[str]:
 # ================================================================
 # 统一调度入口
 # ================================================================
+def build_and_render_per_step(
+    script: ProblemScript,
+    audio_durations: dict,
+    hd: bool = True,
+    audio_paths: dict = None,
+) -> list[dict]:
+    """
+    每步独立渲染：将每个步骤渲染为独立的短视频，然后 ffmpeg 拼接。
+
+    优势：每个步骤视频的时长精确等于对应音频时长，拼接后天然音画同步。
+    使用 add_sound() 将音频嵌入每个步骤视频，拼接后音频也同步。
+    适用题型：word_problem、fraction（无持久化图形的题型）
+
+    Args:
+        script: 标准化动画脚本
+        audio_durations: {step_number: actual_audio_duration_seconds}，必需
+        hd: 是否高清渲染
+        audio_paths: {step_number: absolute_audio_file_path}，用于 add_sound()
+
+    Returns:
+        [{"step_number": 1, "video_path": "...", "duration": 11.2}, ...]
+        失败时返回空列表
+    """
+    import tempfile
+    from config import get_timestamp
+
+    logger.info(
+        f"每步独立渲染模式: type={script.problem_type}, "
+        f"steps={len(script.steps)}, durations={audio_durations}"
+    )
+
+    step_videos = []
+    scene_cls = get_scene_class(script.problem_type)
+    timestamp = get_timestamp()
+
+    for i, step in enumerate(script.steps):
+        step_num = step.step_number
+        audio_dur = audio_durations.get(step_num)
+        if audio_dur is None:
+            logger.warning(f"步骤 {step_num} 无音频时长，使用估算")
+            voice_text = step.voice_text or step.text or ""
+            audio_dur = max(len(voice_text) / AUDIO_CHARS_PER_SEC, 1.0)
+
+        is_first = (i == 0)
+
+        # 生成单步场景代码
+        scene_code = generate_step_scene_code(
+            script=script,
+            step_index=step_num,
+            audio_durations=audio_durations,
+            audio_paths=audio_paths,
+            is_first=is_first,
+        )
+
+        # 渲染
+        with tempfile.TemporaryDirectory() as tmpdir:
+            scene_class_name = f"MathAnimAI_step{step_num:02d}_{timestamp}"
+            scene_file = generate_scene_file(
+                scene_code=scene_code,
+                scene_class_name=scene_class_name,
+                base_class=scene_cls.__name__,
+                output_dir=tmpdir,
+            )
+
+            video_path = render_scene(
+                scene_file=scene_file,
+                scene_class=os.path.splitext(os.path.basename(scene_file))[0],
+                quality="h" if hd else "m",
+            )
+
+            if video_path and os.path.exists(video_path):
+                step_videos.append({
+                    "step_number": step_num,
+                    "video_path": video_path,
+                    "duration": audio_dur,
+                })
+                logger.info(f"  步骤 {step_num} 渲染完成: {video_path} (目标 {audio_dur:.1f}s)")
+            else:
+                logger.error(f"  步骤 {step_num} 渲染失败")
+                # 继续尝试后续步骤
+
+    logger.info(f"每步独立渲染完成: {len(step_videos)}/{len(script.steps)} 个步骤")
+    return step_videos
+
+
 def build_and_render(
     script: ProblemScript,
     output_dir: str = None,
     hd: bool = True,
     audio_durations: dict = None,
+    audio_paths: dict = None,
 ) -> Optional[str]:
     """
     根据ProblemScript生成动画视频
+
+    使用 add_sound() 将音频直接嵌入 Manim 时间轴，实现帧级音画同步。
+    渲染输出的视频已包含音频轨，无需 FFmpeg 后期合并。
 
     Args:
         script: 标准化动画脚本
         output_dir: 视频输出目录
         hd: 是否高清渲染
         audio_durations: {step_number: duration_seconds} TTS 真实时长
+        audio_paths: {step_number: absolute_audio_file_path} 用于 add_sound()
 
     Returns:
         视频文件路径，失败返回None
@@ -487,7 +762,11 @@ def build_and_render(
     scene_cls = get_scene_class(script.problem_type)
 
     # 生成场景代码
-    scene_code = generate_scene_code(script, audio_durations=audio_durations)
+    scene_code = generate_scene_code(
+        script,
+        audio_durations=audio_durations,
+        audio_paths=audio_paths,
+    )
 
     # 用临时目录存场景文件
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -510,7 +789,12 @@ def build_and_render(
         return video_path
 
 
-def parse_and_build(json_str: str, hd: bool = True, audio_durations: dict = None) -> Optional[str]:
+def parse_and_build(
+    json_str: str,
+    hd: bool = True,
+    audio_durations: dict = None,
+    audio_paths: dict = None,
+) -> Optional[str]:
     """
     便捷入口：从JSON字符串直接生成视频
 
@@ -518,13 +802,19 @@ def parse_and_build(json_str: str, hd: bool = True, audio_durations: dict = None
         json_str: JSON动画脚本字符串
         hd: 是否高清
         audio_durations: {step_number: duration_seconds} TTS 真实时长
+        audio_paths: {step_number: absolute_audio_file_path} 用于 add_sound()
 
     Returns:
         视频文件路径
     """
     try:
         script = ProblemScript.from_json_str(json_str)
-        return build_and_render(script, hd=hd, audio_durations=audio_durations)
+        return build_and_render(
+            script,
+            hd=hd,
+            audio_durations=audio_durations,
+            audio_paths=audio_paths,
+        )
     except Exception as e:
         logger.error(f"解析JSON失败: {e}")
         return None

@@ -1331,3 +1331,263 @@ KeyboardInterrupt
 题型: word_problem
 步骤: 11
 视频: ./output\videos\final_20260701_121748.mp4
+2026-07-01 13:18:04,266 [INFO] MathAnimAI: ============================================================
+2026-07-01 13:18:04,266 [INFO] MathAnimAI: MathAnimAI 启动中...
+2026-07-01 13:18:04,266 [INFO] MathAnimAI: ============================================================
+2026-07-01 13:18:08,286 [INFO] manim: Reading config file: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\manim\_config\default.cfg
+2026-07-01 13:18:11,184 [INFO] MathAnimAI: [OK] Manim 0.20.1
+2026-07-01 13:18:11,697 [INFO] MathAnimAI: [OK] edge-tts
+2026-07-01 13:18:12,639 [INFO] MathAnimAI: [OK] moviepy
+2026-07-01 13:18:13,529 [INFO] MathAnimAI: [OK] openai
+2026-07-01 13:18:15,676 [INFO] MathAnimAI: Ollama 已连接，可用模型: ['qwen2.5:7b', 'qwen2.5:0.5b']
+2026-07-01 13:18:15,771 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-07-01 13:18:15,772 [INFO] MathAnimAI: 数据库就绪
+2026-07-01 13:18:21,856 [INFO] MathAnimAI: 启动 Web 服务: http://127.0.0.1:7060
+2026-07-01 13:18:22,339 [INFO] httpx: HTTP Request: GET http://127.0.0.1:7060/gradio_api/startup-events "HTTP/1.1 200 OK"
+2026-07-01 13:18:22,529 [INFO] httpx: HTTP Request: HEAD http://127.0.0.1:7060/ "HTTP/1.1 200 OK"
+2026-07-01 13:19:05,146 [INFO] MathAnimAI: ============================================================
+2026-07-01 13:19:05,146 [INFO] MathAnimAI: 流水线启动: grade=小学, type=自动识别
+2026-07-01 13:19:05,146 [INFO] MathAnimAI: 题目: 鸡兔同笼，共有头 35 个，脚 94 只，问鸡兔各多少只
+
+2026-07-01 13:19:05,146 [INFO] MathAnimAI: [Step 1/7] OCR 预处理
+2026-07-01 13:19:05,146 [INFO] MathAnimAI: [Step 2/7] 题目类型识别
+2026-07-01 13:19:05,231 [INFO] MathAnimAI: 自动识别题型: word_problem
+2026-07-01 13:19:05,231 [INFO] MathAnimAI: [Step 3/7] LLM 规划动画脚本
+2026-07-01 13:19:07,288 [INFO] MathAnimAI: Ollama 已连接，可用模型: ['qwen2.5:7b', 'qwen2.5:0.5b']
+2026-07-01 13:19:07,300 [INFO] MathAnimAI.LLM: 调用LLM: model=qwen2.5:7b, temperature=0.3
+2026-07-01 13:21:10,209 [INFO] openai._base_client: Retrying request to /chat/completions in 0.444618 seconds
+2026-07-01 13:23:12,729 [INFO] openai._base_client: Retrying request to /chat/completions in 0.983041 seconds
+2026-07-01 13:25:15,780 [ERROR] MathAnimAI.LLM: LLM调用异常: APITimeoutError: Request timed out.
+2026-07-01 13:25:15,782 [ERROR] MathAnimAI: LLM调用失败，降级使用内置示例: Request timed out.
+2026-07-01 13:25:15,783 [INFO] MathAnimAI: 动画脚本生成完成: 5个步骤
+2026-07-01 13:25:15,784 [INFO] MathAnimAI: [Step 4/7] 保存记录到数据库
+2026-07-01 13:25:15,833 [INFO] MathAnimAI.Storage: 插入记录 ID=28
+2026-07-01 13:25:15,834 [INFO] MathAnimAI: 数据库记录 ID=28
+2026-07-01 13:25:15,835 [INFO] MathAnimAI: [Step 5/7] TTS 语音生成
+2026-07-01 13:25:15,840 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=37
+2026-07-01 13:25:17,053 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_01_20260701_132515.mp3, 时长=9.2s
+2026-07-01 13:25:17,054 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=18
+2026-07-01 13:25:17,823 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_02_20260701_132515.mp3, 时长=4.5s
+2026-07-01 13:25:17,823 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=15
+2026-07-01 13:25:18,579 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_03_20260701_132515.mp3, 时长=3.8s
+2026-07-01 13:25:18,580 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=16
+2026-07-01 13:25:19,283 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_04_20260701_132515.mp3, 时长=4.0s
+2026-07-01 13:25:19,284 [INFO] MathAnimAI.TTS: 生成语音: voice=zh-CN-XiaoxiaoNeural, 文本长度=18
+2026-07-01 13:25:20,036 [INFO] MathAnimAI.TTS: 语音生成成功: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_05_20260701_132515.mp3, 时长=4.5s
+2026-07-01 13:25:20,036 [INFO] MathAnimAI.TTS: 批量语音生成完成: 共5段
+2026-07-01 13:25:20,036 [INFO] MathAnimAI: 语音生成完成: 5段
+2026-07-01 13:25:20,036 [INFO] MathAnimAI: TTS 真实时长: {1: 9.25, 2: 4.5, 3: 3.75, 4: 4.0, 5: 4.5}
+2026-07-01 13:25:20,139 [INFO] MathAnimAI.TTS: 音频合并完成: ./output\audio\full_20260701_132520.mp3
+2026-07-01 13:25:20,145 [INFO] MathAnimAI.Storage: 更新记录 ID=28: ['audio_path']
+2026-07-01 13:25:20,145 [INFO] MathAnimAI: [Step 6/7] Manim 动画渲染
+2026-07-01 13:25:20,146 [INFO] MathAnimAI: Manim 版本: 0.20.1
+2026-07-01 13:25:20,156 [INFO] MathAnimAI: 使用每步独立渲染模式: word_problem
+2026-07-01 13:25:20,156 [INFO] MathAnimAI.Builder: 每步独立渲染模式: type=ProblemType.WORD_PROBLEM, steps=5, durations={1: 9.25, 2: 4.5, 3: 3.75, 4: 4.0, 5: 4.5}
+2026-07-01 13:25:20,157 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmpina5_41g\MathAnimAI_step01_20260701_132520.py
+2026-07-01 13:25:20,185 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-07-01 13:25:20,186 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\.conda\envs\workbuddy_agent\python.exe -m manim -qh C:\Users\lxy\AppData\Local\Temp\tmpina5_41g\MathAnimAI_step01_20260701_132520.py MathAnimAI_step01_20260701_132520
+2026-07-01 13:25:38,192 [INFO] MathAnimAI.Renderer: 视频已输出: ./output\videos\MathAnimAI_step01_20260701_132520_20260701_132538.mp4
+2026-07-01 13:25:38,194 [INFO] MathAnimAI.Builder:   步骤 1 渲染完成: ./output\videos\MathAnimAI_step01_20260701_132520_20260701_132538.mp4 (目标 9.2s)
+2026-07-01 13:25:38,201 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmpc1vwcvjw\MathAnimAI_step02_20260701_132520.py
+2026-07-01 13:25:38,229 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-07-01 13:25:38,229 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\.conda\envs\workbuddy_agent\python.exe -m manim -qh C:\Users\lxy\AppData\Local\Temp\tmpc1vwcvjw\MathAnimAI_step02_20260701_132520.py MathAnimAI_step02_20260701_132520
+2026-07-01 13:25:46,167 [INFO] MathAnimAI.Renderer: 视频已输出: ./output\videos\MathAnimAI_step02_20260701_132520_20260701_132546.mp4
+2026-07-01 13:25:46,167 [INFO] MathAnimAI.Builder:   步骤 2 渲染完成: ./output\videos\MathAnimAI_step02_20260701_132520_20260701_132546.mp4 (目标 4.5s)
+2026-07-01 13:25:46,173 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmptv3hxchk\MathAnimAI_step03_20260701_132520.py
+2026-07-01 13:25:46,202 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-07-01 13:25:46,203 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\.conda\envs\workbuddy_agent\python.exe -m manim -qh C:\Users\lxy\AppData\Local\Temp\tmptv3hxchk\MathAnimAI_step03_20260701_132520.py MathAnimAI_step03_20260701_132520
+2026-07-01 13:25:53,730 [INFO] MathAnimAI.Renderer: 视频已输出: ./output\videos\MathAnimAI_step03_20260701_132520_20260701_132553.mp4
+2026-07-01 13:25:53,731 [INFO] MathAnimAI.Builder:   步骤 3 渲染完成: ./output\videos\MathAnimAI_step03_20260701_132520_20260701_132553.mp4 (目标 3.8s)
+2026-07-01 13:25:53,738 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmpt_bopzo_\MathAnimAI_step04_20260701_132520.py
+2026-07-01 13:25:53,767 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-07-01 13:25:53,768 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\.conda\envs\workbuddy_agent\python.exe -m manim -qh C:\Users\lxy\AppData\Local\Temp\tmpt_bopzo_\MathAnimAI_step04_20260701_132520.py MathAnimAI_step04_20260701_132520
+2026-07-01 13:25:59,249 [INFO] MathAnimAI.Renderer: 视频已输出: ./output\videos\MathAnimAI_step04_20260701_132520_20260701_132559.mp4
+2026-07-01 13:25:59,249 [INFO] MathAnimAI.Builder:   步骤 4 渲染完成: ./output\videos\MathAnimAI_step04_20260701_132520_20260701_132559.mp4 (目标 4.0s)
+2026-07-01 13:25:59,257 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmpsomp8zwq\MathAnimAI_step05_20260701_132520.py
+2026-07-01 13:25:59,285 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-07-01 13:25:59,285 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\.conda\envs\workbuddy_agent\python.exe -m manim -qh C:\Users\lxy\AppData\Local\Temp\tmpsomp8zwq\MathAnimAI_step05_20260701_132520.py MathAnimAI_step05_20260701_132520
+2026-07-01 13:26:07,008 [INFO] MathAnimAI.Renderer: 视频已输出: ./output\videos\MathAnimAI_step05_20260701_132520_20260701_132606.mp4
+2026-07-01 13:26:07,008 [INFO] MathAnimAI.Builder:   步骤 5 渲染完成: ./output\videos\MathAnimAI_step05_20260701_132520_20260701_132606.mp4 (目标 4.5s)
+2026-07-01 13:26:07,014 [INFO] MathAnimAI.Builder: 每步独立渲染完成: 5/5 个步骤
+2026-07-01 13:26:07,015 [INFO] MathAnimAI: 每步渲染完成: 5/5 步骤
+2026-07-01 13:26:07,015 [INFO] MathAnimAI: [Step 7/7] 字幕生成 & 视频合成
+2026-07-01 13:26:07,019 [INFO] MathAnimAI.Subtitle: 字幕文件已保存: ./output\subtitles\subtitle_20260701_132607.srt
+2026-07-01 13:26:07,026 [INFO] MathAnimAI.Storage: 更新记录 ID=28: ['subtitle_path']
+2026-07-01 13:26:07,027 [INFO] MathAnimAI: 字幕生成完成: ./output\subtitles\subtitle_20260701_132607.srt
+2026-07-01 13:26:07,029 [INFO] MathAnimAI.Composer: FFmpeg 路径: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-07-01 13:26:07,030 [INFO] MathAnimAI: 每步拼接合成: 5 视频 + 5 音频
+2026-07-01 13:26:07,031 [INFO] MathAnimAI.Composer: 拼接 5 个步骤视频...
+2026-07-01 13:26:07,185 [INFO] MathAnimAI.Composer: 视频拼接完成: ./output\videos\_tmp_20260701_132607\silent.mp4
+2026-07-01 13:26:07,186 [INFO] MathAnimAI.Composer: 拼接 5 个步骤音频...
+2026-07-01 13:26:07,245 [INFO] MathAnimAI.Composer: 音频拼接完成: ./output\videos\_tmp_20260701_132607\merged_audio.mp3
+2026-07-01 13:26:07,246 [INFO] MathAnimAI.Composer: 开始视频合成 (ffmpeg): animation=./output\videos\_tmp_20260701_132607\silent.mp4, audio=有, subtitle=有
+2026-07-01 13:26:07,248 [INFO] MathAnimAI.Composer: 字幕文件: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\subtitles\subtitle_20260701_132607.srt
+2026-07-01 13:26:07,248 [INFO] MathAnimAI.Composer: ffmpeg 命令: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe -hide_banner -loglevel warning -i ./output\videos\_tmp_20260701_132607\silent.mp4 -i ./output\videos\_tmp_20260701_132607\merged_audio.mp3 -vf subtitles='C\:/Users/lxy/WorkBuddy/2026-06-30-16-26-23/education_agent/output/subtitles/subtitle_20260701_132607.srt':force_style='FontName=Microsoft YaHei,FontSize=24,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,Outline=2,BackColour=&H80000000,BorderStyle=4,Alignment=2,MarginV=40' -c:v libx264 -preset fast -crf 23 -pix_fmt yuv420p -c:a aac -b:a 128k -shortest -movflags +faststart -y ./output\videos\final_20260701_132607.mp4
+2026-07-01 13:26:14,861 [INFO] MathAnimAI.Composer: 视频合成完成: ./output\videos\final_20260701_132607.mp4
+2026-07-01 13:26:14,905 [INFO] MathAnimAI.Storage: 更新记录 ID=28: ['final_video_path', 'status']
+2026-07-01 13:26:14,905 [INFO] MathAnimAI: 最终视频合成完成: ./output\videos\final_20260701_132607.mp4
+2026-07-01 13:26:14,905 [INFO] MathAnimAI: 流水线完成: 耗时429.8s
+2026-07-01 13:26:14,905 [INFO] MathAnimAI: 结果: [OK] 教学动画生成完成！
+耗时: 429.8s
+题型: word_problem
+步骤: 5
+视频: ./output\videos\final_20260701_132607.mp4
+2026-07-01 13:28:06,230 [ERROR] asyncio: Exception in callback _ProactorBasePipeTransport._call_connection_lost(None)
+handle: <Handle _ProactorBasePipeTransport._call_connection_lost(None)>
+Traceback (most recent call last):
+  File "C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\asyncio\proactor_events.py", line 165, in _call_connection_lost
+    self._sock.shutdown(socket.SHUT_RDWR)
+ConnectionResetError: [WinError 10054] 远程主机强迫关闭了一个现有的连接。
+2026-07-04 12:54:14,929 [INFO] MathAnimAI: ============================================================
+2026-07-04 12:54:14,985 [INFO] MathAnimAI: MathAnimAI 启动中...
+2026-07-04 12:54:14,985 [INFO] MathAnimAI: ============================================================
+2026-07-04 12:54:16,241 [INFO] manim: Reading config file: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\manim\_config\default.cfg
+2026-07-04 12:54:17,143 [INFO] MathAnimAI: [OK] Manim 0.20.1
+2026-07-04 12:54:17,619 [INFO] MathAnimAI: [OK] edge-tts
+2026-07-04 12:54:19,217 [INFO] MathAnimAI: [OK] moviepy
+2026-07-04 12:54:20,383 [INFO] MathAnimAI: [OK] openai
+2026-07-04 12:54:22,442 [INFO] MathAnimAI: Ollama 已连接，可用模型: ['deepseek-coder-v2:16b', 'qwen2.5:7b', 'qwen2.5:0.5b']
+2026-07-04 12:54:22,455 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-07-04 12:54:22,456 [INFO] MathAnimAI: 数据库就绪
+2026-07-04 12:54:32,423 [INFO] MathAnimAI: 启动 Web 服务: http://127.0.0.1:7060
+2026-07-04 12:54:33,279 [INFO] httpx: HTTP Request: GET http://127.0.0.1:7060/gradio_api/startup-events "HTTP/1.1 200 OK"
+2026-07-04 12:54:33,395 [INFO] httpx: HTTP Request: HEAD http://127.0.0.1:7060/ "HTTP/1.1 200 OK"
+2026-07-04 12:56:19,037 [INFO] MathAnimAI: ============================================================
+2026-07-04 12:56:19,037 [INFO] MathAnimAI: 流水线启动: grade=小学, type=自动识别
+2026-07-04 12:56:19,037 [INFO] MathAnimAI: 题目: 	鸡兔同笼，共有头 35 个，脚 94 只，问鸡兔各多少只？
+
+2026-07-04 12:56:19,037 [INFO] MathAnimAI: [Step 1/7] OCR 预处理
+2026-07-04 12:56:19,038 [INFO] MathAnimAI: [Step 2/7] 题目类型识别
+2026-07-04 12:56:19,094 [INFO] MathAnimAI: 自动识别题型: word_problem
+2026-07-04 12:56:19,095 [INFO] MathAnimAI: [Step 3/7] LLM 规划动画脚本
+2026-07-04 12:56:21,156 [INFO] MathAnimAI: Ollama 已连接，可用模型: ['deepseek-coder-v2:16b', 'qwen2.5:7b', 'qwen2.5:0.5b']
+2026-07-04 12:56:21,177 [INFO] MathAnimAI.LLM: 调用LLM: model=qwen2.5:7b, temperature=0.3
+2026-07-04 12:57:22,811 [INFO] httpx: HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-04 12:57:22,827 [INFO] MathAnimAI.LLM: LLM响应完成，耗时61.7s，长度4412字符
+2026-07-04 12:57:22,828 [INFO] MathAnimAI.LLM: Pydantic校验通过，共12个步骤
+2026-07-04 12:57:22,828 [INFO] MathAnimAI.LLM: Token消耗 — prompt: 1171, completion: 1745, total: 2916
+2026-07-04 12:57:22,829 [INFO] MathAnimAI: 动画脚本生成完成: 12个步骤
+2026-07-04 12:57:22,829 [INFO] MathAnimAI: [Step 4/7] 保存记录到数据库
+2026-07-04 12:57:22,836 [INFO] MathAnimAI.Storage: 插入记录 ID=29
+2026-07-04 12:57:22,837 [INFO] MathAnimAI: 数据库记录 ID=29
+2026-07-04 12:57:22,838 [INFO] MathAnimAI: [Step 5/7] TTS 语音生成
+2026-07-04 12:57:22,854 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=35
+2026-07-04 12:57:25,186 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_01_20260704_125722.mp3, 时长=7.9s, 同步点=0句
+2026-07-04 12:57:25,186 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=16
+2026-07-04 12:57:26,891 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_02_20260704_125722.mp3, 时长=3.8s, 同步点=0句
+2026-07-04 12:57:26,892 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=21
+2026-07-04 12:57:28,770 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_03_20260704_125722.mp3, 时长=5.0s, 同步点=0句
+2026-07-04 12:57:28,772 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=63
+2026-07-04 12:57:31,027 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_04_20260704_125722.mp3, 时长=13.0s, 同步点=0句
+2026-07-04 12:57:31,028 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=26
+2026-07-04 12:57:32,998 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_05_20260704_125722.mp3, 时长=4.8s, 同步点=0句
+2026-07-04 12:57:32,998 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=26
+2026-07-04 12:57:35,069 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_06_20260704_125722.mp3, 时长=4.9s, 同步点=0句
+2026-07-04 12:57:35,070 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=12
+2026-07-04 12:57:36,964 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_07_20260704_125722.mp3, 时长=2.5s, 同步点=0句
+2026-07-04 12:57:36,966 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=11
+2026-07-04 12:57:39,563 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_08_20260704_125722.mp3, 时长=2.4s, 同步点=0句
+2026-07-04 12:57:39,565 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=19
+2026-07-04 12:57:41,304 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_09_20260704_125722.mp3, 时长=3.8s, 同步点=0句
+2026-07-04 12:57:41,305 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=34
+2026-07-04 12:57:43,182 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_10_20260704_125722.mp3, 时长=5.5s, 同步点=0句
+2026-07-04 12:57:43,183 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=59
+2026-07-04 12:57:45,764 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_11_20260704_125722.mp3, 时长=13.6s, 同步点=0句
+2026-07-04 12:57:45,765 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=15
+2026-07-04 12:57:47,518 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\step_12_20260704_125722.mp3, 时长=3.9s, 同步点=0句
+2026-07-04 12:57:47,520 [INFO] MathAnimAI.TTS: audio_info.json 已保存: ./output\audio\audio_info.json
+2026-07-04 12:57:47,520 [INFO] MathAnimAI.TTS: 批量语音生成完成: 共12段
+2026-07-04 12:57:47,521 [INFO] MathAnimAI: 语音生成完成: 12段
+2026-07-04 12:57:47,521 [INFO] MathAnimAI: TTS 真实时长: {1: 7.896, 2: 3.792, 3: 4.992, 4: 12.96, 5: 4.776, 6: 4.92, 7: 2.544, 8: 2.424, 9: 3.768, 10: 5.496, 11: 13.632, 12: 3.864}
+2026-07-04 12:57:47,521 [INFO] MathAnimAI: TTS 音频路径: {1: 'C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\step_01_20260704_125722.mp3', 2: 'C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\step_02_20260704_125722.mp3', 3: 'C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\step_03_20260704_125722.mp3', 4: 'C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\step_04_20260704_125722.mp3', 5: 'C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\step_05_20260704_125722.mp3', 6: 'C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\step_06_20260704_125722.mp3', 7: 'C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\step_07_20260704_125722.mp3', 8: 'C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\step_08_20260704_125722.mp3', 9: 'C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\step_09_20260704_125722.mp3', 10: 'C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\step_10_20260704_125722.mp3', 11: 'C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\step_11_20260704_125722.mp3', 12: 'C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\step_12_20260704_125722.mp3'}
+2026-07-04 12:57:47,670 [INFO] MathAnimAI.TTS: 音频合并完成: ./output\audio\full_20260704_125747.mp3
+2026-07-04 12:57:47,733 [INFO] MathAnimAI.Storage: 更新记录 ID=29: ['audio_path']
+2026-07-04 12:57:47,733 [INFO] MathAnimAI: [Step 6/7] Manim 动画渲染
+2026-07-04 12:57:47,733 [INFO] MathAnimAI: Manim 版本: 0.20.1
+2026-07-04 12:57:47,766 [INFO] MathAnimAI: 使用每步独立渲染模式: word_problem
+2026-07-04 12:57:47,767 [INFO] MathAnimAI.Builder: 每步独立渲染模式: type=ProblemType.WORD_PROBLEM, steps=12, durations={1: 7.896, 2: 3.792, 3: 4.992, 4: 12.96, 5: 4.776, 6: 4.92, 7: 2.544, 8: 2.424, 9: 3.768, 10: 5.496, 11: 13.632, 12: 3.864}
+2026-07-04 12:57:47,769 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmp8ogtrfhp\MathAnimAI_step01_20260704_125747.py
+2026-07-04 12:57:47,803 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-07-04 12:57:47,804 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\.conda\envs\workbuddy_agent\python.exe -m manim -qh C:\Users\lxy\AppData\Local\Temp\tmp8ogtrfhp\MathAnimAI_step01_20260704_125747.py MathAnimAI_step01_20260704_125747
+2026-07-04 12:58:07,196 [INFO] MathAnimAI.Renderer: 视频已输出: ./output\videos\MathAnimAI_step01_20260704_125747_20260704_125807.mp4
+2026-07-04 12:58:07,196 [INFO] MathAnimAI.Builder:   步骤 1 渲染完成: ./output\videos\MathAnimAI_step01_20260704_125747_20260704_125807.mp4 (目标 7.9s)
+2026-07-04 12:58:07,204 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmpmxi_da1u\MathAnimAI_step02_20260704_125747.py
+2026-07-04 12:58:07,239 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-07-04 12:58:07,240 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\.conda\envs\workbuddy_agent\python.exe -m manim -qh C:\Users\lxy\AppData\Local\Temp\tmpmxi_da1u\MathAnimAI_step02_20260704_125747.py MathAnimAI_step02_20260704_125747
+2026-07-04 12:58:17,434 [INFO] MathAnimAI.Renderer: 视频已输出: ./output\videos\MathAnimAI_step02_20260704_125747_20260704_125817.mp4
+2026-07-04 12:58:17,434 [INFO] MathAnimAI.Builder:   步骤 2 渲染完成: ./output\videos\MathAnimAI_step02_20260704_125747_20260704_125817.mp4 (目标 3.8s)
+2026-07-04 12:58:17,445 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmpj8083q7f\MathAnimAI_step03_20260704_125747.py
+2026-07-04 12:58:17,480 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-07-04 12:58:17,480 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\.conda\envs\workbuddy_agent\python.exe -m manim -qh C:\Users\lxy\AppData\Local\Temp\tmpj8083q7f\MathAnimAI_step03_20260704_125747.py MathAnimAI_step03_20260704_125747
+2026-07-04 12:58:30,042 [INFO] MathAnimAI.Renderer: 视频已输出: ./output\videos\MathAnimAI_step03_20260704_125747_20260704_125830.mp4
+2026-07-04 12:58:30,043 [INFO] MathAnimAI.Builder:   步骤 3 渲染完成: ./output\videos\MathAnimAI_step03_20260704_125747_20260704_125830.mp4 (目标 5.0s)
+2026-07-04 12:58:30,051 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmp1ve3dbj_\MathAnimAI_step04_20260704_125747.py
+2026-07-04 12:58:30,086 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-07-04 12:58:30,086 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\.conda\envs\workbuddy_agent\python.exe -m manim -qh C:\Users\lxy\AppData\Local\Temp\tmp1ve3dbj_\MathAnimAI_step04_20260704_125747.py MathAnimAI_step04_20260704_125747
+2026-07-04 12:58:49,821 [INFO] MathAnimAI.Renderer: 视频已输出: ./output\videos\MathAnimAI_step04_20260704_125747_20260704_125849.mp4
+2026-07-04 12:58:49,821 [INFO] MathAnimAI.Builder:   步骤 4 渲染完成: ./output\videos\MathAnimAI_step04_20260704_125747_20260704_125849.mp4 (目标 13.0s)
+2026-07-04 12:58:49,831 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmp3lc4sj8r\MathAnimAI_step05_20260704_125747.py
+2026-07-04 12:58:49,869 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-07-04 12:58:49,870 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\.conda\envs\workbuddy_agent\python.exe -m manim -qh C:\Users\lxy\AppData\Local\Temp\tmp3lc4sj8r\MathAnimAI_step05_20260704_125747.py MathAnimAI_step05_20260704_125747
+2026-07-04 12:58:59,412 [INFO] MathAnimAI.Renderer: 视频已输出: ./output\videos\MathAnimAI_step05_20260704_125747_20260704_125859.mp4
+2026-07-04 12:58:59,413 [INFO] MathAnimAI.Builder:   步骤 5 渲染完成: ./output\videos\MathAnimAI_step05_20260704_125747_20260704_125859.mp4 (目标 4.8s)
+2026-07-04 12:58:59,421 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmp4ekbcu3c\MathAnimAI_step06_20260704_125747.py
+2026-07-04 12:58:59,457 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-07-04 12:58:59,457 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\.conda\envs\workbuddy_agent\python.exe -m manim -qh C:\Users\lxy\AppData\Local\Temp\tmp4ekbcu3c\MathAnimAI_step06_20260704_125747.py MathAnimAI_step06_20260704_125747
+2026-07-04 12:59:08,839 [INFO] MathAnimAI.Renderer: 视频已输出: ./output\videos\MathAnimAI_step06_20260704_125747_20260704_125908.mp4
+2026-07-04 12:59:08,840 [INFO] MathAnimAI.Builder:   步骤 6 渲染完成: ./output\videos\MathAnimAI_step06_20260704_125747_20260704_125908.mp4 (目标 4.9s)
+2026-07-04 12:59:08,847 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmppb57_dbs\MathAnimAI_step07_20260704_125747.py
+2026-07-04 12:59:08,884 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-07-04 12:59:08,884 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\.conda\envs\workbuddy_agent\python.exe -m manim -qh C:\Users\lxy\AppData\Local\Temp\tmppb57_dbs\MathAnimAI_step07_20260704_125747.py MathAnimAI_step07_20260704_125747
+2026-07-04 12:59:16,906 [INFO] MathAnimAI.Renderer: 视频已输出: ./output\videos\MathAnimAI_step07_20260704_125747_20260704_125916.mp4
+2026-07-04 12:59:16,906 [INFO] MathAnimAI.Builder:   步骤 7 渲染完成: ./output\videos\MathAnimAI_step07_20260704_125747_20260704_125916.mp4 (目标 2.5s)
+2026-07-04 12:59:16,915 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmpmxm8cyne\MathAnimAI_step08_20260704_125747.py
+2026-07-04 12:59:16,950 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-07-04 12:59:16,950 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\.conda\envs\workbuddy_agent\python.exe -m manim -qh C:\Users\lxy\AppData\Local\Temp\tmpmxm8cyne\MathAnimAI_step08_20260704_125747.py MathAnimAI_step08_20260704_125747
+2026-07-04 12:59:24,630 [INFO] MathAnimAI.Renderer: 视频已输出: ./output\videos\MathAnimAI_step08_20260704_125747_20260704_125924.mp4
+2026-07-04 12:59:24,631 [INFO] MathAnimAI.Builder:   步骤 8 渲染完成: ./output\videos\MathAnimAI_step08_20260704_125747_20260704_125924.mp4 (目标 2.4s)
+2026-07-04 12:59:24,640 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmpvvxrpszc\MathAnimAI_step09_20260704_125747.py
+2026-07-04 12:59:24,679 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-07-04 12:59:24,680 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\.conda\envs\workbuddy_agent\python.exe -m manim -qh C:\Users\lxy\AppData\Local\Temp\tmpvvxrpszc\MathAnimAI_step09_20260704_125747.py MathAnimAI_step09_20260704_125747
+2026-07-04 12:59:33,304 [INFO] MathAnimAI.Renderer: 视频已输出: ./output\videos\MathAnimAI_step09_20260704_125747_20260704_125933.mp4
+2026-07-04 12:59:33,304 [INFO] MathAnimAI.Builder:   步骤 9 渲染完成: ./output\videos\MathAnimAI_step09_20260704_125747_20260704_125933.mp4 (目标 3.8s)
+2026-07-04 12:59:33,311 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmpumqjdsbp\MathAnimAI_step10_20260704_125747.py
+2026-07-04 12:59:33,346 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-07-04 12:59:33,346 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\.conda\envs\workbuddy_agent\python.exe -m manim -qh C:\Users\lxy\AppData\Local\Temp\tmpumqjdsbp\MathAnimAI_step10_20260704_125747.py MathAnimAI_step10_20260704_125747
+2026-07-04 12:59:43,383 [INFO] MathAnimAI.Renderer: 视频已输出: ./output\videos\MathAnimAI_step10_20260704_125747_20260704_125943.mp4
+2026-07-04 12:59:43,384 [INFO] MathAnimAI.Builder:   步骤 10 渲染完成: ./output\videos\MathAnimAI_step10_20260704_125747_20260704_125943.mp4 (目标 5.5s)
+2026-07-04 12:59:43,393 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmp4hfpkj3f\MathAnimAI_step11_20260704_125747.py
+2026-07-04 12:59:43,429 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-07-04 12:59:43,430 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\.conda\envs\workbuddy_agent\python.exe -m manim -qh C:\Users\lxy\AppData\Local\Temp\tmp4hfpkj3f\MathAnimAI_step11_20260704_125747.py MathAnimAI_step11_20260704_125747
+2026-07-04 12:59:59,298 [INFO] MathAnimAI.Renderer: 视频已输出: ./output\videos\MathAnimAI_step11_20260704_125747_20260704_125959.mp4
+2026-07-04 12:59:59,298 [INFO] MathAnimAI.Builder:   步骤 11 渲染完成: ./output\videos\MathAnimAI_step11_20260704_125747_20260704_125959.mp4 (目标 13.6s)
+2026-07-04 12:59:59,306 [INFO] MathAnimAI.Renderer: 场景文件已生成: C:\Users\lxy\AppData\Local\Temp\tmppdrcgj8e\MathAnimAI_step12_20260704_125747.py
+2026-07-04 12:59:59,341 [INFO] MathAnimAI.Renderer: FFmpeg路径: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-07-04 12:59:59,341 [INFO] MathAnimAI.Renderer: 渲染命令: C:\Users\lxy\.conda\envs\workbuddy_agent\python.exe -m manim -qh C:\Users\lxy\AppData\Local\Temp\tmppdrcgj8e\MathAnimAI_step12_20260704_125747.py MathAnimAI_step12_20260704_125747
+2026-07-04 13:00:08,132 [INFO] MathAnimAI.Renderer: 视频已输出: ./output\videos\MathAnimAI_step12_20260704_125747_20260704_130008.mp4
+2026-07-04 13:00:08,133 [INFO] MathAnimAI.Builder:   步骤 12 渲染完成: ./output\videos\MathAnimAI_step12_20260704_125747_20260704_130008.mp4 (目标 3.9s)
+2026-07-04 13:00:08,140 [INFO] MathAnimAI.Builder: 每步独立渲染完成: 12/12 个步骤
+2026-07-04 13:00:08,141 [INFO] MathAnimAI: 每步渲染完成: 12/12 步骤
+2026-07-04 13:00:08,141 [INFO] MathAnimAI: [Step 7/7] 字幕生成 & 视频合成
+2026-07-04 13:00:08,219 [INFO] MathAnimAI.Subtitle: 字幕文件已保存: ./output\subtitles\subtitle_20260704_130008.srt
+2026-07-04 13:00:08,229 [INFO] MathAnimAI.Storage: 更新记录 ID=29: ['subtitle_path']
+2026-07-04 13:00:08,229 [INFO] MathAnimAI: 字幕生成完成: ./output\subtitles\subtitle_20260704_130008.srt
+2026-07-04 13:00:08,245 [INFO] MathAnimAI.Composer: FFmpeg 路径: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-07-04 13:00:08,246 [INFO] MathAnimAI: 每步拼接合成: 12 视频 + 12 音频
+2026-07-04 13:00:08,249 [INFO] MathAnimAI.Composer: 拼接 12 个步骤视频...
+2026-07-04 13:00:08,718 [INFO] MathAnimAI.Composer: 视频拼接完成(含音频): ./output\videos\_tmp_20260704_130008\combined.mp4
+2026-07-04 13:00:08,769 [INFO] MathAnimAI.Composer: 动画视频已含音频流（add_sound 嵌入），跳过外部音频合并
+2026-07-04 13:00:08,769 [INFO] MathAnimAI.Composer: 开始视频合成 (ffmpeg): animation=./output\videos\_tmp_20260704_130008\combined.mp4, video_has_audio=True, subtitle=有
+2026-07-04 13:00:08,770 [INFO] MathAnimAI.Composer: 字幕文件: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\subtitles\subtitle_20260704_130008.srt
+2026-07-04 13:00:08,770 [INFO] MathAnimAI.Composer: ffmpeg 命令: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe -hide_banner -loglevel warning -i ./output\videos\_tmp_20260704_130008\combined.mp4 -vf subtitles='C\:/Users/lxy/WorkBuddy/2026-06-30-16-26-23/education_agent/output/subtitles/subtitle_20260704_130008.srt':force_style='FontName=Microsoft YaHei,FontSize=24,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,Outline=2,BackColour=&H80000000,BorderStyle=4,Alignment=2,MarginV=40' -c:v libx264 -preset fast -crf 23 -pix_fmt yuv420p -c:a aac -b:a 128k -movflags +faststart -y ./output\videos\final_20260704_130008.mp4
+2026-07-04 13:00:40,421 [INFO] MathAnimAI.Composer: 视频合成完成: ./output\videos\final_20260704_130008.mp4
+2026-07-04 13:00:40,487 [INFO] MathAnimAI.Storage: 更新记录 ID=29: ['final_video_path', 'status']
+2026-07-04 13:00:40,487 [INFO] MathAnimAI: 最终视频合成完成: ./output\videos\final_20260704_130008.mp4
+2026-07-04 13:00:40,488 [INFO] MathAnimAI: 流水线完成: 耗时261.5s
+2026-07-04 13:00:40,488 [INFO] MathAnimAI: 结果: [OK] 教学动画生成完成！
+耗时: 261.5s
+题型: word_problem
+步骤: 12
+视频: ./output\videos\final_20260704_130008.mp4

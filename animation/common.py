@@ -8,6 +8,9 @@ MathAnimAI — 全局公共美化工具库 (common.py)
 
 from manim import *
 import numpy as np
+import os
+import json
+import logging
 
 from config import (
     Colors, FONT_FAMILY, FONT_TITLE, FONT_STEP, FONT_LABEL, FONT_ANNOTATION,
@@ -19,6 +22,8 @@ from config import (
     LEFT_PANEL_X, LEFT_PANEL_TOP_Y, LEFT_PANEL_SCALE, LEFT_PANEL_SPACING,
     LEFT_PANEL_MAX_ITEMS, CENTER_CONTENT_Y, CENTER_CONTENT_MAX_WIDTH,
 )
+
+logger = logging.getLogger("MathAnimAI.Common")
 
 
 # ================================================================
@@ -916,6 +921,7 @@ class BaseMathScene(Scene):
     - 步骤过渡逻辑
     - 侧边栏布局（讲解完的内容缩放到左侧）
     - 禁止清屏约束
+    - 音画同步基础设施（add_sound + end_scene_with_audio）
     """
 
     def setup(self):
@@ -930,6 +936,107 @@ class BaseMathScene(Scene):
         self.sidebar_state = {"count": 0, "bottom_y": LEFT_PANEL_TOP_Y}
         # 中央区域当前展示的元素（会被移入侧边栏）
         self.center_elements: list[Mobject] = []
+        # ===== 音画同步基础设施 =====
+        # 当前幕的起始时间戳（Manim 全局动画时钟）
+        self._scene_start_time = 0.0
+        # 音频安全余量（秒），确保动画不抢跑导致音频重叠
+        self._audio_safety_margin = 0.3
+        # 当前幕的音频时长
+        self._current_audio_duration = 0.0
+        # 音画同步是否已启用
+        self._audio_sync_enabled = False
+
+    # ================================================================
+    # 音画同步方法（参考 MathLens 模板项目的 script_scaffold.py）
+    # ================================================================
+    def start_scene_with_audio(
+        self,
+        step_num: int,
+        audio_path: str = None,
+        expected_duration: float = 0.0,
+    ) -> float:
+        """
+        开始一个步骤并播放该步骤的音频（防重叠入口）。
+
+        核心机制：
+        1. 记录当前 Manim 时间戳 self.time 作为幕起始时间
+        2. 调用 self.add_sound() 将音频嵌入 Manim 时间轴
+        3. 音频和动画从此刻起共享同一时间轴，实现帧级同步
+
+        Args:
+            step_num: 步骤编号
+            audio_path: 音频文件绝对路径（None 则不播放音频）
+            expected_duration: 该步骤音频的预期时长（秒）
+
+        Returns:
+            音频预期时长（秒）
+        """
+        self.current_step = step_num
+        self._scene_start_time = self.time
+        self._current_audio_duration = float(expected_duration)
+        self._audio_sync_enabled = True
+
+        if audio_path and os.path.exists(audio_path):
+            try:
+                self.add_sound(audio_path)
+                logger.info(
+                    f"  [同步] 步骤{step_num}: add_sound({os.path.basename(audio_path)}) "
+                    f"duration={expected_duration:.2f}s t={self._scene_start_time:.2f}s"
+                )
+            except Exception as e:
+                logger.warning(f"  [同步] 步骤{step_num} add_sound 失败: {e}")
+        else:
+            if audio_path:
+                logger.warning(f"  [同步] 步骤{step_num} 音频文件不存在: {audio_path}")
+
+        return float(expected_duration)
+
+    def end_scene_with_audio(
+        self,
+        expected_duration: float = None,
+        safety_margin: float = None,
+    ) -> None:
+        """
+        结束一个步骤并补足等待，确保动画时长 >= 音频时长 + 安全余量。
+
+        核心机制：
+        1. 计算 elapsed = self.time - self._scene_start_time（实际已用时间）
+        2. 计算 target = audio_duration + safety_margin
+        3. 如果 remaining > 0，调用 self.wait(remaining) 自动补齐
+        4. 这确保下一幕不会提前开始导致音频重叠
+
+        与旧的 wait(audio_dur - anim_overhead) 方式的区别：
+        - 旧方式：用硬编码估算动画时长（ANIM_TYPE_DURATION），不精确
+        - 新方式：用 self.time 运行时实际测量，帧级精确
+        """
+        if not self._audio_sync_enabled:
+            return
+
+        if expected_duration is None:
+            expected_duration = self._current_audio_duration
+        if safety_margin is None:
+            safety_margin = self._audio_safety_margin
+
+        elapsed = self.time - self._scene_start_time
+        target = max(0.0, float(expected_duration)) + max(0.0, float(safety_margin))
+        remaining = target - elapsed
+
+        if remaining > 1e-3:
+            self.wait(remaining)
+            elapsed = self.time - self._scene_start_time
+
+        if elapsed + 1e-3 < target:
+            logger.warning(
+                f"  [同步] 步骤{self.current_step} 时间偏短: "
+                f"elapsed={elapsed:.2f}s < target={target:.2f}s"
+            )
+        else:
+            logger.info(
+                f"  [同步] 步骤{self.current_step} 完成: "
+                f"elapsed={elapsed:.2f}s / target={target:.2f}s"
+            )
+
+        self._audio_sync_enabled = False
 
     def add_to_all(self, *mobjects: Mobject) -> None:
         """将元素添加到画面并存入持久化缓存"""
