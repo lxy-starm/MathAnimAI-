@@ -21,7 +21,8 @@ from config import (
     CANVAS_MAX_WIDTH, CANVAS_BOTTOM_Y, MAX_STACK_STEPS,
     AUDIO_CHARS_PER_SEC, CENTER_CONTENT_MAX_WIDTH,
     DURATION_CREATE, DURATION_SLIDE_IN, DURATION_HIGHLIGHT,
-    DURATION_GROW, DURATION_TRANSITION,
+    DURATION_GROW, DURATION_TRANSITION, DURATION_FADE,
+    FONT_SUBTITLE, FONT_CONCLUSION,
 )
 
 # ================================================================
@@ -138,8 +139,10 @@ def generate_scene_code(
     indent = "        "
 
     # 注意：不再调用 self.setup()，Manim CE 会自动在 construct() 之前调用
+    # 初始化图形偏移量（_gen_base_figure_code 会更新它，后续步骤的坐标会应用此偏移）
+    lines.append(f'{indent}self._figure_offset = np.array([0.0, 0.0, 0.0])')
 
-    # 标题步骤 — 始终在顶部，不参与侧边栏
+    # 标题步骤 — 始终在顶部，纯文字（参考模板风格）
     title_raw = _py_escape(script.problem_text)
     title_display = title_raw[:40]
     if len(title_raw) > 40:
@@ -148,8 +151,8 @@ def generate_scene_code(
     lines.append(f'{indent}problem_title = title_text("{title_display}")')
     lines.append(f'{indent}problem_title.to_edge(UP, buff=0.5)')
     lines.append(f'{indent}self.add_to_all(problem_title)')
-    lines.append(f'{indent}self.play(FadeIn(problem_title, shift=DOWN*0.5, run_time={script.settings.duration}))')
-    lines.append(f'{indent}self.wait(1.0)  # 标题展示停顿（无音频）')
+    lines.append(f'{indent}self.play(FadeIn(problem_title, shift=DOWN*0.3, run_time={script.settings.duration}))')
+    lines.append(f'{indent}self.wait(0.5)  # 标题展示停顿')
     lines.append(f'')
 
     # 如果有几何底图，生成内联绘制代码（不再调用不存在的 self._draw_base_figure()）
@@ -255,15 +258,17 @@ def generate_scene_code(
         lines.append(f'{indent}self.end_scene_with_audio(expected_duration={audio_dur:.2f})')
         lines.append('')
 
-    # 结尾 — 最终答案展示在中央
+    # 结尾 — 最终答案展示在中央（参考模板：大号高亮文字）
     lines.append(f'{indent}# ===== 最终展示 =====')
-    lines.append(f'{indent}# 将最后中央内容移入侧边栏')
+    lines.append(f'{indent}# 清除中央临时内容')
     lines.append(f'{indent}self.step_transition()')
-    lines.append(f'{indent}final_text = step_text("答：{_py_escape(script.final_answer)}")')
+    lines.append(f'{indent}final_text = Text("答：{_py_escape(script.final_answer)}", font=FONT_FAMILY, font_size=FONT_CONCLUSION, color=Colors.HIGHLIGHT, weight=BOLD)')
     lines.append(f'{indent}position_in_center_safe(final_text)')
-    lines.append(f'{indent}self.add_to_center(final_text)')
-    lines.append(f'{indent}self.play(FadeIn(final_text, shift=UP*0.3, run_time=DURATION_HIGHLIGHT))')
-    lines.append(f'{indent}self.wait(2.5)')
+    lines.append(f'{indent}if final_text.width > {CENTER_CONTENT_MAX_WIDTH}:')
+    lines.append(f'{indent}    final_text.scale({CENTER_CONTENT_MAX_WIDTH} / final_text.width * 0.9)')
+    lines.append(f'{indent}self.add_to_all(final_text)')
+    lines.append(f'{indent}self.play(Write(final_text, run_time=1.0))')
+    lines.append(f'{indent}self.wait(2.0)')
 
     return '\n'.join(lines)
 
@@ -304,6 +309,8 @@ def generate_step_scene_code(
     indent = "        "
 
     # 注意：不再调用 self.setup()，Manim CE 会自动在 construct() 之前调用
+    # 初始化图形偏移量
+    lines.append(f'{indent}self._figure_offset = np.array([0.0, 0.0, 0.0])')
     lines.append(f'{indent}# ===== 步骤 {step.step_number} 独立场景 =====')
     lines.append('')
 
@@ -317,8 +324,8 @@ def generate_step_scene_code(
     lines.append(f'{indent}problem_title.to_edge(UP, buff=0.5)')
     if is_first:
         lines.append(f'{indent}self.add_to_all(problem_title)')
-        lines.append(f'{indent}self.play(FadeIn(problem_title, shift=DOWN*0.5, run_time={script.settings.duration}))')
-        lines.append(f'{indent}self.wait(1.0)  # 标题展示停顿')
+        lines.append(f'{indent}self.play(FadeIn(problem_title, shift=DOWN*0.3, run_time={script.settings.duration}))')
+        lines.append(f'{indent}self.wait(0.5)  # 标题展示停顿')
     else:
         # 静态添加，首帧就显示
         lines.append(f'{indent}self.add(problem_title)')
@@ -384,24 +391,25 @@ def generate_step_scene_code(
 
 
 def _gen_step_text_slide_in(step, indent: str) -> list[str]:
-    """单步骤模式的文字滑入（不使用 add_to_center / sidebar 机制）"""
+    """单步骤模式的文字滑入（参考模板布局：字幕底部 + 公式中央）"""
     lines = []
-    lines.append(f'{indent}# 文字滑入')
-    text_var = f"step{step.step_number}_text"
+    lines.append(f'{indent}# 字幕（底部）')
     raw_text = _py_escape(step.text)
-    step_text_content = raw_text[:80]
-    if len(raw_text) > 80:
-        step_text_content = step_text_content + "..."
-    lines.append(f'{indent}{text_var} = step_text("{step_text_content}")')
+    text_content = raw_text[:50]
+    if len(raw_text) > 50:
+        text_content = text_content + "..."
+    lines.append(f'{indent}_subtitle = create_subtitle("{text_content}")')
+    lines.append(f'{indent}self.add(_subtitle)')
+    lines.append(f'{indent}self.play(FadeIn(_subtitle, run_time=DURATION_FADE))')
+
     if step.math_expr:
-        lines.append(f'{indent}{text_var}_math = math_text(r"{_py_escape(step.math_expr)}")')
-        lines.append(f'{indent}{text_var} = VGroup({text_var}, {text_var}_math).arrange(DOWN, buff=0.2)')
-    # 居中放置
-    lines.append(f'{indent}position_in_center_safe({text_var})')
-    lines.append(f'{indent}if {text_var}.width > {CENTER_CONTENT_MAX_WIDTH}:')
-    lines.append(f'{indent}    {text_var}.scale({CENTER_CONTENT_MAX_WIDTH} / {text_var}.width * 0.9)')
-    lines.append(f'{indent}self.add({text_var})')
-    lines.append(f'{indent}self.play(FadeIn({text_var}, shift=UP*0.5, run_time=DURATION_SLIDE_IN, rate_func=smooth))')
+        lines.append(f'{indent}# 公式（中央）')
+        lines.append(f'{indent}_math = math_text(r"{_py_escape(step.math_expr)}")')
+        lines.append(f'{indent}position_in_center_safe(_math)')
+        lines.append(f'{indent}if _math.width > {CENTER_CONTENT_MAX_WIDTH}:')
+        lines.append(f'{indent}    _math.scale({CENTER_CONTENT_MAX_WIDTH} / _math.width * 0.9)')
+        lines.append(f'{indent}self.add(_math)')
+        lines.append(f'{indent}self.play(FadeIn(_math, shift=UP*0.3, run_time=DURATION_SLIDE_IN))')
     return lines
 
 
@@ -422,21 +430,27 @@ def _gen_base_figure_code(base_figure, indent: str) -> list[str]:
     if fig_type in ("triangle", "polygon") and points:
         pts_str = ", ".join([f"np.array([{p[0]},{p[1]},0])" for p in points])
         lines.append(f'{indent}base_shape = Polygon({pts_str}, color="{color}", stroke_width=2.5, fill_color="{color}", fill_opacity=0.05)')
+        lines.append(f'{indent}# 记录移动前的中心，计算偏移量供后续步骤使用')
+        lines.append(f'{indent}_orig_center = base_shape.get_center().copy()')
         lines.append(f'{indent}position_in_center_safe(base_shape, y_offset=-0.5)')
+        lines.append(f'{indent}self._figure_offset = base_shape.get_center() - _orig_center')
         lines.append(f'{indent}self.add_to_all(base_shape)')
         lines.append(f'{indent}self.play(Create(base_shape, run_time=DURATION_CREATE, rate_func=linear))')
-        # 自动标注顶点
+        # 自动标注顶点（使用偏移修正后的坐标）
         if labels:
             for i, (pt, lbl) in enumerate(zip(points, labels)):
                 directions = ["DL*0.4", "DR*0.4", "UP*0.4"]
                 dir_str = directions[i % len(directions)]
-                lines.append(f'{indent}draw_vertex_label(self, np.array([{pt[0]},{pt[1]},0]), "{_py_escape(lbl)}", direction={dir_str})')
+                lines.append(f'{indent}draw_vertex_label(self, np.array([{pt[0]},{pt[1]},0]) + self._figure_offset, "{_py_escape(lbl)}", direction={dir_str})')
 
     elif fig_type == "circle":
         radius = base_figure.radius if base_figure.radius else 1.5
         center = points[0] if points else [0, 0]
         lines.append(f'{indent}base_shape = Circle(radius={radius}, color="{color}", stroke_width=2.5)')
         lines.append(f'{indent}base_shape.move_to(np.array([{center[0]},{center[1]},0]))')
+        lines.append(f'{indent}_orig_center = base_shape.get_center().copy()')
+        lines.append(f'{indent}position_in_center_safe(base_shape, y_offset=-0.5)')
+        lines.append(f'{indent}self._figure_offset = base_shape.get_center() - _orig_center')
         lines.append(f'{indent}self.add_to_all(base_shape)')
         lines.append(f'{indent}self.play(Create(base_shape, run_time=DURATION_CREATE, rate_func=linear))')
 
@@ -490,27 +504,36 @@ def _gen_coordinate_system_code(coord_config, indent: str) -> list[str]:
 # 各动画类型的代码生成函数
 # ================================================================
 def _gen_text_slide_in(step, indent: str) -> list[str]:
-    """生成文字滑入动画代码 — 放在画面中央，用 add_to_center 追踪"""
+    """
+    生成文字步骤代码 — 参考模板布局：
+    - 字幕在底部（step.text），FadeIn/FadeOut
+    - 数学公式在中央（step.math_expr），如果有
+    - 纯文字步骤（无公式）只显示底部字幕
+    - 字幕加入 center_elements 以便步骤过渡时自动清除
+    """
     lines = []
-    lines.append(f'{indent}# 文字滑入（中央展示）')
-    text_var = f"step{step.step_number}_text"
-    # 先转义再截断（避免截断转义序列）
+    lines.append(f'{indent}# 字幕（底部，参考模板 create_subtitle）')
     raw_text = _py_escape(step.text)
-    step_text_content = raw_text[:80]
-    if len(raw_text) > 80:
-        step_text_content = step_text_content + "..."
-    lines.append(f'{indent}{text_var} = step_text("{step_text_content}")')
+    text_content = raw_text[:50]  # 字幕简洁，最多50字
+    if len(raw_text) > 50:
+        text_content = text_content + "..."
+    lines.append(f'{indent}_subtitle = create_subtitle("{text_content}")')
+    lines.append(f'{indent}self.add_to_center(_subtitle)  # 加入 center_elements 以便步骤过渡时清除')
+    lines.append(f'{indent}self.play(FadeIn(_subtitle, run_time=DURATION_FADE))')
+
+    # 如果有数学公式，放在中央
     if step.math_expr:
-        lines.append(f'{indent}{text_var}_math = math_text(r"{_py_escape(step.math_expr)}")')
-        lines.append(f'{indent}{text_var} = VGroup({text_var}, {text_var}_math).arrange(DOWN, buff=0.2)')
-    # 放置在画面中央，自动安全检查
-    lines.append(f'{indent}position_in_center_safe({text_var})')
-    # 如果文字超出中央最大宽度，等比例缩小
-    lines.append(f'{indent}if {text_var}.width > {CENTER_CONTENT_MAX_WIDTH}:')
-    lines.append(f'{indent}    {text_var}.scale({CENTER_CONTENT_MAX_WIDTH} / {text_var}.width * 0.9)')
-    # 使用 add_to_center 以便后续自动移入侧边栏
-    lines.append(f'{indent}self.add_to_center({text_var})')
-    lines.append(f'{indent}self.play(FadeIn({text_var}, shift=UP*0.5, run_time=DURATION_SLIDE_IN, rate_func=smooth))')
+        lines.append(f'{indent}# 公式（中央）')
+        lines.append(f'{indent}_math = math_text(r"{_py_escape(step.math_expr)}")')
+        lines.append(f'{indent}position_in_center_safe(_math)')
+        lines.append(f'{indent}if _math.width > {CENTER_CONTENT_MAX_WIDTH}:')
+        lines.append(f'{indent}    _math.scale({CENTER_CONTENT_MAX_WIDTH} / _math.width * 0.9)')
+        lines.append(f'{indent}self.add_to_center(_math)')
+        lines.append(f'{indent}self.play(FadeIn(_math, shift=UP*0.3, run_time=DURATION_SLIDE_IN))')
+    else:
+        # 无公式的纯文字步骤，字幕即为本步内容
+        lines.append(f'{indent}# 纯文字步骤（字幕即为本步内容）')
+
     return lines
 
 
@@ -551,14 +574,14 @@ def _gen_draw_shape(step, indent: str) -> list[str]:
 
 
 def _gen_dashed_line(step, indent: str) -> list[str]:
-    """生成虚线辅助线代码 — 添加到持久层（不随步骤过渡移入侧边栏）"""
+    """生成虚线辅助线代码 — 添加到持久层（不随步骤过渡移入侧边栏），坐标自动应用图形偏移"""
     lines = []
     config = step.config or {}
     start = config.get("start", [0, 0])
     end = config.get("end", [1, 1])
     color = config.get("color", "#7F8C8D")
-    lines.append(f'{indent}# 绘制虚线辅助线')
-    lines.append(f'{indent}dl = DashedLine(np.array([{start[0]},{start[1]},0]), np.array([{end[0]},{end[1]},0]), color="{color}", dash_length=0.12)')
+    lines.append(f'{indent}# 绘制虚线辅助线（坐标已应用 figure_offset 修正）')
+    lines.append(f'{indent}dl = DashedLine(np.array([{start[0]},{start[1]},0]) + self._figure_offset, np.array([{end[0]},{end[1]},0]) + self._figure_offset, color="{color}", dash_length=0.12)')
     lines.append(f'{indent}self.add_to_all(dl)')  # 辅助线添加到持久层，不移入侧边栏
     lines.append(f'{indent}self.play(Create(dl, run_time=DURATION_CREATE))')
     return lines
@@ -584,54 +607,54 @@ def _gen_highlight(step, indent: str) -> list[str]:
 
 
 def _gen_mark_angle(step, indent: str) -> list[str]:
-    """生成角度标注代码 — 添加到持久层"""
+    """生成角度标注代码 — 添加到持久层，坐标自动应用图形偏移"""
     lines = []
     config = step.config or {}
     v = config.get("vertex", [0, 0])
     a = config.get("point_a", [1, 0])
     b = config.get("point_b", [0, 1])
     label = config.get("label", "")
-    lines.append(f'{indent}# 角度标注')
-    lines.append(f'{indent}_angle_group = draw_angle_mark(self, np.array([{v[0]},{v[1]},0]), np.array([{a[0]},{a[1]},0]), np.array([{b[0]},{b[1]},0]), label="{_py_escape(label)}")')
+    lines.append(f'{indent}# 角度标注（坐标已应用 figure_offset 修正）')
+    lines.append(f'{indent}_angle_group = draw_angle_mark(self, np.array([{v[0]},{v[1]},0]) + self._figure_offset, np.array([{a[0]},{a[1]},0]) + self._figure_offset, np.array([{b[0]},{b[1]},0]) + self._figure_offset, label="{_py_escape(label)}")')
     lines.append(f'{indent}self.add_to_all(_angle_group)')
     return lines
 
 
 def _gen_mark_right_angle(step, indent: str) -> list[str]:
-    """生成直角标注代码 — 添加到持久层"""
+    """生成直角标注代码 — 添加到持久层，坐标自动应用图形偏移"""
     lines = []
     config = step.config or {}
     v = config.get("vertex", [0, 0])
     a = config.get("point_a", [1, 0])
     b = config.get("point_b", [0, 1])
-    lines.append(f'{indent}# 直角标注')
-    lines.append(f'{indent}_ra = draw_right_angle_mark(self, np.array([{v[0]},{v[1]},0]), np.array([{a[0]},{a[1]},0]), np.array([{b[0]},{b[1]},0]))')
+    lines.append(f'{indent}# 直角标注（坐标已应用 figure_offset 修正）')
+    lines.append(f'{indent}_ra = draw_right_angle_mark(self, np.array([{v[0]},{v[1]},0]) + self._figure_offset, np.array([{a[0]},{a[1]},0]) + self._figure_offset, np.array([{b[0]},{b[1]},0]) + self._figure_offset)')
     lines.append(f'{indent}self.add_to_all(_ra)')
     return lines
 
 
 def _gen_label_vertex(step, indent: str) -> list[str]:
-    """生成顶点标签代码 — 添加到持久层"""
+    """生成顶点标签代码 — 添加到持久层，坐标自动应用图形偏移"""
     lines = []
     config = step.config or {}
     point = config.get("point", [0, 0])
     label = config.get("label", "A")
     direction = config.get("direction", "UR*0.3")
-    lines.append(f'{indent}# 顶点标签')
-    lines.append(f'{indent}_vlbl = draw_vertex_label(self, np.array([{point[0]},{point[1]},0]), "{_py_escape(label)}", direction={direction})')
+    lines.append(f'{indent}# 顶点标签（坐标已应用 figure_offset 修正）')
+    lines.append(f'{indent}_vlbl = draw_vertex_label(self, np.array([{point[0]},{point[1]},0]) + self._figure_offset, "{_py_escape(label)}", direction={direction})')
     lines.append(f'{indent}self.add_to_all(_vlbl)')
     return lines
 
 
 def _gen_label_side(step, indent: str) -> list[str]:
-    """生成边长标注代码 — 添加到持久层"""
+    """生成边长标注代码 — 添加到持久层，坐标自动应用图形偏移"""
     lines = []
     config = step.config or {}
     start = config.get("start", [0, 0])
     end = config.get("end", [1, 0])
     label = config.get("label", "")
-    lines.append(f'{indent}# 边长标注')
-    lines.append(f'{indent}_slbl = draw_side_label(self, np.array([{start[0]},{start[1]},0]), np.array([{end[0]},{end[1]},0]), "{_py_escape(label)}")')
+    lines.append(f'{indent}# 边长标注（坐标已应用 figure_offset 修正）')
+    lines.append(f'{indent}_slbl = draw_side_label(self, np.array([{start[0]},{start[1]},0]) + self._figure_offset, np.array([{end[0]},{end[1]},0]) + self._figure_offset, "{_py_escape(label)}")')
     lines.append(f'{indent}self.add_to_all(_slbl)')
     return lines
 

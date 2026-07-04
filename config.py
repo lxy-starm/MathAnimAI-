@@ -43,93 +43,107 @@ else:
 
 
 # ================================================================
-# 三、全局配色方案（柔和教学风，禁止高饱和刺眼颜色）
+# 三、全局配色方案（参考 MathLens 模板，深色背景 + 亮色配色）
 # ================================================================
 class Colors:
-    """全局统一配色常量"""
-    # 画布底色 — 柔和浅灰，替换纯白刺眼背景
-    BG = "#F0F2F5"
+    """全局统一配色常量 — 深色教学风格"""
+    # 画布底色 — 深蓝夜色背景（参考模板 #1a1a2e）
+    BG = "#1a1a2e"
 
-    # 基础图形实线 — 柔和蓝
-    PRIMARY = "#3498DB"
+    # 基础图形实线 — 亮青色（主色，参考模板 #4ecca3）
+    PRIMARY = "#4ecca3"
 
-    # 辅助线虚线 — 中性灰
-    DASHED = "#7F8C8D"
+    # 辅助线虚线 — 红色（辅助色，参考模板 #e94560）
+    SECONDARY = "#e94560"
+    DASHED = "#e94560"
 
-    # 顶点标记 — 温和红
-    VERTEX = "#E74C3C"
+    # 顶点标记 — 黄色（高亮色，参考模板 #ffc107）
+    VERTEX = "#ffc107"
+    HIGHLIGHT = "#ffc107"
 
-    # 已知条件文字 — 深蓝
-    KNOWN = "#2980B9"
+    # 已知条件文字 — 亮青色
+    KNOWN = "#4ecca3"
 
-    # 推导结论文字 — 柔和绿
-    RESULT = "#27AE60"
+    # 推导结论文字 — 亮青色
+    RESULT = "#4ecca3"
 
-    # 重点高亮底色 — 浅黄渐变扫光
-    HIGHLIGHT_BG = "#FFF3CD"
-    HIGHLIGHT_BORDER = "#FFC107"
+    # 重点高亮底色 — 黄色
+    HIGHLIGHT_BG = "#ffc107"
+    HIGHLIGHT_BORDER = "#ffc107"
 
-    # 文字底色 — 圆角半透明白
-    TEXT_BG = "#FFFFFFCC"
+    # 文字底色 — 深紫色（用于需要背景的场景）
+    TEXT_BG = "#2a2a4e"
 
-    # 标题文字色 — 深灰
-    TITLE_TEXT = "#2C3E50"
+    # 标题文字色 — 白色
+    TITLE_TEXT = "#ffffff"
 
-    # 步骤文字色 — 中灰
-    STEP_TEXT = "#34495E"
+    # 步骤文字色 — 白色
+    STEP_TEXT = "#ffffff"
 
-    # 标注文字色 — 深灰
-    LABEL_TEXT = "#2C3E50"
+    # 标注文字色 — 白色
+    LABEL_TEXT = "#ffffff"
+
+    # 通用文字色 — 白色
+    TEXT = "#ffffff"
+
+    # 次要文字色 — 浅灰
+    TEXT_SECONDARY = "#aaaaaa"
 
     # 白色
-    WHITE = "#FFFFFF"
+    WHITE = "#ffffff"
     # 黑色
-    BLACK = "#1A1A2E"
+    BLACK = "#1a1a2e"
 
-    # 饼图分块色
-    PIE_COLORS = ["#3498DB", "#E74C3C", "#27AE60", "#F39C12",
-                  "#9B59B6", "#1ABC9C", "#E67E22", "#2ECC71"]
+    # 网格线色
+    GRID = "#2a2a4e"
+    AXIS = "#444466"
 
-    # 柱状图颜色
-    BAR_COLORS = ["#3498DB", "#2ECC71", "#E74C3C", "#F39C12"]
+    # 饼图分块色（亮色系，适配深色背景）
+    PIE_COLORS = ["#4ecca3", "#e94560", "#ffc107", "#ff6b6b",
+                  "#4ecdc4", "#ffe66d", "#a8e6cf", "#ff8b94"]
+
+    # 柱状图颜色（亮色系）
+    BAR_COLORS = ["#4ecca3", "#e94560", "#ffc107", "#ff6b6b"]
 
     # 函数曲线颜色
-    FUNCTION_CURVE = "#E74C3C"
-    FUNCTION_SECONDARY = "#3498DB"
+    FUNCTION_CURVE = "#e94560"
+    FUNCTION_SECONDARY = "#4ecca3"
 
 
 # ================================================================
-# 四、字体统一规范
+# 四、字体统一规范（参考模板，增大字号提升可读性）
 # ================================================================
 FONT_FAMILY = "Microsoft YaHei"  # 圆润无衬线中文字体
 
-# 分层字号
-FONT_TITLE = 36      # 标题文字
-FONT_STEP = 26       # 步骤讲解
-FONT_LABEL = 20      # 标注文字
-FONT_ANNOTATION = 16  # 小字注释
+# 分层字号（参考模板：标题60, 字幕36-40, 步骤36, 标签28）
+FONT_TITLE = 44      # 标题文字（模板用60，但我们的标题是题干需要稍小）
+FONT_STEP = 34       # 步骤讲解（模板用36）
+FONT_LABEL = 28      # 标注文字（模板用28-32）
+FONT_ANNOTATION = 22 # 小字注释（模板用24）
+FONT_SUBTITLE = 36   # 字幕专用字号（模板用36-40）
+FONT_CONCLUSION = 42 # 结论公式字号（模板用48）
 
 # 数学公式字号
-MATH_FONT_SIZE = 32
+MATH_FONT_SIZE = 34
 
 
 # ================================================================
-# 五、动画统一时长
+# 五、动画统一时长（参考模板：简洁明快，避免过长等待）
 # ================================================================
 ANIMATION_DURATION = float(os.getenv("ANIMATION_DURATION", "1.0"))
-SLIDE_DURATION = float(os.getenv("SLIDE_DURATION", "0.8"))
+SLIDE_DURATION = float(os.getenv("SLIDE_DURATION", "0.5"))
 
-# 各类型动画具体时长
-DURATION_CREATE = 1.0        # 图形逐笔绘制
-DURATION_SLIDE_IN = 0.8      # 文字滑入+淡入
-DURATION_HIGHLIGHT = 1.2     # 高亮渐变扫光
+# 各类型动画具体时长（参考模板 script_example.py）
+DURATION_CREATE = 1.0        # 图形逐笔绘制（模板 run_time=1.0）
+DURATION_SLIDE_IN = 0.5      # 文字淡入（模板 FadeIn run_time=0.5）
+DURATION_HIGHLIGHT = 0.8     # 高亮渐变（模板 0.4+0.4=0.8）
 DURATION_TRANSITION = 0.5    # 步骤之间过渡
-DURATION_WRITE = 0.6         # 逐字写入
+DURATION_WRITE = 0.5         # 逐字写入（模板 run_time=0.5）
 DURATION_GROW = 0.8          # 图形生长
-DURATION_FADE = 1.0          # 渐变
-DURATION_WAIT_SHORT = 0.5    # 短停顿
-DURATION_WAIT_LONG = 1.5     # 长停顿
-DURATION_SHIFT = 0.6         # 位置偏移
+DURATION_FADE = 0.5          # 渐变（模板 FadeIn/FadeOut run_time=0.5）
+DURATION_WAIT_SHORT = 0.3    # 短停顿
+DURATION_WAIT_LONG = 1.0     # 长停顿
+DURATION_SHIFT = 0.5         # 位置偏移
 
 
 # ================================================================
@@ -188,9 +202,9 @@ OUTPUT_SUBTITLE_DIR = os.path.join(OUTPUT_DIR, "subtitles")
 INTRO_DURATION = 3.0  # 片头时长
 OUTRO_DURATION = 2.0  # 片尾时长
 
-# 字幕配置
-SUBTITLE_FONT_SIZE = 24
-SUBTITLE_BG_OPACITY = 0.6
+# 字幕配置（参考模板：底部纯文字，无背景框）
+SUBTITLE_FONT_SIZE = 36
+SUBTITLE_BG_OPACITY = 0.0  # 深色背景不需要字幕背景框
 SUBTITLE_POSITION = "bottom"  # 字幕位置
 
 

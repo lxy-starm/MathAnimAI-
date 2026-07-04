@@ -14,9 +14,10 @@ import logging
 
 from config import (
     Colors, FONT_FAMILY, FONT_TITLE, FONT_STEP, FONT_LABEL, FONT_ANNOTATION,
+    FONT_SUBTITLE, FONT_CONCLUSION,
     DURATION_CREATE, DURATION_SLIDE_IN, DURATION_HIGHLIGHT,
     DURATION_TRANSITION, DURATION_WRITE, DURATION_GROW, DURATION_SHIFT,
-    DURATION_WAIT_LONG, DURATION_WAIT_SHORT,
+    DURATION_FADE, DURATION_WAIT_LONG, DURATION_WAIT_SHORT,
     OLD_CONTENT_SCALE, OLD_CONTENT_SHIFT_UP,
     CANVAS_MAX_WIDTH, CANVAS_BOTTOM_Y, CANVAS_TOP_Y, MAX_STACK_STEPS,
     LEFT_PANEL_X, LEFT_PANEL_TOP_Y, LEFT_PANEL_SCALE, LEFT_PANEL_SPACING,
@@ -27,28 +28,19 @@ logger = logging.getLogger("MathAnimAI.Common")
 
 
 # ================================================================
-# 一、全局画布背景设置
+# 一、全局画布背景设置（参考模板：直接设置 camera.background_color）
 # ================================================================
 def set_background(scene: Scene):
     """
-    设置柔和浅灰画布背景
-    替换Manim默认纯黑/纯白底色
+    设置深色画布背景（参考模板 #1a1a2e）
+    深色背景下白色文字和亮色图形更清晰美观
     """
-    # 创建一个占满整个画面的矩形作为背景
-    bg = Rectangle(
-        width=config.frame_width,
-        height=config.frame_height,
-        fill_color=Colors.BG,
-        fill_opacity=1.0,
-        stroke_width=0,
-    )
-    bg.z_index = -100  # 放在最底层
-    scene.add(bg)
-    return bg
+    scene.camera.background_color = Colors.BG
+    return None
 
 
 # ================================================================
-# 二、文本美化工具 — 核心函数
+# 二、文本美化工具 — 参考模板：深色背景下纯Text，无需背景框
 # ================================================================
 def pretty_text(
     text: str,
@@ -59,31 +51,21 @@ def pretty_text(
     max_width: float = None,
 ) -> Text:
     """
-    创建美化文本对象
-    - 统一圆润无衬线中文字体
-    - 指定字号和颜色
-    - 支持最大宽度约束（自动换行 + 缩小字号）
-    - 所有文字统一由此函数生成，保证全局风格一致
+    创建美化文本对象（参考模板风格）
+    深色背景下使用白色文字，简洁干净，无需圆角背景框
     """
-    if max_width is None:
-        max_width = CANVAS_MAX_WIDTH
-
     txt = Text(
         text,
         font=font_family,
         font_size=font_size,
         color=color,
         weight=weight,
-        width=max_width,  # Manim CE 支持 width 参数自动换行
     )
-
-    # 如果换行后仍然太宽（比如连续字母），进一步缩小字号
-    if txt.width > max_width * 1.05:
-        scale = max_width / txt.width * 0.95
-        txt.scale(scale)
-        # 也缩小字体定义本身
-        txt.font_size = font_size * scale
-
+    # 宽度安全检查
+    if max_width is None:
+        max_width = CANVAS_MAX_WIDTH
+    if txt.width > max_width:
+        txt.scale(max_width / txt.width * 0.9)
     return txt
 
 
@@ -98,9 +80,7 @@ def pretty_text_with_bg(
     max_width: float = None,
 ) -> VGroup:
     """
-    创建带圆角半透明白底 + 柔和模糊阴影的美化文本
-    所有场景统一使用此函数生成讲解文字，区分画面层级
-    支持宽度约束和自动缩放防溢出
+    带半透明背景的文本（仅用于特殊强调场景，日常文字用 pretty_text）
     """
     if max_width is None:
         max_width = CANVAS_MAX_WIDTH
@@ -110,64 +90,46 @@ def pretty_text_with_bg(
         font=font_family,
         font_size=font_size,
         color=text_color,
-        width=max_width,
     )
-
-    # 如果换行后仍超宽，等比例缩小
-    if txt.width > max_width * 1.05:
-        scale = max_width / txt.width * 0.95
-        txt.scale(scale)
-    # 圆角背景框
+    if txt.width > max_width:
+        txt.scale(max_width / txt.width * 0.9)
+    # 半透明深色背景框
     bg = RoundedRectangle(
         corner_radius=corner_radius,
         fill_color=bg_color,
-        fill_opacity=0.85,
-        stroke_color=parse_color(text_color),
+        fill_opacity=0.6,
+        stroke_color=Colors.PRIMARY,
         stroke_width=1.5,
         stroke_opacity=0.3,
     )
     bg.stretch_to_fit_width(txt.width + buff * 2)
     bg.stretch_to_fit_height(txt.height + buff * 2)
     bg.move_to(txt.get_center())
-
-    # 柔和阴影（下方稍微偏移的深色背景）
-    shadow = RoundedRectangle(
-        corner_radius=corner_radius,
-        fill_color=BLACK,
-        fill_opacity=0.08,
-        stroke_width=0,
-    )
-    shadow.stretch_to_fit_width(bg.width)
-    shadow.stretch_to_fit_height(bg.height)
-    shadow.move_to(bg.get_center() + DOWN * 0.06 + RIGHT * 0.04)
-    shadow.z_index = bg.z_index - 0.1
-
-    return VGroup(shadow, bg, txt)
+    return VGroup(bg, txt)
 
 
 def title_text(
     text: str,
     color: str = Colors.TITLE_TEXT,
-) -> VGroup:
-    """标题专用美化文本 — 大号、深色、居中"""
-    return pretty_text_with_bg(
+) -> Text:
+    """标题专用文本 — 大号、白色、粗体（参考模板风格）"""
+    return pretty_text(
         text,
         font_size=FONT_TITLE,
-        text_color=color,
-        corner_radius=0.2,
-        buff=0.3,
+        color=color,
+        weight=BOLD,
     )
 
 
 def step_text(
     text: str,
     color: str = Colors.STEP_TEXT,
-) -> VGroup:
-    """步骤讲解专用美化文本"""
-    return pretty_text_with_bg(
+) -> Text:
+    """步骤讲解专用文本 — 白色纯文字，无背景框"""
+    return pretty_text(
         text,
         font_size=FONT_STEP,
-        text_color=color,
+        color=color,
     )
 
 
@@ -175,17 +137,18 @@ def label_text(
     text: str,
     color: str = Colors.LABEL_TEXT,
 ) -> Text:
-    """标注小字美化文本"""
+    """标注小字文本"""
     return pretty_text(
         text,
         font_size=FONT_LABEL,
         color=color,
+        weight=BOLD,
     )
 
 
 def annotation_text(
     text: str,
-    color: str = Colors.DASHED,
+    color: str = Colors.TEXT_SECONDARY,
 ) -> Text:
     """注释小字"""
     return pretty_text(
@@ -193,6 +156,66 @@ def annotation_text(
         font_size=FONT_ANNOTATION,
         color=color,
     )
+
+
+# ================================================================
+# 二(补充)、字幕系统 — 参考模板 script_scaffold.py
+# ================================================================
+def create_subtitle(
+    text: str,
+    font_size: int = FONT_SUBTITLE,
+    color: str = Colors.STEP_TEXT,
+) -> Text:
+    """
+    创建字幕对象（参考模板 create_subtitle）
+    字幕放在画面底部 to_edge(DOWN, buff=0.5)，纯文字无背景框
+    """
+    subtitle = Text(
+        text,
+        font=FONT_FAMILY,
+        font_size=font_size,
+        color=color,
+    )
+    # 宽度安全检查：字幕不应超出画布
+    if subtitle.width > CANVAS_MAX_WIDTH:
+        subtitle.scale(CANVAS_MAX_WIDTH / subtitle.width * 0.9)
+    subtitle.to_edge(DOWN, buff=0.5)
+    return subtitle
+
+
+def show_subtitle_timed(
+    scene: Scene,
+    text: str,
+    duration: float,
+    font_size: int = FONT_SUBTITLE,
+    fade_in_time: float = DURATION_FADE,
+    fade_out_time: float = DURATION_FADE,
+) -> Text:
+    """
+    显示字幕并在指定时间后自动退场（参考模板 show_subtitle_timed）
+    """
+    subtitle = create_subtitle(text, font_size=font_size)
+    scene.play(FadeIn(subtitle, run_time=fade_in_time))
+    hold_time = max(0.0, duration - fade_in_time - fade_out_time)
+    scene.wait(hold_time)
+    scene.play(FadeOut(subtitle, run_time=fade_out_time))
+    return subtitle
+
+
+def show_subtitle_with_audio(
+    scene: Scene,
+    text: str,
+    audio_duration: float,
+    font_size: int = FONT_SUBTITLE,
+) -> Text:
+    """
+    显示字幕并持续到音频结束（参考模板 show_subtitle_with_audio）
+    """
+    subtitle = create_subtitle(text, font_size=font_size)
+    scene.play(FadeIn(subtitle, run_time=DURATION_FADE))
+    scene.wait(max(0.0, audio_duration - 1.0))
+    scene.play(FadeOut(subtitle, run_time=DURATION_FADE))
+    return subtitle
 
 
 def _has_latex() -> bool:
@@ -311,7 +334,7 @@ def _latex_to_unicode(latex: str) -> str:
 
 
 # ================================================================
-# 三、动画工具 — 全部顺滑缓慢，禁止瞬间闪现
+# 三、动画工具 — 参考模板：简洁明快，FadeIn/FadeOut/Create/Write
 # ================================================================
 
 def smooth_create(
@@ -321,22 +344,13 @@ def smooth_create(
     shift_dir: np.ndarray = None,
 ) -> Animation:
     """
-    顺滑创建动画 — 滑入 + 淡入组合
-    禁止瞬间FadeIn/FadeOut
-
-    Args:
-        scene: Manim场景
-        mobject: 要显示的对象
-        duration: 动画时长
-        shift_dir: 入场方向（例如 UP, RIGHT, DOWN, LEFT）
+    文字淡入动画（参考模板 FadeIn run_time=0.5）
     """
     if shift_dir is None:
-        shift_dir = UP * 0.5
-
+        shift_dir = UP * 0.3
     anim = FadeIn(
         mobject,
         shift=shift_dir,
-        scale=0.95,
         run_time=duration,
         rate_func=smooth,
     )
@@ -350,12 +364,12 @@ def smooth_create_shape(
     duration: float = DURATION_CREATE,
 ) -> Animation:
     """
-    几何图形匀速逐笔绘制 — Create动画，模拟黑板手写
+    几何图形逐笔绘制（参考模板 Create run_time=1.0）
     """
     anim = Create(
         mobject,
         run_time=duration,
-        rate_func=linear,  # 匀速，模拟手写
+        rate_func=linear,
     )
     scene.play(anim)
     return anim
@@ -368,11 +382,8 @@ def smooth_write(
     shift_dir: np.ndarray = None,
 ) -> Animation:
     """
-    文字逐字写入动画
+    文字逐字写入（参考模板 Write run_time=0.5）
     """
-    if shift_dir is None:
-        shift_dir = UP * 0.3
-
     anim = Write(
         mobject,
         run_time=duration,
@@ -389,7 +400,7 @@ def smooth_grow(
     direction: np.ndarray = None,
 ) -> Animation:
     """
-    图形从中心/边缘生长动画
+    图形从中心生长（参考模板 GrowFromCenter）
     """
     if direction is not None:
         anim = GrowFromEdge(mobject, direction, run_time=duration, rate_func=smooth)
@@ -405,44 +416,24 @@ def smooth_highlight(
     duration: float = DURATION_HIGHLIGHT,
 ) -> Animation:
     """
-    高亮渐变扫光动画 — 柔和不闪烁
-    给目标添加高亮背景框，缓慢渐入渐出
+    高亮动画（参考模板 highlight_element: scale 1.3 + color change）
+    简洁的缩放+变色，避免复杂的扫光效果
     """
-    # 创建比目标稍大的高亮框
-    highlight_box = RoundedRectangle(
-        corner_radius=0.1,
-        fill_color=Colors.HIGHLIGHT_BG,
-        fill_opacity=0.0,
-        stroke_color=Colors.HIGHLIGHT_BORDER,
-        stroke_width=3,
-        stroke_opacity=0.0,
+    original_color = mobject.get_color() if hasattr(mobject, 'get_color') else Colors.TEXT
+    # 缩放+变色
+    scene.play(
+        mobject.animate.scale(1.15).set_color(Colors.HIGHLIGHT),
+        run_time=duration * 0.5,
+        rate_func=smooth,
     )
-    highlight_box.stretch_to_fit_width(mobject.width + 0.3)
-    highlight_box.stretch_to_fit_height(mobject.height + 0.2)
-    highlight_box.move_to(mobject.get_center())
-    highlight_box.z_index = mobject.z_index - 0.1
-
-    scene.add(highlight_box)
-
-    # 渐入高亮
-    anim_in = highlight_box.animate.set_style(
-        fill_opacity=0.3,
-        stroke_opacity=0.8,
-    ).set_run_time(duration * 0.5).set_rate_func(smooth)
-    scene.play(anim_in)
-
-    # 保持高亮
-    scene.wait(0.5)
-
-    # 渐出
-    anim_out = highlight_box.animate.set_style(
-        fill_opacity=0.0,
-        stroke_opacity=0.0,
-    ).set_run_time(duration * 0.5).set_rate_func(smooth)
-    scene.play(anim_out)
-
-    scene.remove(highlight_box)
-    return anim_in
+    scene.wait(0.3)
+    # 恢复
+    scene.play(
+        mobject.animate.scale(1/1.15).set_color(original_color),
+        run_time=duration * 0.5,
+        rate_func=smooth,
+    )
+    return None
 
 
 def smooth_transition(
@@ -450,19 +441,11 @@ def smooth_transition(
     old_elements: list[Mobject],
 ) -> None:
     """
-    步骤间过渡动画 — 旧内容微缩上移，为新内容腾空间
-    不使用FadeOut清除，只做位置和大小调整
+    步骤间过渡 — 旧内容淡出（参考模板：每幕结束 FadeOut 清理）
     """
     if not old_elements:
         return
-
-    animations = []
-    for elem in old_elements:
-        # 缩小 + 上移 + 稍微降低不透明度
-        animations.append(elem.animate.scale(OLD_CONTENT_SCALE).shift(
-            UP * OLD_CONTENT_SHIFT_UP
-        ).set_opacity(0.7))
-
+    animations = [FadeOut(elem) for elem in old_elements]
     scene.play(
         *animations,
         run_time=DURATION_TRANSITION,
@@ -635,24 +618,13 @@ def draw_angle_mark(
     point_a: np.ndarray,
     point_b: np.ndarray,
     radius: float = 0.5,
-    color: str = Colors.DASHED,
+    color: str = Colors.HIGHLIGHT,
     label: str = "",
     duration: float = DURATION_CREATE,
 ) -> VGroup:
     """
-    绘制角度弧线标注
-    Args:
-        vertex: 角的顶点坐标
-        point_a: 角的一边上的一点
-        point_b: 角的另一边上的一点
-        radius: 弧线半径
-        color: 弧线颜色
-        label: 角度文字标签
-        duration: 动画时长
-    Returns:
-        角度标注组（弧线 + 标签）
+    绘制角度弧线标注（参考模板：使用 Sector/Angle + 颜色标注）
     """
-    # 创建两条线用于Angle构造
     line1 = Line(vertex, point_a)
     line2 = Line(vertex, point_b)
     angle = Angle(line1, line2, radius=radius, color=color)
@@ -661,10 +633,11 @@ def draw_angle_mark(
     scene.play(Create(angle, run_time=duration, rate_func=linear))
 
     if label:
-        lbl = Tex(label, font_size=FONT_ANNOTATION, color=color)
+        # 使用 Text 代替 Tex，避免 LaTeX 依赖
+        lbl = Text(label, font=FONT_FAMILY, font_size=FONT_ANNOTATION, color=color)
         lbl.next_to(angle.get_center(), UP * 0.3 + RIGHT * 0.3)
         group.add(lbl)
-        scene.play(FadeIn(lbl, shift=UP * 0.2, run_time=0.5))
+        scene.play(FadeIn(lbl, shift=UP * 0.2, run_time=DURATION_FADE))
 
     return group
 
@@ -675,18 +648,11 @@ def draw_right_angle_mark(
     point_a: np.ndarray,
     point_b: np.ndarray,
     length: float = 0.3,
-    color: str = Colors.VERTEX,
-    duration: float = DURATION_CREATE,
+    color: str = Colors.HIGHLIGHT,
+    duration: float = 0.5,
 ) -> VMobject:
     """
-    绘制直角标记
-    Args:
-        vertex: 直角顶点
-        point_a: 一条直角边上的点
-        point_b: 另一条直角边上的点
-        length: 直角标记边长
-        color: 标记颜色
-        duration: 动画时长
+    绘制直角标记（参考模板：使用 RightAngle）
     """
     line1 = Line(vertex, point_a)
     line2 = Line(vertex, point_b)
@@ -700,20 +666,13 @@ def draw_vertex_label(
     scene: Scene,
     point: np.ndarray,
     label: str,
-    color: str = Colors.VERTEX,
+    color: str = Colors.HIGHLIGHT,
     font_size: int = FONT_LABEL,
     direction: np.ndarray = None,
-    duration: float = DURATION_SLIDE_IN,
+    duration: float = DURATION_FADE,
 ) -> Text:
     """
-    绘制顶点字母标签
-    Args:
-        point: 顶点坐标
-        label: 字母标签（如'A', 'B', 'C'）
-        color: 文字颜色
-        font_size: 字号
-        direction: 标签偏移方向
-        duration: 动画时长
+    绘制顶点字母标签（参考模板：Text + next_to 偏移）
     """
     if direction is None:
         direction = UR * 0.3
@@ -735,24 +694,16 @@ def draw_side_label(
     start_point: np.ndarray,
     end_point: np.ndarray,
     label: str,
-    color: str = Colors.KNOWN,
+    color: str = Colors.TEXT,
     font_size: int = FONT_LABEL,
     offset: float = 0.3,
-    duration: float = DURATION_SLIDE_IN,
+    duration: float = DURATION_FADE,
 ) -> Text:
     """
     绘制边长标注
-    Args:
-        start_point: 线段起点
-        end_point: 线段终点
-        label: 标注文字
-        color: 文字颜色
-        font_size: 字号
-        offset: 与线段的偏移距离
     """
     mid = (start_point + end_point) / 2
     line_dir = end_point - start_point
-    # 垂直于线段方向
     perp = np.array([-line_dir[1], line_dir[0], 0])
     norm = np.linalg.norm(perp) if np.linalg.norm(perp) > 0 else UP
     perp = perp / norm * offset
@@ -900,19 +851,13 @@ def create_aligned_equations(
     color: str = Colors.STEP_TEXT,
 ) -> VGroup:
     """
-    创建等号对齐的方程列表
-    每行等号在相同x坐标，方便对比变形过程
+    创建等号对齐的方程列表（使用 Text 代替 MathTex，避免 LaTeX 依赖）
     """
     parts = []
     for eq in equations:
-        if "=" in eq:
-            left, right = eq.split("=", 1)
-            left_tex = MathTex(left.strip(), font_size=font_size, color=color)
-            eq_sign = MathTex("=", font_size=font_size, color=color)
-            right_tex = MathTex(right.strip(), font_size=font_size, color=color)
-            parts.append(VGroup(left_tex, eq_sign, right_tex).arrange(RIGHT, buff=0.1))
-        else:
-            parts.append(MathTex(eq, font_size=font_size, color=color))
+        # 使用 Text 直接显示，Unicode 数学符号
+        txt = Text(eq, font=FONT_FAMILY, font_size=font_size, color=color)
+        parts.append(txt)
 
     group = VGroup(*parts).arrange(DOWN, buff=0.3, aligned_edge=LEFT)
     return group
@@ -956,6 +901,11 @@ class BaseMathScene(Scene):
         self.sidebar_state = {"count": 0, "bottom_y": LEFT_PANEL_TOP_Y}
         # 中央区域当前展示的元素（会被移入侧边栏）
         self.center_elements: list[Mobject] = []
+        # ===== 图形偏移量跟踪 =====
+        # 当 position_in_center_safe() 移动基础图形后，记录偏移量
+        # 后续 mark_right_angle / label_vertex 等步骤需要用偏移修正坐标
+        self._figure_offset = np.array([0.0, 0.0, 0.0])
+
         # ===== 音画同步基础设施 =====
         # 当前幕的起始时间戳（Manim 全局动画时钟）
         self._scene_start_time = 0.0
@@ -1089,11 +1039,17 @@ class BaseMathScene(Scene):
 
     def step_transition(self) -> None:
         """
-        步骤过渡：将中央区域的内容移入左侧侧边栏。
-        旧内容缩小并排列在左侧，为新的中央内容腾出空间。
+        步骤过渡：将中央区域的临时内容淡出（参考模板：每幕结束 FadeOut 清理）。
+        基础图形（add_to_all 添加的）保持不动，仅清除中央临时内容（add_to_center 添加的）。
         """
         if self.center_elements:
-            move_to_left_sidebar(self, self.center_elements, self.sidebar_state)
+            # 淡出中央临时内容
+            fade_outs = [FadeOut(elem) for elem in self.center_elements]
+            self.play(*fade_outs, run_time=DURATION_TRANSITION, rate_func=smooth)
+            # 从持久化缓存中也移除
+            for elem in self.center_elements:
+                if elem in self.all_elements:
+                    self.all_elements.remove(elem)
             self.center_elements = []
 
     def finalize_scene(self) -> None:
