@@ -137,10 +137,7 @@ def generate_scene_code(
     lines = []
     indent = "        "
 
-    # 初始化
-    lines.append(f'{indent}# ===== 初始化场景 =====')
-    lines.append(f'{indent}self.setup()')
-    lines.append(f'')
+    # 注意：不再调用 self.setup()，Manim CE 会自动在 construct() 之前调用
 
     # 标题步骤 — 始终在顶部，不参与侧边栏
     title_raw = _py_escape(script.problem_text)
@@ -155,15 +152,15 @@ def generate_scene_code(
     lines.append(f'{indent}self.wait(1.0)  # 标题展示停顿（无音频）')
     lines.append(f'')
 
-    # 如果有几何底图，先绘制
+    # 如果有几何底图，生成内联绘制代码（不再调用不存在的 self._draw_base_figure()）
     if script.base_figure:
         lines.append(f'{indent}# ===== 绘制基础图形 =====')
-        lines.append(f'{indent}self._draw_base_figure()')
+        lines.extend(_gen_base_figure_code(script.base_figure, indent))
 
-    # 如果有坐标系，先绘制
+    # 如果有坐标系，生成内联绘制代码（不再调用不存在的 self._draw_coordinate_system()）
     if script.coordinate_system:
         lines.append(f'{indent}# ===== 绘制坐标系 =====')
-        lines.append(f'{indent}self._draw_coordinate_system()')
+        lines.extend(_gen_coordinate_system_code(script.coordinate_system, indent))
 
     lines.append('')
 
@@ -306,9 +303,8 @@ def generate_step_scene_code(
     lines = []
     indent = "        "
 
-    # 初始化场景
+    # 注意：不再调用 self.setup()，Manim CE 会自动在 construct() 之前调用
     lines.append(f'{indent}# ===== 步骤 {step.step_number} 独立场景 =====')
-    lines.append(f'{indent}self.setup()')
     lines.append('')
 
     # 标题 — 首步 FadeIn，后续步静态（拼接后视觉连续）
@@ -410,6 +406,87 @@ def _gen_step_text_slide_in(step, indent: str) -> list[str]:
 
 
 # ================================================================
+# 基础图形和坐标系内联代码生成（替代不存在的 _draw_base_figure / _draw_coordinate_system）
+# ================================================================
+def _gen_base_figure_code(base_figure, indent: str) -> list[str]:
+    """
+    根据 GeoElement 生成基础图形的绘制代码。
+    替代之前调用不存在的 self._draw_base_figure()。
+    """
+    lines = []
+    fig_type = base_figure.type
+    points = base_figure.points or []
+    labels = base_figure.labels or []
+    color = base_figure.config.get("color", Colors.PRIMARY) if base_figure.config else Colors.PRIMARY
+
+    if fig_type in ("triangle", "polygon") and points:
+        pts_str = ", ".join([f"np.array([{p[0]},{p[1]},0])" for p in points])
+        lines.append(f'{indent}base_shape = Polygon({pts_str}, color="{color}", stroke_width=2.5, fill_color="{color}", fill_opacity=0.05)')
+        lines.append(f'{indent}position_in_center_safe(base_shape, y_offset=-0.5)')
+        lines.append(f'{indent}self.add_to_all(base_shape)')
+        lines.append(f'{indent}self.play(Create(base_shape, run_time=DURATION_CREATE, rate_func=linear))')
+        # 自动标注顶点
+        if labels:
+            for i, (pt, lbl) in enumerate(zip(points, labels)):
+                directions = ["DL*0.4", "DR*0.4", "UP*0.4"]
+                dir_str = directions[i % len(directions)]
+                lines.append(f'{indent}draw_vertex_label(self, np.array([{pt[0]},{pt[1]},0]), "{_py_escape(lbl)}", direction={dir_str})')
+
+    elif fig_type == "circle":
+        radius = base_figure.radius if base_figure.radius else 1.5
+        center = points[0] if points else [0, 0]
+        lines.append(f'{indent}base_shape = Circle(radius={radius}, color="{color}", stroke_width=2.5)')
+        lines.append(f'{indent}base_shape.move_to(np.array([{center[0]},{center[1]},0]))')
+        lines.append(f'{indent}self.add_to_all(base_shape)')
+        lines.append(f'{indent}self.play(Create(base_shape, run_time=DURATION_CREATE, rate_func=linear))')
+
+    elif fig_type == "line" and len(points) >= 2:
+        p1, p2 = points[0], points[1]
+        lines.append(f'{indent}base_shape = Line(np.array([{p1[0]},{p1[1]},0]), np.array([{p2[0]},{p2[1]},0]), color="{color}", stroke_width=2.5)')
+        lines.append(f'{indent}self.add_to_all(base_shape)')
+        lines.append(f'{indent}self.play(Create(base_shape, run_time=DURATION_CREATE, rate_func=linear))')
+
+    else:
+        # 兜底：不知道怎么画，显示文字
+        logger.warning(f"base_figure 兜底: type={fig_type}, points={points}")
+        lines.append(f'{indent}base_text = step_text("（基础图形：{fig_type}）")')
+        lines.append(f'{indent}position_in_center_safe(base_text, y_offset=-0.5)')
+        lines.append(f'{indent}self.add_to_all(base_text)')
+        lines.append(f'{indent}self.play(FadeIn(base_text, shift=UP*0.3, run_time=DURATION_SLIDE_IN))')
+
+    return lines
+
+
+def _gen_coordinate_system_code(coord_config, indent: str) -> list[str]:
+    """
+    根据 CoordinateConfig 生成坐标系的绘制代码。
+    替代之前调用不存在的 self._draw_coordinate_system()。
+    自动检测 LaTeX 是否可用，不可用时跳过数字标签避免崩溃。
+    """
+    lines = []
+    x_range = coord_config.x_range
+    y_range = coord_config.y_range
+    x_length = coord_config.x_length
+    y_length = coord_config.y_length
+
+    lines.append(f'{indent}import shutil as _shutil')
+    lines.append(f'{indent}_has_latex = _shutil.which("pdflatex") is not None or _shutil.which("xelatex") is not None')
+    lines.append(f'{indent}self.axes = Axes(')
+    lines.append(f'{indent}    x_range={x_range},')
+    lines.append(f'{indent}    y_range={y_range},')
+    lines.append(f'{indent}    x_length={x_length},')
+    lines.append(f'{indent}    y_length={y_length},')
+    lines.append(f'{indent}    axis_config={{"include_numbers": _has_latex, "font_size": 20, "color": Colors.STEP_TEXT}},')
+    lines.append(f'{indent}    tips=True,')
+    lines.append(f'{indent})')
+    lines.append(f'{indent}self.axes.center().shift(DOWN*0.3)')
+    lines.append(f'{indent}self.add_to_all(self.axes)')
+    lines.append(f'{indent}self.play(Create(self.axes, run_time=DURATION_CREATE*1.2, rate_func=linear))')
+
+    return lines
+
+
+# ================================================================
 # 各动画类型的代码生成函数
 # ================================================================
 def _gen_text_slide_in(step, indent: str) -> list[str]:
@@ -448,7 +525,8 @@ def _gen_draw_shape(step, indent: str) -> list[str]:
     lines.append(f'{indent}# 绘制图形: {shape_type}（中央展示）')
     if shape_type == "polygon" and points:
         pts_str = ", ".join([f"np.array([{p[0]},{p[1]},0])" for p in points])
-        lines.append(f'{indent}shape = Polygon({pts_str}, color="{color}", stroke_width=2.5)')
+        lines.append(f'{indent}shape = Polygon({pts_str}, color="{color}", stroke_width=2.5, fill_color="{color}", fill_opacity=0.05)')
+        lines.append(f'{indent}position_in_center_safe(shape)')
         lines.append(f'{indent}self.add_to_center(shape)')
         lines.append(f'{indent}self.play(Create(shape, run_time=DURATION_CREATE, rate_func=linear))')
     elif shape_type == "circle":
@@ -456,11 +534,13 @@ def _gen_draw_shape(step, indent: str) -> list[str]:
         center = config.get("center", [0, 0])
         lines.append(f'{indent}shape = Circle(radius={radius}, color="{color}", stroke_width=2.5)')
         lines.append(f'{indent}shape.move_to(np.array([{center[0]},{center[1]},0]))')
+        lines.append(f'{indent}position_in_center_safe(shape)')
         lines.append(f'{indent}self.add_to_center(shape)')
         lines.append(f'{indent}self.play(Create(shape, run_time=DURATION_CREATE, rate_func=linear))')
     elif shape_type == "triangle" and points:
         pts_str = ", ".join([f"np.array([{p[0]},{p[1]},0])" for p in points])
-        lines.append(f'{indent}shape = Polygon({pts_str}, color="{color}", stroke_width=2.5)')
+        lines.append(f'{indent}shape = Polygon({pts_str}, color="{color}", stroke_width=2.5, fill_color="{color}", fill_opacity=0.05)')
+        lines.append(f'{indent}position_in_center_safe(shape)')
         lines.append(f'{indent}self.add_to_center(shape)')
         lines.append(f'{indent}self.play(Create(shape, run_time=DURATION_CREATE, rate_func=linear))')
     else:
@@ -471,26 +551,31 @@ def _gen_draw_shape(step, indent: str) -> list[str]:
 
 
 def _gen_dashed_line(step, indent: str) -> list[str]:
-    """生成虚线辅助线代码"""
+    """生成虚线辅助线代码 — 添加到持久层（不随步骤过渡移入侧边栏）"""
     lines = []
     config = step.config or {}
     start = config.get("start", [0, 0])
     end = config.get("end", [1, 1])
     color = config.get("color", "#7F8C8D")
-    lines.append(f'{indent}# 绘制虚线辅助线（中央展示）')
+    lines.append(f'{indent}# 绘制虚线辅助线')
     lines.append(f'{indent}dl = DashedLine(np.array([{start[0]},{start[1]},0]), np.array([{end[0]},{end[1]},0]), color="{color}", dash_length=0.12)')
-    lines.append(f'{indent}self.add_to_center(dl)')
+    lines.append(f'{indent}self.add_to_all(dl)')  # 辅助线添加到持久层，不移入侧边栏
     lines.append(f'{indent}self.play(Create(dl, run_time=DURATION_CREATE))')
     return lines
 
 
 def _gen_highlight(step, indent: str) -> list[str]:
-    """生成高亮动画代码"""
+    """生成高亮动画代码 — 安全引用，避免 NameError"""
     lines = []
     lines.append(f'{indent}# 高亮 {step.target or "当前步骤"}')
     if step.target:
         target_var = step.target
-        lines.append(f'{indent}smooth_highlight(self, {target_var})')
+        # 安全引用：先检查变量是否存在，不存在则回退到 center_elements[-1]
+        lines.append(f'{indent}try:')
+        lines.append(f'{indent}    smooth_highlight(self, {target_var})')
+        lines.append(f'{indent}except (NameError, AttributeError):')
+        lines.append(f'{indent}    if self.center_elements:')
+        lines.append(f'{indent}        smooth_highlight(self, self.center_elements[-1])')
     else:
         # 未指定目标时，高亮 center_elements 中最后一个元素
         lines.append(f'{indent}if self.center_elements:')
@@ -499,47 +584,55 @@ def _gen_highlight(step, indent: str) -> list[str]:
 
 
 def _gen_mark_angle(step, indent: str) -> list[str]:
-    """生成角度标注代码"""
+    """生成角度标注代码 — 添加到持久层"""
     lines = []
     config = step.config or {}
     v = config.get("vertex", [0, 0])
     a = config.get("point_a", [1, 0])
     b = config.get("point_b", [0, 1])
     label = config.get("label", "")
-    lines.append(f'{indent}draw_angle_mark(self, np.array([{v[0]},{v[1]},0]), np.array([{a[0]},{a[1]},0]), np.array([{b[0]},{b[1]},0]), label="{_py_escape(label)}")')
+    lines.append(f'{indent}# 角度标注')
+    lines.append(f'{indent}_angle_group = draw_angle_mark(self, np.array([{v[0]},{v[1]},0]), np.array([{a[0]},{a[1]},0]), np.array([{b[0]},{b[1]},0]), label="{_py_escape(label)}")')
+    lines.append(f'{indent}self.add_to_all(_angle_group)')
     return lines
 
 
 def _gen_mark_right_angle(step, indent: str) -> list[str]:
-    """生成直角标注代码"""
+    """生成直角标注代码 — 添加到持久层"""
     lines = []
     config = step.config or {}
     v = config.get("vertex", [0, 0])
     a = config.get("point_a", [1, 0])
     b = config.get("point_b", [0, 1])
-    lines.append(f'{indent}draw_right_angle_mark(self, np.array([{v[0]},{v[1]},0]), np.array([{a[0]},{a[1]},0]), np.array([{b[0]},{b[1]},0]))')
+    lines.append(f'{indent}# 直角标注')
+    lines.append(f'{indent}_ra = draw_right_angle_mark(self, np.array([{v[0]},{v[1]},0]), np.array([{a[0]},{a[1]},0]), np.array([{b[0]},{b[1]},0]))')
+    lines.append(f'{indent}self.add_to_all(_ra)')
     return lines
 
 
 def _gen_label_vertex(step, indent: str) -> list[str]:
-    """生成顶点标签代码"""
+    """生成顶点标签代码 — 添加到持久层"""
     lines = []
     config = step.config or {}
     point = config.get("point", [0, 0])
     label = config.get("label", "A")
     direction = config.get("direction", "UR*0.3")
-    lines.append(f'{indent}draw_vertex_label(self, np.array([{point[0]},{point[1]},0]), "{_py_escape(label)}", direction={direction})')
+    lines.append(f'{indent}# 顶点标签')
+    lines.append(f'{indent}_vlbl = draw_vertex_label(self, np.array([{point[0]},{point[1]},0]), "{_py_escape(label)}", direction={direction})')
+    lines.append(f'{indent}self.add_to_all(_vlbl)')
     return lines
 
 
 def _gen_label_side(step, indent: str) -> list[str]:
-    """生成边长标注代码"""
+    """生成边长标注代码 — 添加到持久层"""
     lines = []
     config = step.config or {}
     start = config.get("start", [0, 0])
     end = config.get("end", [1, 0])
     label = config.get("label", "")
-    lines.append(f'{indent}draw_side_label(self, np.array([{start[0]},{start[1]},0]), np.array([{end[0]},{end[1]},0]), "{_py_escape(label)}")')
+    lines.append(f'{indent}# 边长标注')
+    lines.append(f'{indent}_slbl = draw_side_label(self, np.array([{start[0]},{start[1]},0]), np.array([{end[0]},{end[1]},0]), "{_py_escape(label)}")')
+    lines.append(f'{indent}self.add_to_all(_slbl)')
     return lines
 
 
@@ -549,11 +642,19 @@ def _gen_label_text(step, indent: str) -> list[str]:
 
 
 def _gen_plot_function(step, indent: str) -> list[str]:
-    """函数曲线 — 中央展示"""
+    """函数曲线 — 中央展示，自动创建坐标系如果不存在"""
     lines = []
     config = step.config
     func_expr = step.math_expr or config.get("function", "x**2")
     lines.append(f'{indent}# 绘制函数曲线（中央展示）')
+    # 安全检查：如果 self.axes 不存在，自动创建默认坐标系
+    lines.append(f'{indent}if not hasattr(self, "axes") or self.axes is None:')
+    lines.append(f'{indent}    import shutil as _shutil')
+    lines.append(f'{indent}    _has_latex = _shutil.which("pdflatex") is not None or _shutil.which("xelatex") is not None')
+    lines.append(f'{indent}    self.axes = Axes(x_range=[-10, 10, 1], y_range=[-6, 6, 1], axis_config={{"include_numbers": _has_latex, "font_size": 20}}, tips=True)')
+    lines.append(f'{indent}    self.axes.center().shift(DOWN*0.3)')
+    lines.append(f'{indent}    self.add_to_all(self.axes)')
+    lines.append(f'{indent}    self.play(Create(self.axes, run_time=DURATION_CREATE))')
     lines.append(f'{indent}graph = self.axes.plot(lambda x: {func_expr}, color="{Colors.FUNCTION_CURVE}", stroke_width=3)')
     lines.append(f'{indent}self.add_to_center(graph)')
     lines.append(f'{indent}self.play(Create(graph, run_time=DURATION_CREATE*1.5))')
@@ -561,24 +662,44 @@ def _gen_plot_function(step, indent: str) -> list[str]:
 
 
 def _gen_plot_coordinate(step, indent: str) -> list[str]:
-    """坐标系 — 持久化（保持在画面中不动）"""
+    """坐标系 — 持久化（保持在画面中不动），自动检测 LaTeX"""
     lines = []
     config = step.config
     x_range = config.get("x_range", [-10, 10, 1])
     y_range = config.get("y_range", [-6, 6, 1])
+    x_length = config.get("x_length", 10.0)
+    y_length = config.get("y_length", 6.0)
     lines.append(f'{indent}# 绘制坐标系（持久化）')
-    lines.append(f'{indent}self.axes = Axes(x_range={x_range}, y_range={y_range}, axis_config={{"include_numbers": True, "font_size": 20}}, tips=True)')
-    lines.append(f'{indent}self.axes.center()')
+    lines.append(f'{indent}import shutil as _shutil')
+    lines.append(f'{indent}_has_latex = _shutil.which("pdflatex") is not None or _shutil.which("xelatex") is not None')
+    lines.append(f'{indent}self.axes = Axes(')
+    lines.append(f'{indent}    x_range={x_range},')
+    lines.append(f'{indent}    y_range={y_range},')
+    lines.append(f'{indent}    x_length={x_length},')
+    lines.append(f'{indent}    y_length={y_length},')
+    lines.append(f'{indent}    axis_config={{"include_numbers": _has_latex, "font_size": 20, "color": Colors.STEP_TEXT}},')
+    lines.append(f'{indent}    tips=True,')
+    lines.append(f'{indent})')
+    lines.append(f'{indent}self.axes.center().shift(DOWN*0.3)')
     lines.append(f'{indent}self.add_to_all(self.axes)')
     lines.append(f'{indent}self.play(Create(self.axes, run_time=DURATION_CREATE))')
     return lines
 
 
 def _gen_plot_point(step, indent: str) -> list[str]:
-    """标注动点 — 中央展示"""
+    """标注动点 — 中央展示，自动创建坐标系如果不存在"""
     lines = []
     config = step.config
     point = config.get("point", [0, 0])
+    lines.append(f'{indent}# 标注动点（中央展示）')
+    # 安全检查：如果 self.axes 不存在，自动创建默认坐标系
+    lines.append(f'{indent}if not hasattr(self, "axes") or self.axes is None:')
+    lines.append(f'{indent}    import shutil as _shutil')
+    lines.append(f'{indent}    _has_latex = _shutil.which("pdflatex") is not None or _shutil.which("xelatex") is not None')
+    lines.append(f'{indent}    self.axes = Axes(x_range=[-10, 10, 1], y_range=[-6, 6, 1], axis_config={{"include_numbers": _has_latex, "font_size": 20}}, tips=True)')
+    lines.append(f'{indent}    self.axes.center().shift(DOWN*0.3)')
+    lines.append(f'{indent}    self.add_to_all(self.axes)')
+    lines.append(f'{indent}    self.play(Create(self.axes, run_time=DURATION_CREATE))')
     lines.append(f'{indent}dot = Dot(self.axes.coords_to_point({point[0]}, {point[1]}), color="{Colors.VERTEX}", radius=0.08)')
     lines.append(f'{indent}self.add_to_center(dot)')
     lines.append(f'{indent}self.play(GrowFromCenter(dot, run_time=DURATION_GROW))')
@@ -591,25 +712,70 @@ def _gen_bar_chart(step, indent: str) -> list[str]:
     config = step.config
     values = config.get("values", [1, 2, 3])
     labels = config.get("labels", ["", "", ""])
+    # 预计算颜色列表，避免在 f-string 中使用复杂的列表推导
+    bar_colors = [Colors.BAR_COLORS[i % len(Colors.BAR_COLORS)] for i in range(len(values))]
+
     lines.append(f'{indent}# 绘制柱状图（中央展示）')
-    lines.append(f'{indent}chart = BarChart(values={values}, bar_names={labels}, bar_colors={[Colors.BAR_COLORS[i%len(Colors.BAR_COLORS)] for i in range(len({values}))]})')
+    lines.append(f'{indent}chart = BarChart(')
+    lines.append(f'{indent}    values={values},')
+    lines.append(f'{indent}    bar_names={labels},')
+    lines.append(f'{indent}    y_range=[0, max({values}) * 1.2, max({values}) // 5 + 1],')
+    lines.append(f'{indent})')
+    lines.append(f'{indent}position_in_center_safe(chart)')
     lines.append(f'{indent}self.add_to_center(chart)')
     lines.append(f'{indent}self.play(Create(chart, run_time=DURATION_CREATE*1.5))')
     return lines
 
 
 def _gen_pie_chart(step, indent: str) -> list[str]:
-    """饼图 — 中央展示"""
+    """饼图 — 中央展示，使用 AnnularSector 实际绘制"""
     lines = []
     config = step.config
     values = config.get("values", [1, 1, 1])
     labels = config.get("labels", ["", "", ""])
+    total = sum(values) if values else 3
+    colors_list = Colors.PIE_COLORS
+
     lines.append(f'{indent}# 绘制饼图（中央展示）')
-    lines.append(f'{indent}chart = VGroup()')
-    lines.append(f'{indent}colors_list = {Colors.PIE_COLORS}')
-    lines.append(f'{indent}pie_text = step_text("{" + "+".join([str(v) for v in {values}]) + "}")')
-    lines.append(f'{indent}self.add_to_center(pie_text)')
-    lines.append(f'{indent}self.play(FadeIn(pie_text, shift=UP*0.5, run_time=DURATION_SLIDE_IN))')
+    lines.append(f'{indent}pie_group = VGroup()')
+    lines.append(f'{indent}_pie_center = np.array([0, CENTER_CONTENT_Y, 0])')
+    lines.append(f'{indent}_pie_radius = 1.2')
+    lines.append(f'{indent}_colors = {colors_list}')
+
+    angle_offset = 0.0
+    for i, v in enumerate(values):
+        frac = v / total if total > 0 else 1.0 / len(values)
+        angle = frac * 2 * 3.141592653589793
+        start_angle = angle_offset - 3.141592653589793 / 2
+        color_idx = i % len(colors_list)
+        lines.append(f'{indent}# 第{i+1}块: {v} ({frac*100:.0f}%)')
+        lines.append(f'{indent}_sector{i} = AnnularSector(')
+        lines.append(f'{indent}    inner_radius=0,')
+        lines.append(f'{indent}    outer_radius=_pie_radius,')
+        lines.append(f'{indent}    start_angle={start_angle:.4f},')
+        lines.append(f'{indent}    angle={angle:.4f},')
+        lines.append(f'{indent}    fill_color=_colors[{color_idx}],')
+        lines.append(f'{indent}    fill_opacity=0.6,')
+        lines.append(f'{indent}    stroke_color=Colors.PRIMARY,')
+        lines.append(f'{indent}    stroke_width=1,')
+        lines.append(f'{indent})')
+        lines.append(f'{indent}_sector{i}.move_arc_center_to(_pie_center)')
+        lines.append(f'{indent}pie_group.add(_sector{i})')
+        angle_offset += angle
+
+    lines.append(f'{indent}position_in_center_safe(pie_group)')
+    lines.append(f'{indent}self.add_to_center(pie_group)')
+    lines.append(f'{indent}self.play(GrowFromCenter(pie_group, run_time=DURATION_CREATE*1.2))')
+
+    # 添加标签
+    if labels:
+        for i, lbl in enumerate(labels):
+            if lbl:
+                lines.append(f'{indent}_lbl{i} = label_text("{_py_escape(lbl)}")')
+                lines.append(f'{indent}_lbl{i}.next_to(_sector{i}.get_center(), UP*0.1, buff=0.1)')
+                lines.append(f'{indent}self.add_to_center(_lbl{i})')
+                lines.append(f'{indent}self.play(FadeIn(_lbl{i}, shift=UP*0.2, run_time=0.3))')
+
     return lines
 
 
@@ -621,6 +787,7 @@ def _gen_segment_diagram(step, indent: str) -> list[str]:
     parts = config.get("parts", [0.3, 0.7])
     lines.append(f'{indent}# 绘制线段图（中央展示）')
     lines.append(f'{indent}seg_line = Line(LEFT*4, RIGHT*4, color="{Colors.PRIMARY}", stroke_width=4)')
+    lines.append(f'{indent}seg_line.move_to(np.array([0, CENTER_CONTENT_Y, 0]))')
     lines.append(f'{indent}self.add_to_center(seg_line)')
     lines.append(f'{indent}self.play(Create(seg_line, run_time=DURATION_CREATE))')
     # Draw division markers
@@ -628,17 +795,47 @@ def _gen_segment_diagram(step, indent: str) -> list[str]:
     for i, part in enumerate(parts):
         cumulative += part
         x_pos = -4 + cumulative / total * 8
-        lines.append(f'{indent}marker = DashedLine(UP*0.5 + RIGHT*{x_pos}, DOWN*0.5 + RIGHT*{x_pos}, color="{Colors.DASHED}")')
+        lines.append(f'{indent}marker = DashedLine(np.array([{x_pos}, CENTER_CONTENT_Y+0.5, 0]), np.array([{x_pos}, CENTER_CONTENT_Y-0.5, 0]), color="{Colors.DASHED}")')
         lines.append(f'{indent}self.add_to_center(marker)')
         lines.append(f'{indent}self.play(Create(marker, run_time=0.5))')
     return lines
 
 
 def _gen_transform(step, indent: str) -> list[str]:
-    """图形变换"""
+    """图形变换 — 将当前中央元素变换为新内容"""
     lines = []
+    config = step.config or {}
+    duration = config.get("duration", 1.0)
+
     lines.append(f'{indent}# 图形变换')
-    lines.append(f'{indent}self.wait({step.config.get("duration", 1.0)})')
+
+    # 优先使用 config 中指定的 source 变量
+    source_var = config.get("source", "")
+    if source_var:
+        lines.append(f'{indent}try:')
+        lines.append(f'{indent}    _transform_source = {source_var}')
+        lines.append(f'{indent}except (NameError, AttributeError):')
+        lines.append(f'{indent}    _transform_source = self.center_elements[-1] if self.center_elements else None')
+    else:
+        lines.append(f'{indent}_transform_source = self.center_elements[-1] if self.center_elements else None')
+
+    # 如果有目标文本，创建新文本并变换
+    if step.text:
+        raw_text = _py_escape(step.text)
+        text_content = raw_text[:80]
+        lines.append(f'{indent}_transform_target = step_text("{text_content}")')
+        lines.append(f'{indent}position_in_center_safe(_transform_target)')
+        lines.append(f'{indent}if _transform_source is not None:')
+        lines.append(f'{indent}    self.play(Transform(_transform_source, _transform_target), run_time={duration})')
+        lines.append(f'{indent}    self.center_elements.remove(_transform_source)')
+        lines.append(f'{indent}    self.add_to_center(_transform_target)')
+        lines.append(f'{indent}else:')
+        lines.append(f'{indent}    self.add_to_center(_transform_target)')
+        lines.append(f'{indent}    self.play(FadeIn(_transform_target, shift=UP*0.3, run_time={duration}))')
+    else:
+        # 没有目标文本，仅等待
+        lines.append(f'{indent}self.wait({duration})')
+
     return lines
 
 

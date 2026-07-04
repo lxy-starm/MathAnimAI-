@@ -484,7 +484,7 @@ def move_to_left_sidebar(
     布局逻辑：
     - 所有旧元素缩放至 LEFT_PANEL_SCALE
     - 按垂直方向堆叠排列在左侧面板
-    - 自动检测边界，防止溢出
+    - 自动检测边界，动态调整间距防止溢出
 
     Args:
         scene: Manim 场景
@@ -496,24 +496,32 @@ def move_to_left_sidebar(
         return
 
     count = sidebar_state.get("count", 0)
+    total_items = count + len(elements)
     animations = []
 
-    # 如果侧边栏元素过多，进一步缩小比例
+    # 动态计算缩放比例和间距
     scale = LEFT_PANEL_SCALE
-    if count >= LEFT_PANEL_MAX_ITEMS:
-        scale = LEFT_PANEL_SCALE * 0.7
+    if total_items > LEFT_PANEL_MAX_ITEMS:
+        # 元素过多时进一步缩小
+        scale = LEFT_PANEL_SCALE * max(0.5, LEFT_PANEL_MAX_ITEMS / total_items)
+
+    # 动态间距：根据元素数量自动调整，确保不溢出
+    available_height = LEFT_PANEL_TOP_Y - (CANVAS_BOTTOM_Y + 0.5)
+    if total_items > 0:
+        spacing = min(LEFT_PANEL_SPACING * 3.0, available_height / total_items)
+    else:
+        spacing = LEFT_PANEL_SPACING * 3.0
 
     # 按从下到上排列：最旧的在最下面
     for i, elem in enumerate(elements):
-        # 计算目标位置
         row = count + i
-        target_y = LEFT_PANEL_TOP_Y - row * LEFT_PANEL_SPACING * 3.0
+        target_y = LEFT_PANEL_TOP_Y - row * spacing
 
-        # 如果超出底部，不再添加（防止溢出）
+        # 硬性边界检查：确保不溢出底部
         if target_y < CANVAS_BOTTOM_Y + 0.5:
-            # 所有剩余元素一起缩小并压缩间距
-            scale *= 0.75
-            target_y = LEFT_PANEL_TOP_Y - (row * 0.5) * LEFT_PANEL_SPACING * 3.0
+            # 压缩所有元素到更小的间距
+            spacing = available_height / max(total_items, 1)
+            target_y = LEFT_PANEL_TOP_Y - row * spacing
 
         target_pos = np.array([LEFT_PANEL_X, target_y, 0])
 
@@ -530,9 +538,9 @@ def move_to_left_sidebar(
         )
 
     # 更新侧边栏状态
-    sidebar_state["count"] = count + len(elements)
+    sidebar_state["count"] = total_items
     sidebar_state["bottom_y"] = (
-        LEFT_PANEL_TOP_Y - sidebar_state["count"] * LEFT_PANEL_SPACING * 3.0
+        LEFT_PANEL_TOP_Y - total_items * spacing
     )
 
 
@@ -576,23 +584,35 @@ def position_in_center_safe(
     """
     将新元素放在画面中央，同时考虑当前中央是否已有元素。
 
-    如果中央已有内容，先将其移至侧边栏，再放置新内容。
+    如果中央已有内容，新元素会放在已有内容下方，避免重叠。
     """
     if y_offset is None:
         y_offset = CENTER_CONTENT_Y
 
-    new_element.move_to(np.array([0, y_offset, 0]))
+    # 如果有已有中央元素，将新元素放在最下方元素下面
+    if existing_center:
+        try:
+            lowest = existing_center[0]
+            for elem in existing_center:
+                if elem.get_bottom()[1] < lowest.get_bottom()[1]:
+                    lowest = elem
+            new_element.next_to(lowest, DOWN, buff=0.4)
+        except Exception:
+            new_element.move_to(np.array([0, y_offset, 0]))
+    else:
+        new_element.move_to(np.array([0, y_offset, 0]))
 
     # 宽度安全检查
     if new_element.width > CENTER_CONTENT_MAX_WIDTH:
         scale_factor = CENTER_CONTENT_MAX_WIDTH / new_element.width * 0.9
         new_element.scale(scale_factor)
 
-    # 高度安全检查
+    # 高度安全检查 — 底部不能超出边界
     if new_element.get_bottom()[1] < CANVAS_BOTTOM_Y + 0.5:
         overshoot = (CANVAS_BOTTOM_Y + 0.5) - new_element.get_bottom()[1]
         new_element.shift(UP * overshoot)
 
+    # 顶部安全检查 — 不能与标题重叠
     if new_element.get_top()[1] > CANVAS_TOP_Y - 0.5:
         overshoot = new_element.get_top()[1] - (CANVAS_TOP_Y - 0.5)
         new_element.shift(DOWN * overshoot)
