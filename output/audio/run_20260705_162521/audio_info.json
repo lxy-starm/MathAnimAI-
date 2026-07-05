@@ -1,0 +1,55 @@
+{
+  "files": [
+    {
+      "scene": 1,
+      "file": "audio_001_开场.mp3",
+      "path": "C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\run_20260705_162521\\audio_001_开场.mp3",
+      "text": "大家好，今天我们来学习一道经典的勾股定理应用题。在直角三角形ABC中，角C等于90度，AC等于3，CB等于4，要求出AB的长度。",
+      "duration": 13.92,
+      "sync_points": []
+    },
+    {
+      "scene": 2,
+      "file": "audio_002_画三角形.mp3",
+      "path": "C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\run_20260705_162521\\audio_002_画三角形.mp3",
+      "text": "首先，我们来画出这个直角三角形。角C是直角，所以两条直角边AC和CB互相垂直。",
+      "duration": 9.38,
+      "sync_points": []
+    },
+    {
+      "scene": 3,
+      "file": "audio_003_标注边长.mp3",
+      "path": "C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\run_20260705_162521\\audio_003_标注边长.mp3",
+      "text": "我们来标注已知的边长。AC等于3，CB等于4，AB是斜边，也就是我们要求的那条边。",
+      "duration": 9.24,
+      "sync_points": []
+    },
+    {
+      "scene": 4,
+      "file": "audio_004_应用勾股定理.mp3",
+      "path": "C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\run_20260705_162521\\audio_004_应用勾股定理.mp3",
+      "text": "根据勾股定理，在直角三角形中，两条直角边的平方和等于斜边的平方。所以AB的平方等于AC的平方加CB的平方。",
+      "duration": 11.95,
+      "sync_points": []
+    },
+    {
+      "scene": 5,
+      "file": "audio_005_代入计算.mp3",
+      "path": "C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\run_20260705_162521\\audio_005_代入计算.mp3",
+      "text": "代入数值，AB的平方等于3的平方加4的平方，等于9加16，等于25。所以AB等于根号25，也就是5。",
+      "duration": 11.33,
+      "sync_points": []
+    },
+    {
+      "scene": 6,
+      "file": "audio_006_总结.mp3",
+      "path": "C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\run_20260705_162521\\audio_006_总结.mp3",
+      "text": "总结一下，在直角三角形ABC中，角C等于90度，AC等于3，CB等于4，根据勾股定理求得AB等于5。这就是经典的3、4、5勾股数组。",
+      "duration": 15.02,
+      "sync_points": []
+    }
+  ],
+  "total_duration": 70.85,
+  "count": 6,
+  "voice": "zh-CN-XiaoxiaoNeural"
+}

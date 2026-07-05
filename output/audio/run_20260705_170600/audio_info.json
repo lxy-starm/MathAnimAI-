@@ -1,0 +1,55 @@
+{
+  "files": [
+    {
+      "scene": 1,
+      "file": "audio_001_开场.mp3",
+      "path": "C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\run_20260705_170600\\audio_001_开场.mp3",
+      "text": "大家好，今天我们来学习勾股定理的应用。",
+      "duration": 4.18,
+      "sync_points": []
+    },
+    {
+      "scene": 2,
+      "file": "audio_002_画三角形.mp3",
+      "path": "C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\run_20260705_170600\\audio_002_画三角形.mp3",
+      "text": "首先画一个直角三角形ABC，其中角C是直角。",
+      "duration": 5.28,
+      "sync_points": []
+    },
+    {
+      "scene": 3,
+      "file": "audio_003_标注边长.mp3",
+      "path": "C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\run_20260705_170600\\audio_003_标注边长.mp3",
+      "text": "已知AC等于3，CB等于4，我们需要求斜边AB的长度。",
+      "duration": 5.98,
+      "sync_points": []
+    },
+    {
+      "scene": 4,
+      "file": "audio_004_写出公式.mp3",
+      "path": "C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\run_20260705_170600\\audio_004_写出公式.mp3",
+      "text": "根据勾股定理，AB的平方等于AC的平方加上CB的平方。",
+      "duration": 6.02,
+      "sync_points": []
+    },
+    {
+      "scene": 5,
+      "file": "audio_005_代入计算.mp3",
+      "path": "C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\run_20260705_170600\\audio_005_代入计算.mp3",
+      "text": "代入数值，AB的平方等于9加16等于25，所以AB等于5。",
+      "duration": 6.77,
+      "sync_points": []
+    },
+    {
+      "scene": 6,
+      "file": "audio_006_总结.mp3",
+      "path": "C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\run_20260705_170600\\audio_006_总结.mp3",
+      "text": "这就是经典的勾三股四弦五，直角三角形斜边AB的长度是5。",
+      "duration": 6.43,
+      "sync_points": []
+    }
+  ],
+  "total_duration": 34.66,
+  "count": 6,
+  "voice": "zh-CN-XiaoxiaoNeural"
+}

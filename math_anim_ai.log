@@ -2922,3 +2922,307 @@ KeyError: 'radius_line'
 2026-07-05 16:14:26,500 [INFO] MathAnimAI.Storage: 更新记录 ID=46: ['final_video_path', 'status']
 2026-07-05 16:14:26,500 [INFO] MathAnimAI: 动画渲染完成: ./output\videos\MathProblemScene_20260705_161347.mp4
 2026-07-05 16:14:26,501 [INFO] MathAnimAI: 流水线完成: 耗时77.3s
+2026-07-05 16:21:40,274 [INFO] MathAnimAI: ============================================================
+2026-07-05 16:21:40,274 [INFO] MathAnimAI: MathAnimAI 启动中...
+2026-07-05 16:21:40,275 [INFO] MathAnimAI: ============================================================
+2026-07-05 16:21:41,035 [INFO] manim: Reading config file: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\manim\_config\default.cfg
+2026-07-05 16:21:41,649 [INFO] MathAnimAI: [OK] Manim 0.20.1
+2026-07-05 16:21:41,900 [INFO] MathAnimAI: [OK] edge-tts
+2026-07-05 16:21:42,110 [INFO] MathAnimAI: [OK] moviepy
+2026-07-05 16:21:42,917 [INFO] MathAnimAI: [OK] openai
+2026-07-05 16:21:46,311 [INFO] httpx: HTTP Request: POST https://api.kunkunout.cn/v1/messages "HTTP/1.1 200 OK"
+2026-07-05 16:21:46,336 [INFO] MathAnimAI: Anthropic API 连接成功
+2026-07-05 16:21:46,352 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-07-05 16:21:46,352 [INFO] MathAnimAI: 数据库就绪
+2026-07-05 16:21:49,285 [INFO] MathAnimAI: 启动 Web 服务: http://127.0.0.1:7060
+2026-07-05 16:21:49,743 [INFO] httpx: HTTP Request: GET http://127.0.0.1:7060/gradio_api/startup-events "HTTP/1.1 200 OK"
+2026-07-05 16:21:49,769 [INFO] httpx: HTTP Request: HEAD http://127.0.0.1:7060/ "HTTP/1.1 200 OK"
+2026-07-05 16:21:50,281 [INFO] httpx: HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2026-07-05 16:24:33,051 [INFO] httpx: HTTP Request: POST https://api.kunkunout.cn/v1/messages "HTTP/1.1 200 OK"
+2026-07-05 16:24:33,053 [INFO] MathAnimAI: Anthropic API 连接成功
+2026-07-05 16:24:33,053 [INFO] MathAnimAI: 使用 Claude 直生代码模式
+2026-07-05 16:24:33,053 [INFO] MathAnimAI: ============================================================
+2026-07-05 16:24:33,054 [INFO] MathAnimAI: [代码直生模式] 流水线启动: grade=初中, type=自动识别
+2026-07-05 16:24:33,055 [INFO] MathAnimAI: 题目: 直角三角形ABC中，角C=90度，AC=3,CB=4，求AB的长度
+2026-07-05 16:24:33,056 [INFO] MathAnimAI: [Step 1/6] OCR 预处理
+2026-07-05 16:24:33,056 [INFO] MathAnimAI: [Step 2/6] 题目类型识别
+2026-07-05 16:24:33,056 [INFO] MathAnimAI: 自动识别题型: geometry
+2026-07-05 16:24:33,056 [INFO] MathAnimAI: [Step 3/6] Claude 直生 Manim 代码
+2026-07-05 16:24:35,069 [INFO] httpx: HTTP Request: POST https://api.kunkunout.cn/v1/messages "HTTP/1.1 200 OK"
+2026-07-05 16:24:35,071 [INFO] MathAnimAI: Anthropic API 连接成功
+2026-07-05 16:24:35,072 [INFO] MathAnimAI.LLM: 调用 Claude 直生代码: model=claude-opus-4-6, max_tokens=16384
+2026-07-05 16:25:21,801 [INFO] httpx: HTTP Request: POST https://api.kunkunout.cn/v1/messages "HTTP/1.1 200 OK"
+2026-07-05 16:25:21,803 [INFO] MathAnimAI.LLM: Claude 代码生成完成，耗时46.7s，长度14612字符
+2026-07-05 16:25:21,804 [INFO] MathAnimAI.LLM: 代码生成成功: 6幕, 代码13153字符
+2026-07-05 16:25:21,804 [INFO] MathAnimAI: 代码生成成功: 6幕, 代码13153字符
+2026-07-05 16:25:21,804 [INFO] MathAnimAI: [Step 4/6] 保存记录到数据库
+2026-07-05 16:25:21,808 [INFO] MathAnimAI.Storage: 插入记录 ID=47
+2026-07-05 16:25:21,808 [INFO] MathAnimAI: 数据库记录 ID=47
+2026-07-05 16:25:21,808 [INFO] MathAnimAI: [Step 5/6] TTS 语音生成
+2026-07-05 16:25:21,812 [INFO] MathAnimAI: 生成幕1语音: 开场, 文本长度=64
+2026-07-05 16:25:21,812 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=64
+2026-07-05 16:25:23,348 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\run_20260705_162521\audio_001_开场.mp3, 时长=13.9s, 同步点=0句
+2026-07-05 16:25:23,349 [INFO] MathAnimAI: 幕1语音生成成功: 时长=13.9s, 同步点=0句
+2026-07-05 16:25:23,349 [INFO] MathAnimAI: 生成幕2语音: 画三角形, 文本长度=39
+2026-07-05 16:25:23,349 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=39
+2026-07-05 16:25:25,030 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\run_20260705_162521\audio_002_画三角形.mp3, 时长=9.4s, 同步点=0句
+2026-07-05 16:25:25,030 [INFO] MathAnimAI: 幕2语音生成成功: 时长=9.4s, 同步点=0句
+2026-07-05 16:25:25,030 [INFO] MathAnimAI: 生成幕3语音: 标注边长, 文本长度=41
+2026-07-05 16:25:25,031 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=41
+2026-07-05 16:25:26,656 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\run_20260705_162521\audio_003_标注边长.mp3, 时长=9.2s, 同步点=0句
+2026-07-05 16:25:26,656 [INFO] MathAnimAI: 幕3语音生成成功: 时长=9.2s, 同步点=0句
+2026-07-05 16:25:26,657 [INFO] MathAnimAI: 生成幕4语音: 应用勾股定理, 文本长度=53
+2026-07-05 16:25:26,657 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=53
+2026-07-05 16:25:28,261 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\run_20260705_162521\audio_004_应用勾股定理.mp3, 时长=12.0s, 同步点=0句
+2026-07-05 16:25:28,261 [INFO] MathAnimAI: 幕4语音生成成功: 时长=12.0s, 同步点=0句
+2026-07-05 16:25:28,261 [INFO] MathAnimAI: 生成幕5语音: 代入计算, 文本长度=50
+2026-07-05 16:25:28,262 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=50
+2026-07-05 16:25:30,418 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\run_20260705_162521\audio_005_代入计算.mp3, 时长=11.3s, 同步点=0句
+2026-07-05 16:25:30,418 [INFO] MathAnimAI: 幕5语音生成成功: 时长=11.3s, 同步点=0句
+2026-07-05 16:25:30,418 [INFO] MathAnimAI: 生成幕6语音: 总结, 文本长度=66
+2026-07-05 16:25:30,418 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=66
+2026-07-05 16:25:34,319 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\run_20260705_162521\audio_006_总结.mp3, 时长=15.0s, 同步点=0句
+2026-07-05 16:25:34,319 [INFO] MathAnimAI: 幕6语音生成成功: 时长=15.0s, 同步点=0句
+2026-07-05 16:25:34,321 [INFO] MathAnimAI.TTS: audio_info.json 已保存: ./output\audio\run_20260705_162521\audio_info.json
+2026-07-05 16:25:34,322 [INFO] MathAnimAI.TTS: audio_info.json 已保存: ./output\audio\audio_info.json
+2026-07-05 16:25:34,325 [INFO] MathAnimAI: 语音生成完成，音频目录: ./output\audio\run_20260705_162521
+2026-07-05 16:25:34,325 [INFO] MathAnimAI: [Step 6/6] Manim 动画渲染
+2026-07-05 16:25:34,325 [INFO] MathAnimAI: Manim 版本: 0.20.1
+2026-07-05 16:25:34,327 [INFO] MathAnimAI: 场景文件已写入: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\cache\codegen_20260705_162534\MathProblemScene.py
+2026-07-05 16:25:34,328 [INFO] MathAnimAI: 场景类名: MathProblemScene
+2026-07-05 16:25:34,328 [INFO] MathAnimAI: FFmpeg路径: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-07-05 16:25:34,328 [INFO] MathAnimAI: 渲染命令: C:\Users\lxy\.conda\envs\workbuddy_agent\python.exe -m manim -qh C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\cache\codegen_20260705_162534\MathProblemScene.py MathProblemScene
+2026-07-05 16:27:08,713 [INFO] MathAnimAI: 视频已输出: ./output\videos\MathProblemScene_20260705_162534.mp4
+2026-07-05 16:27:08,718 [INFO] MathAnimAI.Storage: 更新记录 ID=47: ['final_video_path', 'status']
+2026-07-05 16:27:08,719 [INFO] MathAnimAI: 动画渲染完成: ./output\videos\MathProblemScene_20260705_162534.mp4
+2026-07-05 16:27:08,719 [INFO] MathAnimAI: 流水线完成: 耗时155.7s
+2026-07-05 16:44:58,314 [INFO] MathAnimAI: ============================================================
+2026-07-05 16:44:58,315 [INFO] MathAnimAI: MathAnimAI 启动中...
+2026-07-05 16:44:58,315 [INFO] MathAnimAI: ============================================================
+2026-07-05 16:44:59,225 [INFO] manim: Reading config file: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\manim\_config\default.cfg
+2026-07-05 16:44:59,945 [INFO] MathAnimAI: [OK] Manim 0.20.1
+2026-07-05 16:45:00,223 [INFO] MathAnimAI: [OK] edge-tts
+2026-07-05 16:45:00,468 [INFO] MathAnimAI: [OK] moviepy
+2026-07-05 16:45:01,437 [INFO] MathAnimAI: [OK] openai
+2026-07-05 16:45:05,956 [INFO] httpx: HTTP Request: POST https://api.kunkunout.cn/v1/messages "HTTP/1.1 200 OK"
+2026-07-05 16:45:05,983 [INFO] MathAnimAI: Anthropic API 连接成功
+2026-07-05 16:45:05,996 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-07-05 16:45:05,996 [INFO] MathAnimAI: 数据库就绪
+2026-07-05 16:45:09,672 [INFO] MathAnimAI: 启动 Web 服务: http://127.0.0.1:7060
+2026-07-05 16:45:10,230 [INFO] httpx: HTTP Request: GET http://127.0.0.1:7060/gradio_api/startup-events "HTTP/1.1 200 OK"
+2026-07-05 16:45:10,255 [INFO] httpx: HTTP Request: HEAD http://127.0.0.1:7060/ "HTTP/1.1 200 OK"
+2026-07-05 16:45:10,629 [INFO] httpx: HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2026-07-05 16:45:43,511 [INFO] httpx: HTTP Request: POST https://api.kunkunout.cn/v1/messages "HTTP/1.1 200 OK"
+2026-07-05 16:45:43,514 [INFO] MathAnimAI: Anthropic API 连接成功
+2026-07-05 16:45:43,514 [INFO] MathAnimAI: 使用 Claude 直生代码模式
+2026-07-05 16:45:43,514 [INFO] MathAnimAI: ============================================================
+2026-07-05 16:45:43,515 [INFO] MathAnimAI: [代码直生模式] 流水线启动: grade=初中, type=自动识别
+2026-07-05 16:45:43,515 [INFO] MathAnimAI: 题目: 直角三角形ABC中，角C=90度，AC=3,CB=4，求AB的长度。
+2026-07-05 16:45:43,515 [INFO] MathAnimAI: [Step 1/6] OCR 预处理
+2026-07-05 16:45:43,515 [INFO] MathAnimAI: [Step 2/6] 题目类型识别
+2026-07-05 16:45:43,515 [INFO] MathAnimAI: 自动识别题型: geometry
+2026-07-05 16:45:43,515 [INFO] MathAnimAI: [Step 3/6] Claude 直生 Manim 代码
+2026-07-05 16:45:45,793 [INFO] httpx: HTTP Request: POST https://api.kunkunout.cn/v1/messages "HTTP/1.1 200 OK"
+2026-07-05 16:45:45,794 [INFO] MathAnimAI: Anthropic API 连接成功
+2026-07-05 16:45:45,799 [INFO] MathAnimAI.LLM: 调用 Claude 直生代码: model=claude-opus-4-6, max_tokens=16384
+2026-07-05 16:46:42,785 [INFO] httpx: HTTP Request: POST https://api.kunkunout.cn/v1/messages "HTTP/1.1 200 OK"
+2026-07-05 16:46:42,787 [INFO] MathAnimAI.LLM: Claude 代码生成完成，耗时57.0s，长度18308字符
+2026-07-05 16:46:42,788 [INFO] MathAnimAI.LLM: 代码生成成功: 6幕, 代码17189字符
+2026-07-05 16:46:42,789 [INFO] MathAnimAI: 代码生成成功: 6幕, 代码17189字符
+2026-07-05 16:46:42,790 [INFO] MathAnimAI: [Step 4/6] 保存记录到数据库
+2026-07-05 16:46:42,829 [INFO] MathAnimAI.Storage: 插入记录 ID=48
+2026-07-05 16:46:42,829 [INFO] MathAnimAI: 数据库记录 ID=48
+2026-07-05 16:46:42,829 [INFO] MathAnimAI: [Step 5/6] TTS 语音生成
+2026-07-05 16:46:42,833 [INFO] MathAnimAI: 生成幕1语音: 开场, 文本长度=19
+2026-07-05 16:46:42,834 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=19
+2026-07-05 16:46:44,341 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\run_20260705_164642\audio_001_开场.mp3, 时长=4.2s, 同步点=0句
+2026-07-05 16:46:44,341 [INFO] MathAnimAI: 幕1语音生成成功: 时长=4.2s, 同步点=0句
+2026-07-05 16:46:44,341 [INFO] MathAnimAI: 生成幕2语音: 画三角形, 文本长度=20
+2026-07-05 16:46:44,341 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=20
+2026-07-05 16:46:45,809 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\run_20260705_164642\audio_002_画三角形.mp3, 时长=4.8s, 同步点=0句
+2026-07-05 16:46:45,809 [INFO] MathAnimAI: 幕2语音生成成功: 时长=4.8s, 同步点=0句
+2026-07-05 16:46:45,810 [INFO] MathAnimAI: 生成幕3语音: 标注边长, 文本长度=20
+2026-07-05 16:46:45,810 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=20
+2026-07-05 16:46:47,171 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\run_20260705_164642\audio_003_标注边长.mp3, 时长=4.9s, 同步点=0句
+2026-07-05 16:46:47,171 [INFO] MathAnimAI: 幕3语音生成成功: 时长=4.9s, 同步点=0句
+2026-07-05 16:46:47,171 [INFO] MathAnimAI: 生成幕4语音: 应用勾股定理, 文本长度=26
+2026-07-05 16:46:47,172 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=26
+2026-07-05 16:46:48,715 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\run_20260705_164642\audio_004_应用勾股定理.mp3, 时长=5.8s, 同步点=0句
+2026-07-05 16:46:48,715 [INFO] MathAnimAI: 幕4语音生成成功: 时长=5.8s, 同步点=0句
+2026-07-05 16:46:48,715 [INFO] MathAnimAI: 生成幕5语音: 计算结果, 文本长度=29
+2026-07-05 16:46:48,716 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=29
+2026-07-05 16:46:50,262 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\run_20260705_164642\audio_005_计算结果.mp3, 时长=6.8s, 同步点=0句
+2026-07-05 16:46:50,262 [INFO] MathAnimAI: 幕5语音生成成功: 时长=6.8s, 同步点=0句
+2026-07-05 16:46:50,262 [INFO] MathAnimAI: 生成幕6语音: 总结, 文本长度=26
+2026-07-05 16:46:50,263 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=26
+2026-07-05 16:46:51,778 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\run_20260705_164642\audio_006_总结.mp3, 时长=6.1s, 同步点=0句
+2026-07-05 16:46:51,778 [INFO] MathAnimAI: 幕6语音生成成功: 时长=6.1s, 同步点=0句
+2026-07-05 16:46:51,781 [INFO] MathAnimAI.TTS: audio_info.json 已保存: ./output\audio\run_20260705_164642\audio_info.json
+2026-07-05 16:46:51,783 [INFO] MathAnimAI.TTS: audio_info.json 已保存: ./output\audio\audio_info.json
+2026-07-05 16:46:51,784 [INFO] MathAnimAI: 语音生成完成，音频目录: ./output\audio\run_20260705_164642
+2026-07-05 16:46:51,784 [INFO] MathAnimAI: [Step 6/6] Manim 动画渲染
+2026-07-05 16:46:51,784 [INFO] MathAnimAI: Manim 版本: 0.20.1
+2026-07-05 16:46:51,786 [INFO] MathAnimAI: 场景文件已写入: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\cache\codegen_20260705_164651\MathProblemScene.py
+2026-07-05 16:46:51,786 [INFO] MathAnimAI: 场景类名: MathProblemScene
+2026-07-05 16:46:51,787 [INFO] MathAnimAI: FFmpeg路径: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-07-05 16:46:51,787 [INFO] MathAnimAI: 渲染命令: C:\Users\lxy\.conda\envs\workbuddy_agent\python.exe -m manim -qh C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\cache\codegen_20260705_164651\MathProblemScene.py MathProblemScene
+2026-07-05 16:47:46,496 [INFO] MathAnimAI: 视频已输出: ./output\videos\MathProblemScene_20260705_164651.mp4
+2026-07-05 16:47:46,538 [INFO] MathAnimAI.Storage: 更新记录 ID=48: ['final_video_path', 'status']
+2026-07-05 16:47:46,538 [INFO] MathAnimAI: 动画渲染完成: ./output\videos\MathProblemScene_20260705_164651.mp4
+2026-07-05 16:47:46,539 [INFO] MathAnimAI: 流水线完成: 耗时123.0s
+2026-07-05 17:04:37,297 [INFO] MathAnimAI: ============================================================
+2026-07-05 17:04:37,297 [INFO] MathAnimAI: MathAnimAI 启动中...
+2026-07-05 17:04:37,298 [INFO] MathAnimAI: ============================================================
+2026-07-05 17:04:38,077 [INFO] manim: Reading config file: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\manim\_config\default.cfg
+2026-07-05 17:04:38,662 [INFO] MathAnimAI: [OK] Manim 0.20.1
+2026-07-05 17:04:38,890 [INFO] MathAnimAI: [OK] edge-tts
+2026-07-05 17:04:39,100 [INFO] MathAnimAI: [OK] moviepy
+2026-07-05 17:04:39,890 [INFO] MathAnimAI: [OK] openai
+2026-07-05 17:04:43,059 [INFO] httpx: HTTP Request: POST https://api.kunkunout.cn/v1/messages "HTTP/1.1 200 OK"
+2026-07-05 17:04:43,083 [INFO] MathAnimAI: Anthropic API 连接成功
+2026-07-05 17:04:43,091 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-07-05 17:04:43,092 [INFO] MathAnimAI: 数据库就绪
+2026-07-05 17:04:45,985 [INFO] MathAnimAI: 启动 Web 服务: http://127.0.0.1:7060
+2026-07-05 17:04:46,439 [INFO] httpx: HTTP Request: GET http://127.0.0.1:7060/gradio_api/startup-events "HTTP/1.1 200 OK"
+2026-07-05 17:04:46,461 [INFO] httpx: HTTP Request: HEAD http://127.0.0.1:7060/ "HTTP/1.1 200 OK"
+2026-07-05 17:04:47,143 [INFO] httpx: HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2026-07-05 17:05:01,836 [INFO] httpx: HTTP Request: POST https://api.kunkunout.cn/v1/messages "HTTP/1.1 200 OK"
+2026-07-05 17:05:01,839 [INFO] MathAnimAI: Anthropic API 连接成功
+2026-07-05 17:05:01,839 [INFO] MathAnimAI: 使用 Claude 直生代码模式
+2026-07-05 17:05:01,839 [INFO] MathAnimAI: ============================================================
+2026-07-05 17:05:01,839 [INFO] MathAnimAI: [代码直生模式] 流水线启动: grade=初中, type=自动识别
+2026-07-05 17:05:01,839 [INFO] MathAnimAI: 题目: 直角三角形ABC中，角C=90度，AC=3,CB=4，求AB的长度。
+2026-07-05 17:05:01,839 [INFO] MathAnimAI: [Step 1/6] OCR 预处理
+2026-07-05 17:05:01,840 [INFO] MathAnimAI: [Step 2/6] 题目类型识别
+2026-07-05 17:05:01,840 [INFO] MathAnimAI: 自动识别题型: geometry
+2026-07-05 17:05:01,840 [INFO] MathAnimAI: [Step 3/6] Claude 直生 Manim 代码
+2026-07-05 17:05:03,852 [INFO] httpx: HTTP Request: POST https://api.kunkunout.cn/v1/messages "HTTP/1.1 200 OK"
+2026-07-05 17:05:03,854 [INFO] MathAnimAI: Anthropic API 连接成功
+2026-07-05 17:05:03,858 [INFO] MathAnimAI.LLM: 调用 Claude 直生代码: model=claude-opus-4-6, max_tokens=16384
+2026-07-05 17:06:00,507 [INFO] httpx: HTTP Request: POST https://api.kunkunout.cn/v1/messages "HTTP/1.1 200 OK"
+2026-07-05 17:06:00,703 [INFO] MathAnimAI.LLM: Claude 代码生成完成，耗时56.8s，长度13983字符
+2026-07-05 17:06:00,704 [INFO] MathAnimAI.LLM: 代码生成成功: 6幕, 代码12984字符
+2026-07-05 17:06:00,705 [INFO] MathAnimAI: 代码生成成功: 6幕, 代码12984字符
+2026-07-05 17:06:00,706 [INFO] MathAnimAI: [Step 4/6] 保存记录到数据库
+2026-07-05 17:06:00,711 [INFO] MathAnimAI.Storage: 插入记录 ID=49
+2026-07-05 17:06:00,712 [INFO] MathAnimAI: 数据库记录 ID=49
+2026-07-05 17:06:00,712 [INFO] MathAnimAI: [Step 5/6] TTS 语音生成
+2026-07-05 17:06:00,716 [INFO] MathAnimAI: 生成幕1语音: 开场, 文本长度=19
+2026-07-05 17:06:00,717 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=19
+2026-07-05 17:06:02,168 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\run_20260705_170600\audio_001_开场.mp3, 时长=4.2s, 同步点=0句
+2026-07-05 17:06:02,168 [INFO] MathAnimAI: 幕1语音生成成功: 时长=4.2s, 同步点=0句
+2026-07-05 17:06:02,168 [INFO] MathAnimAI: 生成幕2语音: 画三角形, 文本长度=22
+2026-07-05 17:06:02,169 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=22
+2026-07-05 17:06:03,599 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\run_20260705_170600\audio_002_画三角形.mp3, 时长=5.3s, 同步点=0句
+2026-07-05 17:06:03,599 [INFO] MathAnimAI: 幕2语音生成成功: 时长=5.3s, 同步点=0句
+2026-07-05 17:06:03,599 [INFO] MathAnimAI: 生成幕3语音: 标注边长, 文本长度=27
+2026-07-05 17:06:03,599 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=27
+2026-07-05 17:06:05,157 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\run_20260705_170600\audio_003_标注边长.mp3, 时长=6.0s, 同步点=0句
+2026-07-05 17:06:05,157 [INFO] MathAnimAI: 幕3语音生成成功: 时长=6.0s, 同步点=0句
+2026-07-05 17:06:05,157 [INFO] MathAnimAI: 生成幕4语音: 写出公式, 文本长度=27
+2026-07-05 17:06:05,158 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=27
+2026-07-05 17:06:06,632 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\run_20260705_170600\audio_004_写出公式.mp3, 时长=6.0s, 同步点=0句
+2026-07-05 17:06:06,633 [INFO] MathAnimAI: 幕4语音生成成功: 时长=6.0s, 同步点=0句
+2026-07-05 17:06:06,633 [INFO] MathAnimAI: 生成幕5语音: 代入计算, 文本长度=29
+2026-07-05 17:06:06,633 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=29
+2026-07-05 17:06:08,074 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\run_20260705_170600\audio_005_代入计算.mp3, 时长=6.8s, 同步点=0句
+2026-07-05 17:06:08,074 [INFO] MathAnimAI: 幕5语音生成成功: 时长=6.8s, 同步点=0句
+2026-07-05 17:06:08,074 [INFO] MathAnimAI: 生成幕6语音: 总结, 文本长度=28
+2026-07-05 17:06:08,075 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=28
+2026-07-05 17:06:09,596 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\run_20260705_170600\audio_006_总结.mp3, 时长=6.4s, 同步点=0句
+2026-07-05 17:06:09,597 [INFO] MathAnimAI: 幕6语音生成成功: 时长=6.4s, 同步点=0句
+2026-07-05 17:06:09,598 [INFO] MathAnimAI.TTS: audio_info.json 已保存: ./output\audio\run_20260705_170600\audio_info.json
+2026-07-05 17:06:09,600 [INFO] MathAnimAI.TTS: audio_info.json 已保存: ./output\audio\audio_info.json
+2026-07-05 17:06:09,602 [INFO] MathAnimAI: 语音生成完成，音频目录: ./output\audio\run_20260705_170600
+2026-07-05 17:06:09,602 [INFO] MathAnimAI: [Step 6/6] Manim 动画渲染
+2026-07-05 17:06:09,603 [INFO] MathAnimAI: Manim 版本: 0.20.1
+2026-07-05 17:06:09,604 [INFO] MathAnimAI: 场景文件已写入: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\cache\codegen_20260705_170609\MathProblemScene.py
+2026-07-05 17:06:09,605 [INFO] MathAnimAI: 场景类名: MathProblemScene
+2026-07-05 17:06:09,605 [INFO] MathAnimAI: FFmpeg路径: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-07-05 17:06:09,605 [INFO] MathAnimAI: 渲染命令: C:\Users\lxy\.conda\envs\workbuddy_agent\python.exe -m manim -qh C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\cache\codegen_20260705_170609\MathProblemScene.py MathProblemScene
+2026-07-05 17:07:10,636 [INFO] MathAnimAI: 视频已输出: ./output\videos\MathProblemScene_20260705_170609.mp4
+2026-07-05 17:07:10,641 [INFO] MathAnimAI.Storage: 更新记录 ID=49: ['final_video_path', 'status']
+2026-07-05 17:07:10,641 [INFO] MathAnimAI: 动画渲染完成: ./output\videos\MathProblemScene_20260705_170609.mp4
+2026-07-05 17:07:10,642 [INFO] MathAnimAI: 流水线完成: 耗时128.8s
+2026-07-05 17:07:10,810 [ERROR] asyncio: Exception in callback _ProactorBasePipeTransport._call_connection_lost(None)
+handle: <Handle _ProactorBasePipeTransport._call_connection_lost(None)>
+Traceback (most recent call last):
+  File "C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\asyncio\proactor_events.py", line 165, in _call_connection_lost
+    self._sock.shutdown(socket.SHUT_RDWR)
+ConnectionResetError: [WinError 10054] 远程主机强迫关闭了一个现有的连接。
+2026-07-05 17:26:58,647 [INFO] MathAnimAI: ============================================================
+2026-07-05 17:26:58,647 [INFO] MathAnimAI: MathAnimAI 启动中...
+2026-07-05 17:26:58,648 [INFO] MathAnimAI: ============================================================
+2026-07-05 17:26:59,460 [INFO] manim: Reading config file: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\manim\_config\default.cfg
+2026-07-05 17:27:00,287 [INFO] MathAnimAI: [OK] Manim 0.20.1
+2026-07-05 17:27:00,602 [INFO] MathAnimAI: [OK] edge-tts
+2026-07-05 17:27:00,837 [INFO] MathAnimAI: [OK] moviepy
+2026-07-05 17:27:01,747 [INFO] MathAnimAI: [OK] openai
+2026-07-05 17:27:05,423 [INFO] httpx: HTTP Request: POST https://api.kunkunout.cn/v1/messages "HTTP/1.1 200 OK"
+2026-07-05 17:27:05,448 [INFO] MathAnimAI: Anthropic API 连接成功
+2026-07-05 17:27:05,458 [INFO] MathAnimAI.Storage: 数据库初始化完成
+2026-07-05 17:27:05,458 [INFO] MathAnimAI: 数据库就绪
+2026-07-05 17:27:08,422 [INFO] MathAnimAI: 启动 Web 服务: http://127.0.0.1:7060
+2026-07-05 17:27:08,897 [INFO] httpx: HTTP Request: GET http://127.0.0.1:7060/gradio_api/startup-events "HTTP/1.1 200 OK"
+2026-07-05 17:27:08,919 [INFO] httpx: HTTP Request: HEAD http://127.0.0.1:7060/ "HTTP/1.1 200 OK"
+2026-07-05 17:27:09,261 [INFO] httpx: HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2026-07-05 17:27:17,949 [INFO] httpx: HTTP Request: POST https://api.kunkunout.cn/v1/messages "HTTP/1.1 200 OK"
+2026-07-05 17:27:17,950 [INFO] MathAnimAI: Anthropic API 连接成功
+2026-07-05 17:27:17,950 [INFO] MathAnimAI: 使用 Claude 直生代码模式
+2026-07-05 17:27:17,951 [INFO] MathAnimAI: ============================================================
+2026-07-05 17:27:17,952 [INFO] MathAnimAI: [代码直生模式] 流水线启动: grade=初中, type=自动识别
+2026-07-05 17:27:17,952 [INFO] MathAnimAI: 题目: 直角三角形ABC中，角C=90度，AC=3,CB=4，求AB的长度。
+2026-07-05 17:27:17,952 [INFO] MathAnimAI: [Step 1/6] OCR 预处理
+2026-07-05 17:27:17,952 [INFO] MathAnimAI: [Step 2/6] 题目类型识别
+2026-07-05 17:27:17,952 [INFO] MathAnimAI: 自动识别题型: geometry
+2026-07-05 17:27:17,953 [INFO] MathAnimAI: [Step 3/6] Claude 直生 Manim 代码
+2026-07-05 17:27:24,477 [INFO] httpx: HTTP Request: POST https://api.kunkunout.cn/v1/messages "HTTP/1.1 200 OK"
+2026-07-05 17:27:24,478 [INFO] MathAnimAI: Anthropic API 连接成功
+2026-07-05 17:27:24,481 [INFO] MathAnimAI.LLM: 调用 Claude 直生代码: model=claude-opus-4-6, max_tokens=16384
+2026-07-05 17:28:04,361 [INFO] httpx: HTTP Request: POST https://api.kunkunout.cn/v1/messages "HTTP/1.1 200 OK"
+2026-07-05 17:28:04,363 [INFO] MathAnimAI.LLM: Claude 代码生成完成，耗时39.9s，长度11834字符
+2026-07-05 17:28:04,364 [INFO] MathAnimAI.LLM: 代码生成成功: 6幕, 代码10643字符
+2026-07-05 17:28:04,365 [INFO] MathAnimAI: 代码生成成功: 6幕, 代码10643字符
+2026-07-05 17:28:04,366 [INFO] MathAnimAI: [Step 4/6] 保存记录到数据库
+2026-07-05 17:28:04,369 [INFO] MathAnimAI.Storage: 插入记录 ID=50
+2026-07-05 17:28:04,370 [INFO] MathAnimAI: 数据库记录 ID=50
+2026-07-05 17:28:04,370 [INFO] MathAnimAI: [Step 5/6] TTS 语音生成
+2026-07-05 17:28:04,376 [INFO] MathAnimAI: 生成幕1语音: 开场, 文本长度=16
+2026-07-05 17:28:04,377 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=16
+2026-07-05 17:28:05,816 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\run_20260705_172804\audio_001_开场.mp3, 时长=3.8s, 同步点=0句
+2026-07-05 17:28:05,816 [INFO] MathAnimAI: 幕1语音生成成功: 时长=3.8s, 同步点=0句
+2026-07-05 17:28:05,816 [INFO] MathAnimAI: 生成幕2语音: 画三角形, 文本长度=31
+2026-07-05 17:28:05,817 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=31
+2026-07-05 17:28:07,398 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\run_20260705_172804\audio_002_画三角形.mp3, 时长=7.2s, 同步点=0句
+2026-07-05 17:28:07,398 [INFO] MathAnimAI: 幕2语音生成成功: 时长=7.2s, 同步点=0句
+2026-07-05 17:28:07,398 [INFO] MathAnimAI: 生成幕3语音: 标注边长, 文本长度=16
+2026-07-05 17:28:07,399 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=16
+2026-07-05 17:28:08,807 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\run_20260705_172804\audio_003_标注边长.mp3, 时长=4.1s, 同步点=0句
+2026-07-05 17:28:08,807 [INFO] MathAnimAI: 幕3语音生成成功: 时长=4.1s, 同步点=0句
+2026-07-05 17:28:08,807 [INFO] MathAnimAI: 生成幕4语音: 写出公式, 文本长度=26
+2026-07-05 17:28:08,808 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=26
+2026-07-05 17:28:10,157 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\run_20260705_172804\audio_004_写出公式.mp3, 时长=5.8s, 同步点=0句
+2026-07-05 17:28:10,157 [INFO] MathAnimAI: 幕4语音生成成功: 时长=5.8s, 同步点=0句
+2026-07-05 17:28:10,157 [INFO] MathAnimAI: 生成幕5语音: 计算结果, 文本长度=19
+2026-07-05 17:28:10,158 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=19
+2026-07-05 17:28:11,546 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\run_20260705_172804\audio_005_计算结果.mp3, 时长=4.2s, 同步点=0句
+2026-07-05 17:28:11,546 [INFO] MathAnimAI: 幕5语音生成成功: 时长=4.2s, 同步点=0句
+2026-07-05 17:28:11,546 [INFO] MathAnimAI: 生成幕6语音: 总结, 文本长度=20
+2026-07-05 17:28:11,547 [INFO] MathAnimAI.TTS: 生成语音(带同步): voice=zh-CN-XiaoxiaoNeural, 文本长度=20
+2026-07-05 17:28:12,971 [INFO] MathAnimAI.TTS: 语音生成成功(带同步): C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\output\audio\run_20260705_172804\audio_006_总结.mp3, 时长=4.9s, 同步点=0句
+2026-07-05 17:28:12,971 [INFO] MathAnimAI: 幕6语音生成成功: 时长=4.9s, 同步点=0句
+2026-07-05 17:28:12,974 [INFO] MathAnimAI.TTS: audio_info.json 已保存: ./output\audio\run_20260705_172804\audio_info.json
+2026-07-05 17:28:12,975 [INFO] MathAnimAI.TTS: audio_info.json 已保存: ./output\audio\audio_info.json
+2026-07-05 17:28:12,976 [INFO] MathAnimAI: 语音生成完成，音频目录: ./output\audio\run_20260705_172804
+2026-07-05 17:28:12,976 [INFO] MathAnimAI: [Step 6/6] Manim 动画渲染
+2026-07-05 17:28:12,976 [INFO] MathAnimAI: Manim 版本: 0.20.1
+2026-07-05 17:28:13,033 [INFO] MathAnimAI: 场景文件已写入: C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\cache\codegen_20260705_172812\MathProblemScene.py
+2026-07-05 17:28:13,033 [INFO] MathAnimAI: 场景类名: MathProblemScene
+2026-07-05 17:28:13,034 [INFO] MathAnimAI: FFmpeg路径: C:\Users\lxy\.conda\envs\workbuddy_agent\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe
+2026-07-05 17:28:13,034 [INFO] MathAnimAI: 渲染命令: C:\Users\lxy\.conda\envs\workbuddy_agent\python.exe -m manim -qh C:\Users\lxy\WorkBuddy\2026-06-30-16-26-23\education_agent\cache\codegen_20260705_172812\MathProblemScene.py MathProblemScene
+2026-07-05 17:29:05,070 [INFO] MathAnimAI: 视频已输出: ./output\videos\MathProblemScene_20260705_172812.mp4
+2026-07-05 17:29:05,074 [INFO] MathAnimAI.Storage: 更新记录 ID=50: ['final_video_path', 'status']
+2026-07-05 17:29:05,074 [INFO] MathAnimAI: 动画渲染完成: ./output\videos\MathProblemScene_20260705_172812.mp4
+2026-07-05 17:29:05,075 [INFO] MathAnimAI: 流水线完成: 耗时107.1s

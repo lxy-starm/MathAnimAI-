@@ -36,9 +36,16 @@ SYSTEM_PROMPT = r"""你是一个专业的数学教学动画工程师，擅长用
    - `self.get_sync_time("关键词")` — 获取关键词对应的同步时间
 
 2. **字幕工具**：
-   - `self.create_subtitle(text)` — 创建字幕（底部纯文字）
-   - `self.show_subtitle_timed(text, duration)` — 显示字幕并在指定时间后退场
-   - `self.fade_in(mobject, run_time=0.5)` / `self.fade_out(mobject, run_time=0.5)`
+   - `self.create_subtitle(text)` — 创建字幕 Mobject（底部），返回 Text 对象，需手动 add/remove
+   - `self.show_subtitle_timed(text, duration)` — 显示字幕指定秒数后自动退场（会阻塞）
+   - **推荐模式（字幕持续整幕）**：
+     ```python
+     sub = self.create_subtitle("本幕摘要文本")   # 创建
+     self.play(FadeIn(sub), run_time=0.5)       # 淡入（之后持续显示）
+     # ... 本幕所有动画 ...
+     self.play(FadeOut(sub), run_time=0.5)       # 结尾淡出
+     ```
+   - **不推荐**：`show_subtitle_timed(text, expected)` 会阻塞整幕时长，导致其他动画无法同时播放
 
 3. **高亮工具**：
    - `self.highlight_element(element, color=None, scale=1.3, duration=0.8)` — 高亮元素
@@ -143,11 +150,105 @@ SYSTEM_PROMPT = r"""你是一个专业的数学教学动画工程师，擅长用
    - 如果题目半径=5，画在屏幕上的圆应该用 display_radius≈2.0，不是5.0
    - 数学值（如 radius=5, area=25π）单独存储在 geometry dict 中，不用作坐标
 5. **音频同步**：配音提到什么，画面就高亮什么；用 `wait_for_narration` 对齐
-6. **字幕**：用 `self.create_subtitle(text)` 创建，不用 Subtitle 类
+6. **字幕（必须）**：每幕 `play_scene_N` 开头必须调用 `self.show_subtitle_timed(narration文本, expected)` 显示字幕；也可用 `self.create_subtitle(text)` + `self.play(FadeIn(sub))` 手动控制
 7. **角度标记**：用 `Sector` 绘制角度弧
 8. **虚线**：用 `DashedLine`
 9. **不硬编码坐标**：所有坐标在 `calculate_geometry()` 中用 numpy 计算
 10. **不写 construct()**：基类已有模板方法 construct()，会自动调用你的方法
+11. **字幕强制规则**：每幕 `play_scene_N` 中必须显示字幕。推荐写法（字幕持续整幕，动画同时播放）：
+    ```python
+    # 在 start_scene_with_audio 之后
+    sub = self.create_subtitle("本幕摘要（15字以内）")  # 创建字幕 Mobject
+    self.play(FadeIn(sub), run_time=0.5)                  # 淡入（之后持续显示）
+    # ... 本幕所有动画（字幕始终可见）...
+    self.play(FadeOut(sub), run_time=0.5)                  # 结尾淡出
+    ```
+    - 字幕文本应简洁，概括本幕内容（15字以内为佳）
+    - 不要用 `show_subtitle_timed(text, expected)`（会阻塞整幕）
+12. **图形逐步构建（重要！）**：
+   数学讲解动画的图形是**逐步构建、持续保留**的，不是每幕从零开始。
+   - 第1幕：显示标题/题目，这些元素可以保留到后续幕
+   - 第2幕：画出核心图形（如三角形），图形**必须保留**到后续所有幕
+   - 第3幕及以后：在已有图形基础上**添加**新元素（标注、公式、高亮），不清除已有图形
+   - **绝对禁止**在 `play_scene_N` 开头写 `self.clear()`！这会导致前面画的图形消失
+   - 如果某幕确实需要移除特定元素（如标题在第一幕结尾淡出），用 `self.play(FadeOut(特定元素))` 精确移除，不要用 `self.clear()`
+   - 参考 MathLens 模板风格：所有 `play_scene_N` 方法在同一画布上渐进式添加内容
+   正确写法：
+   ```python
+   def play_scene_1(self, elements, geometry):
+       expected = self.start_scene_with_audio(1)
+       # 显示标题
+       title = Text("勾股定理", font_size=60, color=self.COLORS['highlight'])
+       self.play(Write(title), run_time=1)
+       self.wait_for_narration("勾股定理")
+       # 标题可以保留到scene_2，也可以在这里淡出
+       self.play(FadeOut(title))
+       self.end_scene_with_audio(expected)
+
+   def play_scene_2(self, elements, geometry):
+       expected = self.start_scene_with_audio(2)
+       # ✅ 没有 self.clear()！scene_1 的元素已淡出，但三角形会从0开始画
+       # 画三角形（这个三角形会保留到 scene_3, scene_4...）
+       self.play(Create(elements['lines']['AB']), run_time=1)
+
+13. **布局规划（防重叠，必读！）**：
+   公式/文字**绝不能**和图形放在同一区域，必须分区域规划！
+   - **在 `calculate_geometry()` 里定义 `layout` 字典**，规划画面各区域坐标：
+     ```python
+     geometry = {
+         ...,
+         'layout': {
+             'figure': {'center': LEFT * 2.5 + DOWN * 0.5},   # 图形放左下方
+             'formula': {'center': RIGHT * 2.5 + UP * 1.5},   # 公式放右上方
+             'summary': {'center': DOWN * 2.5},                # 总结放底部
+         }
+     }
+     ```
+   - **主图形放在画面一侧**（如 `LEFT * 2.5 + DOWN * 0.5`），不要占满中央
+   - **公式/推导放在另一侧**（如 `RIGHT * 2.5 + UP * 1.5`），用 `move_to(geometry['layout']['formula']['center'])` 定位
+   - 或使用 Manim 的 `to_edge()` 方法：`formula.to_edge(RIGHT, buff=1)` 贴右边缘，`formula.to_edge(UP, buff=1)` 贴上边缘
+   - **三角形等主图形缩小一点**（scale≈0.6~0.8），给公式留空间
+   - 在 `define_elements()` 中创建图形时，用 `line.move_to(geometry['layout']['figure']['center'])` 或直接用计算好的显示坐标（已包含偏移）
+   - ❌ 错误：所有元素都用 `move_to([0, y, 0])`，导致全部堆在中央
+   - ✅ 正确：图形在左下方，公式在右上方，各归其位
+   示例（直角三角形题）：
+   ```python
+   # calculate_geometry() 中：
+   # 三角形放在左下方（C在原点附近，A在上方，B在右方，但整体左移）
+   layout_figure = LEFT * 2.0 + DOWN * 0.5
+   A_disp = layout_figure + np.array([0.0, 2.4, 0.0])
+   B_disp = layout_figure + np.array([3.2, 0.0, 0.0])
+   C_disp = layout_figure + np.array([0.0, 0.0, 0.0])
+   ...
+   geometry = {
+       'points': {'A': A_disp, 'B': B_disp, 'C': C_disp},
+       'layout': {
+           'figure_center': layout_figure,
+           'formula_pos': RIGHT * 2.5 + UP * 1.5,  # 公式位置
+           'summary_pos': DOWN * 2.5,                   # 总结位置
+       },
+       ...
+   }
+
+   # play_scene_4() 中写公式：
+   formula = MathTex(r"AB^2 = AC^2 + CB^2", font_size=44, color=self.COLORS['highlight'])
+   formula.move_to(geometry['layout']['formula_pos'])  # ✅ 公式在右上方，不重叠
+   ```
+       self.play(Create(elements['lines']['AC']), run_time=1)
+       self.play(Create(elements['lines']['BC']), run_time=1)
+       self.wait_for_narration("直角三角形")
+       self.end_scene_with_audio(expected)
+
+   def play_scene_3(self, elements, geometry):
+       expected = self.start_scene_with_audio(3)
+       # ✅ 三角形仍然在画面上！不需要重新画
+       # 在本幕添加新元素：标注边长
+       ab_label = MathTex(r"AB = c", font_size=32, color=self.COLORS['primary'])
+       ab_label.next_to(elements['lines']['AB'], DOWN)
+       self.play(Write(ab_label), run_time=1)
+       self.wait_for_narration("斜边AB")
+       self.end_scene_with_audio(expected)
+   ```
 
 ## 文本渲染规则（重要！）
 
@@ -215,6 +316,9 @@ label = Tex(r"三角形内角和")
 - **print 语句只能用 ASCII 字符**（Windows 控制台是 GBK 编码，Unicode 符号如 ✓⚠▶ 会崩溃。用 [OK] [!] >> 代替）
 - **geometry dict 中绝不存 Manim 对象**（Line/Circle/Dot 等）！只存原始坐标数据（numpy数组/dict/数字）。Manim 对象在 define_elements() 中创建。
 - **define_elements 中访问 geometry 的 key 必须和 calculate_geometry 中定义的完全一致**，不要凭空创造新 key
+- **字幕必写**：每幕 play_scene_N 中，在 start_scene_with_audio 之后必须创建字幕（用 create_subtitle + FadeIn，见第11条）
+- **图形逐步构建**：play_scene_N 中绝不写 self.clear()，图形画好后持续保留；只对新添加的元素做 FadeIn，不重新画已有图形
+- narration 文本需口语化、简洁，适合做字幕（15字以内为佳）
 """
 
 
@@ -282,9 +386,14 @@ EXAMPLE_CODE = r'''class TriangleAngleSum(MathAnimScene):
     ]
 
     def calculate_geometry(self):
-        A = np.array([0, 2, 0])
-        B = np.array([-3, -2, 0])
-        C = np.array([3, -2, 0])
+        # 布局规划：图形放左下方，公式放右上方（防止重叠）
+        layout_figure = LEFT * 2.0 + DOWN * 0.5   # 图形区域中心（左下方）
+        layout_formula = RIGHT * 2.5 + UP * 1.5   # 公式区域中心（右上方）
+        layout_summary = DOWN * 2.5                   # 总结区域（底部）
+
+        A = layout_figure + np.array([0, 2, 0])
+        B = layout_figure + np.array([-3, -2, 0])
+        C = layout_figure + np.array([3, -2, 0])
 
         def dist(p1, p2):
             return np.linalg.norm(p1 - p2)
@@ -308,6 +417,11 @@ EXAMPLE_CODE = r'''class TriangleAngleSum(MathAnimScene):
         parallel_end = A + parallel_dir * 4
 
         return {
+            '_layout': {
+                'figure_center': layout_figure,   # 图形区域（左下方）
+                'formula_pos': layout_formula,      # 公式区域（右上方）
+                'summary_pos': layout_summary,      # 总结区域（底部）
+            },
             'points': {'A': A, 'B': B, 'C': C},
             'lines': {
                 'AB': {'start': A, 'end': B, 'length': AB},
@@ -357,6 +471,11 @@ EXAMPLE_CODE = r'''class TriangleAngleSum(MathAnimScene):
 
     def play_scene_1(self, elements, geometry):
         expected = self.start_scene_with_audio(1)
+
+        # 底部字幕（淡入后持续显示，结尾淡出）
+        sub = self.create_subtitle("今天我们一起来证明三角形内角和定理")
+        self.play(FadeIn(sub), run_time=0.5)
+
         title = Text("三角形内角和定理", font_size=60, color=self.COLORS['highlight'])
         subtitle = Text("证明：三角形内角和等于180度", font_size=36, color=self.COLORS['text'])
         title.move_to(UP * 2)
@@ -365,12 +484,18 @@ EXAMPLE_CODE = r'''class TriangleAngleSum(MathAnimScene):
         self.play(FadeIn(subtitle), run_time=1)
         self.wait_for_narration("三角形")
         self.play(FadeOut(title), FadeOut(subtitle))
+
+        # 结尾：淡出底部字幕
+        self.play(FadeOut(sub), run_time=0.5)
         self.end_scene_with_audio(expected)
 
     def play_scene_2(self, elements, geometry):
         expected = self.start_scene_with_audio(2)
+
+        # 底部字幕
         sub = self.create_subtitle("首先画一个任意三角形ABC")
-        self.play(FadeIn(sub))
+        self.play(FadeIn(sub), run_time=0.5)
+
         self.wait_for_narration("三角形")
         self.play(Create(elements['lines']['AB']), run_time=1)
         self.play(Create(elements['lines']['AC']), run_time=1)
@@ -380,52 +505,74 @@ EXAMPLE_CODE = r'''class TriangleAngleSum(MathAnimScene):
             *[Write(elements['labels'][p]) for p in 'ABC'],
             run_time=1
         )
-        self.play(FadeOut(sub))
+
+        # 结尾：淡出字幕
+        self.play(FadeOut(sub), run_time=0.5)
         self.end_scene_with_audio(expected)
 
     def play_scene_3(self, elements, geometry):
         expected = self.start_scene_with_audio(3)
+
+        # 底部字幕
         sub = self.create_subtitle("标记三个内角")
-        self.play(FadeIn(sub))
+        self.play(FadeIn(sub), run_time=0.5)
+
         self.wait_for_narration("内角")
         for name in ['A', 'B', 'C']:
             angle_val = geometry['angles'][name]['deg']
             label = MathTex(f"{angle_val:.0f}" + r"^\circ", font_size=24, color=self.COLORS[f'angle_{name.lower()}'])
             label.next_to(elements['points'][name], UP if name == 'A' else DOWN, buff=0.3)
             self.play(Write(label), run_time=0.5)
-        self.play(FadeOut(sub))
+
+        # 结尾：淡出字幕
+        self.play(FadeOut(sub), run_time=0.5)
         self.end_scene_with_audio(expected)
 
     def play_scene_4(self, elements, geometry):
         expected = self.start_scene_with_audio(4)
+
+        # 底部字幕
         sub = self.create_subtitle("过顶点A作BC的平行线")
-        self.play(FadeIn(sub))
+        self.play(FadeIn(sub), run_time=0.5)
+
         self.wait_for_narration("平行线")
         self.play(Create(elements['lines']['parallel']), run_time=1.5)
-        self.play(FadeOut(sub))
+
+        # 结尾：淡出字幕
+        self.play(FadeOut(sub), run_time=0.5)
         self.end_scene_with_audio(expected)
 
     def play_scene_5(self, elements, geometry):
         expected = self.start_scene_with_audio(5)
+
+        # 底部字幕
         sub = self.create_subtitle("利用平行线性质：内错角相等")
-        self.play(FadeIn(sub))
+        self.play(FadeIn(sub), run_time=0.5)
+
         self.wait_for_narration("内错角")
         conclusion = MathTex(r"\therefore \angle A + \angle B + \angle C = 180^\circ", font_size=48, color=self.COLORS['highlight'])
-        conclusion.to_edge(DOWN, buff=1.5)
+        conclusion.move_to(geometry['_layout']['formula_pos'])  # 公式放右上方，不重叠
         self.play(Write(conclusion), run_time=1)
-        self.play(FadeOut(sub), FadeOut(conclusion))
+
+        # 结尾：淡出字幕和结论
+        self.play(FadeOut(sub), FadeOut(conclusion), run_time=0.5)
         self.end_scene_with_audio(expected)
 
     def play_scene_6(self, elements, geometry):
         expected = self.start_scene_with_audio(6)
+
+        # 底部字幕
         sub = self.create_subtitle("三角形内角和恒等于180度")
-        self.play(FadeIn(sub))
+        self.play(FadeIn(sub), run_time=0.5)
+
         self.wait_for_narration("180度")
         all_elems = list(elements['lines'].values()) + list(elements['points'].values())
         self.play(*[e.animate.set_color(self.COLORS['highlight']) for e in all_elems], run_time=1)
         final = Text("证毕", font_size=72, color=self.COLORS['highlight'])
         self.play(Write(final), run_time=1)
         self.wait(1)
-        self.play(FadeOut(final), FadeOut(sub))
+
+        # 结尾：淡出字幕
+        self.play(FadeOut(sub), FadeOut(final), run_time=0.5)
         self.end_scene_with_audio(expected)
 '''
