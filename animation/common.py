@@ -42,6 +42,87 @@ def set_background(scene: Scene):
 # ================================================================
 # 二、文本美化工具 — 参考模板：深色背景下纯Text，无需背景框
 # ================================================================
+
+# Microsoft YaHei 缺少字形的数学符号集合
+# 当文本包含这些字符时，不指定字体让 Pango 自动回退到有对应字形的字体
+# 包含：数学运算符、希腊字母、上下标、几何符号、逻辑符号等
+_MATH_SYMBOLS = set('×÷≤≥≠±≈≡∞∑∫√∠△∥⊥⌀∝∈∉∪∩⊂⊃⊆⊇∀∃∇∂δµΩρσφψχω→←↑↓↔⇒⇐⇔∴∵⟂∡∢')
+# 补充：上标、下标、度数等常见数学排版字符
+_MATH_SYMBOLS |= set('°²³¹⁰⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎')
+# 补充：分数、百分比等
+_MATH_SYMBOLS |= set('½⅓⅔¼¾‰‰')
+# 补充：更多希腊大写字母
+_MATH_SYMBOLS |= set('ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨ')
+
+# 尝试检测系统中是否有支持数学符号的字体
+_MATH_FONT_CANDIDATES = ["Cambria Math", "Segoe UI Symbol", "DejaVu Sans", "STIX Two Math"]
+_cached_math_font = None
+
+def _get_math_font():
+    """检测可用的数学符号字体"""
+    global _cached_math_font
+    if _cached_math_font is not None:
+        return _cached_math_font
+    import shutil
+    fonts_dir = os.path.join(os.environ.get("WINDIR", "C:\\Windows"), "Fonts")
+    for font_name in _MATH_FONT_CANDIDATES:
+        # 简单检测：字体文件名中包含关键词
+        font_file = font_name.replace(" ", "") + ".ttf"
+        font_file_lower = font_file.lower()
+        try:
+            for f in os.listdir(fonts_dir):
+                if font_file_lower in f.lower():
+                    _cached_math_font = font_name
+                    return font_name
+        except OSError:
+            pass
+    _cached_math_font = ""  # 没找到
+    return _cached_math_font
+
+def _has_math_symbols(text: str) -> bool:
+    """检测文本是否包含 Microsoft YaHei 无法渲染的数学符号"""
+    return any(c in _MATH_SYMBOLS for c in text)
+
+def smart_text(
+    text: str,
+    font_size: int = FONT_STEP,
+    color: str = Colors.STEP_TEXT,
+    weight: str = NORMAL,
+    max_width: float = None,
+) -> Text:
+    """
+    智能文本渲染 — 自动处理数学符号的字体回退。
+    
+    当文本包含数学符号（×, ÷, ≤, ∠, √等）时：
+    - 不指定 font 参数，让 Pango 自动回退到系统字体
+    - 这样数学符号会用 Cambria Math/Segoe UI Symbol 等渲染
+    - 中文字符也会通过 Pango 字体回退正常显示
+    
+    当文本不含数学符号时：
+    - 使用 Microsoft YaHei 字体保证中文美观
+    """
+    if _has_math_symbols(text):
+        txt = Text(
+            text,
+            font_size=font_size,
+            color=color,
+            weight=weight,
+        )
+    else:
+        txt = Text(
+            text,
+            font=FONT_FAMILY,
+            font_size=font_size,
+            color=color,
+            weight=weight,
+        )
+    # 宽度安全检查
+    if max_width is None:
+        max_width = CANVAS_MAX_WIDTH
+    if txt.width > max_width:
+        txt.scale(max_width / txt.width * 0.9)
+    return txt
+
 def pretty_text(
     text: str,
     font_size: int = FONT_STEP,
@@ -53,14 +134,24 @@ def pretty_text(
     """
     创建美化文本对象（参考模板风格）
     深色背景下使用白色文字，简洁干净，无需圆角背景框
+    自动处理数学符号字体回退
     """
-    txt = Text(
-        text,
-        font=font_family,
-        font_size=font_size,
-        color=color,
-        weight=weight,
-    )
+    if _has_math_symbols(text):
+        # 含数学符号，不指定字体让 Pango 回退
+        txt = Text(
+            text,
+            font_size=font_size,
+            color=color,
+            weight=weight,
+        )
+    else:
+        txt = Text(
+            text,
+            font=font_family,
+            font_size=font_size,
+            color=color,
+            weight=weight,
+        )
     # 宽度安全检查
     if max_width is None:
         max_width = CANVAS_MAX_WIDTH
@@ -85,12 +176,10 @@ def pretty_text_with_bg(
     if max_width is None:
         max_width = CANVAS_MAX_WIDTH
 
-    txt = Text(
-        text,
-        font=font_family,
-        font_size=font_size,
-        color=text_color,
-    )
+    if _has_math_symbols(text):
+        txt = Text(text, font_size=font_size, color=text_color)
+    else:
+        txt = Text(text, font=font_family, font_size=font_size, color=text_color)
     if txt.width > max_width:
         txt.scale(max_width / txt.width * 0.9)
     # 半透明深色背景框
@@ -170,12 +259,10 @@ def create_subtitle(
     创建字幕对象（参考模板 create_subtitle）
     字幕放在画面底部 to_edge(DOWN, buff=0.5)，纯文字无背景框
     """
-    subtitle = Text(
-        text,
-        font=FONT_FAMILY,
-        font_size=font_size,
-        color=color,
-    )
+    if _has_math_symbols(text):
+        subtitle = Text(text, font_size=font_size, color=color)
+    else:
+        subtitle = Text(text, font=FONT_FAMILY, font_size=font_size, color=color)
     # 宽度安全检查：字幕不应超出画布
     if subtitle.width > CANVAS_MAX_WIDTH:
         subtitle.scale(CANVAS_MAX_WIDTH / subtitle.width * 0.9)
@@ -243,9 +330,9 @@ def math_text(
     else:
         # LaTeX不可用时降级为Text渲染，做简单的Unicode映射
         display_text = _latex_to_unicode(latex)
+        # 不指定字体，让 Pango 自动回退以正确显示数学符号
         return Text(
             display_text,
-            font=FONT_FAMILY,
             font_size=font_size,
             color=color,
         )
@@ -633,8 +720,8 @@ def draw_angle_mark(
     scene.play(Create(angle, run_time=duration, rate_func=linear))
 
     if label:
-        # 使用 Text 代替 Tex，避免 LaTeX 依赖
-        lbl = Text(label, font=FONT_FAMILY, font_size=FONT_ANNOTATION, color=color)
+        # 使用 smart_text 自动处理数学符号（如 °、∠ 等）
+        lbl = smart_text(label, font_size=FONT_ANNOTATION, color=color)
         lbl.next_to(angle.get_center(), UP * 0.3 + RIGHT * 0.3)
         group.add(lbl)
         scene.play(FadeIn(lbl, shift=UP * 0.2, run_time=DURATION_FADE))
@@ -677,13 +764,7 @@ def draw_vertex_label(
     if direction is None:
         direction = UR * 0.3
 
-    txt = Text(
-        label,
-        font=FONT_FAMILY,
-        font_size=font_size,
-        color=color,
-        weight=BOLD,
-    )
+    txt = smart_text(label, font_size=font_size, color=color, weight=BOLD)
     txt.next_to(point, direction, buff=0.1)
     scene.play(FadeIn(txt, shift=direction * 0.5, run_time=duration))
     return txt
@@ -708,12 +789,7 @@ def draw_side_label(
     norm = np.linalg.norm(perp) if np.linalg.norm(perp) > 0 else UP
     perp = perp / norm * offset
 
-    txt = Text(
-        label,
-        font=FONT_FAMILY,
-        font_size=font_size,
-        color=color,
-    )
+    txt = smart_text(label, font_size=font_size, color=color)
     txt.move_to(mid + perp)
     scene.play(FadeIn(txt, shift=perp * 0.3, run_time=duration))
     return txt
@@ -855,8 +931,8 @@ def create_aligned_equations(
     """
     parts = []
     for eq in equations:
-        # 使用 Text 直接显示，Unicode 数学符号
-        txt = Text(eq, font=FONT_FAMILY, font_size=font_size, color=color)
+        # 使用 smart_text 自动处理数学符号字体回退
+        txt = smart_text(eq, font_size=font_size, color=color)
         parts.append(txt)
 
     group = VGroup(*parts).arrange(DOWN, buff=0.3, aligned_edge=LEFT)

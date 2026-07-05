@@ -1,0 +1,31 @@
+Claude 直生代码模式测试结果
+========================================
+测试题目: 证明：三角形内角和等于180度。
+模型: claude-sonnet-5
+耗时: 约2分钟
+
+结果:
+- Success: True
+- Scenes: 6
+- Code length: 16,474 chars
+
+6幕信息:
+  Scene 1: 开场 - 大家好，今天我们来证明一个经典的几何定理，三角形内角和等于一百八十度。
+  Scene 2: 画三角形 - 首先，我们任意画一个三角形ABC，三个顶点分别是A、B、C。
+  Scene 3: 标注角度 - 我们用希腊字母α、β、γ分别表示三角形的三个内角。
+  Scene 4: 画辅助线 - 接下来，过顶点A作一条直线DE，使DE平行于底边BC。
+  Scene 5: 证明过程 - 由于DE平行于BC，根据平行线的性质，内错角相等...
+  Scene 6: 总结 - 因此我们得出结论，三角形三个内角α、β、γ的和等于一百八十度。证明完毕。
+
+代码结构验证:
+  class MathProblemScene(MathAnimScene) ✓
+  calculate_geometry() ✓
+  assert_geometry() ✓
+  define_elements() ✓
+  play_scene_1 ~ play_scene_6 ✓
+  wait_for_narration() ✓
+  start_scene_with_audio() ✓
+  end_scene_with_audio() ✓
+  SCENES 数组格式正确 ✓
+
+结论: Claude 直生代码模式工作正常，可以生成完整的 Manim 场景代码。

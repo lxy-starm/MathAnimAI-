@@ -1,0 +1,55 @@
+{
+  "files": [
+    {
+      "scene": 1,
+      "file": "audio_001_开场.mp3",
+      "path": "C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\run_20260705_152354\\audio_001_开场.mp3",
+      "text": "大家好，今天我们来学习圆的面积的计算方法。题目告诉我们，圆的半径是7，让我们一起求出这个圆的面积。",
+      "duration": 10.1,
+      "sync_points": []
+    },
+    {
+      "scene": 2,
+      "file": "audio_002_画圆.mp3",
+      "path": "C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\run_20260705_152354\\audio_002_画圆.mp3",
+      "text": "首先，我们在屏幕上画一个圆，标出圆心O和半径r，半径r等于7。",
+      "duration": 7.13,
+      "sync_points": []
+    },
+    {
+      "scene": 3,
+      "file": "audio_003_写出公式.mp3",
+      "path": "C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\run_20260705_152354\\audio_003_写出公式.mp3",
+      "text": "圆的面积公式是S等于π乘以r的平方，这是计算圆面积的基本公式。",
+      "duration": 6.65,
+      "sync_points": []
+    },
+    {
+      "scene": 4,
+      "file": "audio_004_代入数值.mp3",
+      "path": "C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\run_20260705_152354\\audio_004_代入数值.mp3",
+      "text": "接下来，把半径r等于7代入公式中，得到S等于π乘以7的平方，也就是49π。",
+      "duration": 8.11,
+      "sync_points": []
+    },
+    {
+      "scene": 5,
+      "file": "audio_005_计算结果.mp3",
+      "path": "C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\run_20260705_152354\\audio_005_计算结果.mp3",
+      "text": "计算7的平方等于49，所以圆的面积S等于49π，约等于153.86。",
+      "duration": 8.02,
+      "sync_points": []
+    },
+    {
+      "scene": 6,
+      "file": "audio_006_总结.mp3",
+      "path": "C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\run_20260705_152354\\audio_006_总结.mp3",
+      "text": "总结一下，圆的面积公式是S等于πr的平方，当半径等于7时，圆的面积等于49π。",
+      "duration": 8.66,
+      "sync_points": []
+    }
+  ],
+  "total_duration": 48.67,
+  "count": 6,
+  "voice": "zh-CN-XiaoxiaoNeural"
+}

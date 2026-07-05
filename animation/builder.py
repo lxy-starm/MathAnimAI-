@@ -202,7 +202,12 @@ def generate_scene_code(
             lines.extend(_gen_text_slide_in(step, indent))
 
         elif anim_type in ("draw_shape", "draw_circle", "draw_arc"):
-            lines.extend(_gen_draw_shape(step, indent))
+            # 如果 base_figure 已经绘制了相同类型的图形，跳过重复绘制
+            step_shape = (step.config or {}).get("shape_type", "")
+            if script.base_figure and step_shape == script.base_figure.type:
+                lines.append(f'{indent}# (基础图形已由 base_figure 绘制，跳过重复绘制)')
+            else:
+                lines.extend(_gen_draw_shape(step, indent))
 
         elif anim_type == "draw_dashed_line":
             lines.extend(_gen_dashed_line(step, indent))
@@ -262,7 +267,7 @@ def generate_scene_code(
     lines.append(f'{indent}# ===== 最终展示 =====')
     lines.append(f'{indent}# 清除中央临时内容')
     lines.append(f'{indent}self.step_transition()')
-    lines.append(f'{indent}final_text = Text("答：{_py_escape(script.final_answer)}", font=FONT_FAMILY, font_size=FONT_CONCLUSION, color=Colors.HIGHLIGHT, weight=BOLD)')
+    lines.append(f'{indent}final_text = smart_text("答：{_py_escape(script.final_answer)}", font_size=FONT_CONCLUSION, color=Colors.HIGHLIGHT, weight=BOLD)')
     lines.append(f'{indent}position_in_center_safe(final_text)')
     lines.append(f'{indent}if final_text.width > {CENTER_CONTENT_MAX_WIDTH}:')
     lines.append(f'{indent}    final_text.scale({CENTER_CONTENT_MAX_WIDTH} / final_text.width * 0.9)')

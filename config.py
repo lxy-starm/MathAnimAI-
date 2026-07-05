@@ -7,21 +7,50 @@ MathAnimAI — 全局统一配置文件
 """
 
 import os
+import shutil
 from dotenv import load_dotenv
 
 # 加载 .env 环境变量
 load_dotenv()
 
+# ================================================================
+# 自动检测并添加 MiKTeX / LaTeX 到 PATH（Manim MathTex 依赖）
+# ================================================================
+def _ensure_latex_on_path():
+    """检测 LaTeX 是否在 PATH 中，如果没有则尝试常见安装路径"""
+    if shutil.which("latex"):
+        return  # 已在 PATH 中
+
+    # 常见 MiKTeX / TeX Live 安装路径
+    _latex_paths = [
+        r"D:\Miktex\miktex\bin\x64",           # 用户手动安装
+        r"C:\Program Files\MiKTeX\miktex\bin\x64",  # 默认安装路径
+        r"C:\Users\lxy\AppData\Local\Programs\MiKTeX\miktex\bin\x64",
+        r"C:\texlive\2024\bin\windows",
+        r"C:\texlive\2025\bin\windows",
+    ]
+
+    for path in _latex_paths:
+        if os.path.isdir(path) and os.path.exists(os.path.join(path, "latex.exe")):
+            os.environ["PATH"] = os.environ["PATH"] + ";" + path
+            print(f"[config] LaTeX found at: {path}")
+            return
+
+    # 未找到 LaTeX
+    print("[config] Warning: LaTeX not found. MathTex() will not work. Install MiKTeX or add to PATH.")
+
+_ensure_latex_on_path()
+
 
 # ================================================================
 # 一、LLM大模型配置
 # ================================================================
-LLM_PROVIDER = os.getenv("LLM_PROVIDER", "ollama")  # ollama | deepseek | openai | custom
+LLM_PROVIDER = os.getenv("LLM_PROVIDER", "ollama")  # ollama | deepseek | openai | custom | anthropic
 LLM_BASE_URL = os.getenv("LLM_BASE_URL", "http://localhost:11434/v1")
 LLM_API_KEY = os.getenv("LLM_API_KEY", "ollama")
 LLM_MODEL = os.getenv("LLM_MODEL", "qwen2.5:7b")
-LLM_MAX_TOKENS = 4096
-LLM_TEMPERATURE = 0.3  # 数学题需要稳定输出，温度不宜过高
+LLM_MAX_TOKENS = 8192  # Claude 支持更长输出，增加到 8192
+LLM_TEMPERATURE = 0.2  # 数学题需要稳定输出，温度不宜过高（Claude 建议 0.2）
 LLM_RETRY_TIMES = 3  # API调用失败重试次数
 LLM_RETRY_BACKOFF = 2  # 重试退避因子
 

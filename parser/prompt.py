@@ -48,9 +48,44 @@ COMMON_SYSTEM_INSTRUCTION = """
    - transform: 图形变换
 7. **position合法值**：below / above / left / right / center
 8. **voice_text字段**：为每个步骤生成口语化的讲解旁白，用于TTS配音。
-9. **math_expr字段**：如果有数学公式，填写LaTeX表达式。
+9. **math_expr字段**：如果有数学公式，填写LaTeX表达式。注意：使用正确的LaTeX命令，如 \\frac{}{} 表示分数，\\times 表示乘号，\\sqrt{} 表示根号。不要使用 \\rac, \\t, \\au 等错误命令。
 10. **坐标归一化**：Manim画布坐标系，原点(0,0)在中心，x范围[-7,7]，y范围[-4,4]。
-11. **draw_shape 约束**：使用 draw_shape 时必须填写 config.shape_type ("polygon"/"circle"/"triangle") 和 config.points 坐标数组。无法提供坐标时改用 text_slide_in。
+
+## config 字段必填规则（极其重要！！）
+
+**每个 animation_type 的 config 字段必须包含对应的坐标数据，否则画面将为空白！**
+
+| animation_type | config 必填字段 | 示例 |
+|---|---|---|
+| draw_shape | shape_type, points | {"shape_type":"triangle","points":[[-2,-1.5],[2,-1.5],[0,2]],"color":"#4ecca3"} |
+| draw_circle | shape_type, radius, center | {"shape_type":"circle","radius":1.5,"center":[0,0],"color":"#4ecca3"} |
+| label_vertex | point, label, direction | {"point":[0,2],"label":"C","direction":"UP*0.4"} |
+| label_side | start, end, label | {"start":[-2,-1.5],"end":[2,-1.5],"label":"3"} |
+| mark_angle | vertex, point_a, point_b, label | {"vertex":[0,0],"point_a":[1,0],"point_b":[0,1],"label":"90°"} |
+| mark_right_angle | vertex, point_a, point_b | {"vertex":[0,2],"point_a":[-2,-1.5],"point_b":[2,-1.5]} |
+| draw_dashed_line | start, end | {"start":[0,2],"end":[0,-1.5],"color":"#e94560"} |
+| highlight | （无需坐标，自动高亮当前内容） | {} |
+| text_slide_in | （无需坐标） | {} |
+
+**如果无法提供坐标数据，请改用 text_slide_in 代替！不要使用 draw_shape/label_vertex/label_side 等需要坐标的动画类型却不提供坐标！**
+
+## base_figure 字段（几何题必填）
+
+几何题必须在 base_figure 中定义基础图形，包含 type、points、labels：
+
+```json
+"base_figure": {
+  "type": "triangle",
+  "points": [[-2,-1.5], [2,-1.5], [0,2]],
+  "labels": ["A", "B", "C"],
+  "config": {"color": "#4ecca3"}
+}
+```
+
+- 三角形 type="triangle"，3个顶点
+- 四边形 type="polygon"，4个顶点
+- 圆 type="circle"，points=[[圆心x,圆心y]]，额外提供 radius
+- 顶点坐标必须在 [-5,5] 范围内，图形居中
 
 ## JSON输出结构
 
@@ -65,8 +100,8 @@ COMMON_SYSTEM_INSTRUCTION = """
     "auto_advance": true,
     "step_pause": 1.0
   },
-  "base_figure": null,  // 几何题此处填写基础图形定义
-  "coordinate_system": null,  // 函数题此处填写坐标系定义
+  "base_figure": null,
+  "coordinate_system": null,
   "steps": [
     {
       "step_number": 1,
@@ -186,36 +221,61 @@ GEOMETRY_PROMPT = f"""
 你正在处理一道**几何题**（三角形、四边形、圆形、角度计算、勾股定理等）。
 
 ### 标准解题步骤拆分要求：
-1. **审题画图**：在base_figure中定义基础图形（三角形/四边形等），标注顶点字母、已知边长和角度。
+1. **审题画图**：在base_figure中定义基础图形（三角形/四边形等），标注顶点字母、已知边长和角度。第一个步骤必须是 draw_shape。
 2. **分析已知条件**：逐条列出题目给出的条件。
 3. **添加辅助线**：如需作垂线、角平分线、中线等，用draw_dashed_line。
 4. **逐步推导**：每一步基于已知条件推理出一个新结论，标注在图上。
 5. **计算结果**：得出最终角度、边长或面积。
 6. **总结**：完整呈现解题过程和最终答案。
 
-### base_figure定义格式：
+### base_figure定义格式（必填！）：
+几何题必须在 base_figure 中定义基础图形。坐标系：原点(0,0)在画面中心，x范围[-7,7]，y范围[-4,4]。
+
+三角形示例：
 {{
   "type": "triangle",
   "points": [[-2,-1.5], [2,-1.5], [0,2]],
   "labels": ["A", "B", "C"],
-  "config": {{"color": "#3498DB"}}
+  "config": {{"color": "#4ecca3"}}
 }}
 
+圆示例：
+{{
+  "type": "circle",
+  "points": [[0,0]],
+  "radius": 1.5,
+  "labels": ["O"],
+  "config": {{"color": "#4ecca3"}}
+}}
+
+### config 字段必须填写完整坐标数据！
+
+每个需要坐标的步骤，config 字段必须填写：
+- draw_shape: {{"shape_type":"triangle","points":[[-2,-1.5],[2,-1.5],[0,2]],"color":"#4ecca3"}}
+- label_vertex: {{"point":[0,2],"label":"C","direction":"UP*0.4"}}
+- label_side: {{"start":[-2,-1.5],"end":[2,-1.5],"label":"3"}}
+- mark_right_angle: {{"vertex":[0,2],"point_a":[-2,-1.5],"point_b":[2,-1.5]}}
+- mark_angle: {{"vertex":[0,0],"point_a":[1,0],"point_b":[0,1],"label":"90°"}}
+- draw_dashed_line: {{"start":[0,2],"end":[0,-1.5],"color":"#e94560"}}
+
+**如果无法提供坐标，请改用 text_slide_in！**
+
 ### animation_type使用规范：
-- draw_shape: 绘制基础图形
-- label_vertex: 标注顶点字母
-- label_side: 标注边长
-- draw_dashed_line: 添加辅助虚线
-- mark_angle: 标注普通角度
-- mark_right_angle: 标注直角
-- text_slide_in: 展示文字讲解
-- highlight: 高亮关键条件/结论
+- draw_shape: 绘制基础图形（必须提供points坐标）
+- label_vertex: 标注顶点字母（必须提供point坐标和label）
+- label_side: 标注边长（必须提供start/end坐标）
+- draw_dashed_line: 添加辅助虚线（必须提供start/end坐标）
+- mark_angle: 标注普通角度（必须提供vertex/point_a/point_b坐标）
+- mark_right_angle: 标注直角（必须提供vertex/point_a/point_b坐标）
+- text_slide_in: 展示文字讲解（无需坐标，适合无法提供坐标的步骤）
+- highlight: 高亮关键条件/结论（无需坐标）
 
 ### 关键要求：
 - 图形居中，顶点字母向外偏移避免重叠
 - 辅助线用虚线，颜色与实线有明显区分
 - 每一步新的标注文字放在图形下方空白区域
 - 底图永不消失，所有步骤的内容叠加展示
+- **优先使用 text_slide_in 而非空坐标的几何动画类型**
 """
 
 

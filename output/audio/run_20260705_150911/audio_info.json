@@ -1,0 +1,55 @@
+{
+  "files": [
+    {
+      "scene": 1,
+      "file": "audio_001_开场.mp3",
+      "path": "C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\run_20260705_150911\\audio_001_开场.mp3",
+      "text": "大家好，今天我们来学习如何求圆的面积。已知圆的半径是五，求这个圆的面积是多少。",
+      "duration": 8.45,
+      "sync_points": []
+    },
+    {
+      "scene": 2,
+      "file": "audio_002_画圆.mp3",
+      "path": "C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\run_20260705_150911\\audio_002_画圆.mp3",
+      "text": "首先，我们画一个圆，标记圆心O，标出半径r等于五。",
+      "duration": 5.59,
+      "sync_points": []
+    },
+    {
+      "scene": 3,
+      "file": "audio_003_展示公式.mp3",
+      "path": "C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\run_20260705_150911\\audio_003_展示公式.mp3",
+      "text": "圆的面积公式是S等于π乘以r的平方，这是计算圆面积的基本公式。",
+      "duration": 6.65,
+      "sync_points": []
+    },
+    {
+      "scene": 4,
+      "file": "audio_004_代入数值.mp3",
+      "path": "C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\run_20260705_150911\\audio_004_代入数值.mp3",
+      "text": "将半径r等于五代入公式，得到S等于π乘以五的平方，也就是二十五π。",
+      "duration": 7.34,
+      "sync_points": []
+    },
+    {
+      "scene": 5,
+      "file": "audio_005_计算结果.mp3",
+      "path": "C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\run_20260705_150911\\audio_005_计算结果.mp3",
+      "text": "二十五π就是最终结果，如果取近似值，约等于七十八点五四。",
+      "duration": 6.24,
+      "sync_points": []
+    },
+    {
+      "scene": 6,
+      "file": "audio_006_总结.mp3",
+      "path": "C:\\Users\\lxy\\WorkBuddy\\2026-06-30-16-26-23\\education_agent\\output\\audio\\run_20260705_150911\\audio_006_总结.mp3",
+      "text": "总结一下，圆的面积S等于πr的平方，半径为五时面积是二十五π。",
+      "duration": 7.15,
+      "sync_points": []
+    }
+  ],
+  "total_duration": 41.42,
+  "count": 6,
+  "voice": "zh-CN-XiaoxiaoNeural"
+}
